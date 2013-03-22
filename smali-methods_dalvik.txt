@@ -1,0 +1,8 @@
+Ldalvik/system/DexFile;->loadDex(Ljava/lang/String;Ljava/lang/String;I)Ldalvik/system/DexFile;
+Ldalvik/system/DexFile;->isDexOptNeeded(Ljava/lang/String;)Z
+Ldalvik/system/DexFile;->entries()Ljava/util/Enumeration;
+Ldalvik/system/DexFile;->loadClass(Ljava/lang/String;Ljava/lang/ClassLoader;)Ljava/lang/Class;
+Ldalvik/system/DexFile;->getName()Ljava/lang/String;
+Ldalvik/system/DexFile;->close()V
+Ldalvik/system/BaseDexClassLoader;->toString()Ljava/lang/String;
+Ldalvik/system/BaseDexClassLoader;->findLibrary(Ljava/lang/String;)Ljava/lang/String;

@@ -28,6 +28,8 @@ public class SmaliParser {
 	public File folder;
 	public HashMap<String, Integer> featuresHashMap;
 	public HashMap<String, OpenBitSet> bitVectorsHashMap;
+	public HashMap<String, Long> recognizedHashMap;
+	public HashMap<String, Long> unRecognizedHashMap;
 	public int bitVectorsCount;
 	public long recCount;
 	public long unRecCount;
@@ -39,6 +41,8 @@ public class SmaliParser {
 		this.features = new ArrayList<String>();
 		this.folder = new File(this.folderRoot);
 		this.featuresHashMap = new HashMap<String, Integer>(); 
+		this.recognizedHashMap = new HashMap<String, Long>(); 
+		this.unRecognizedHashMap = new HashMap<String, Long>(); 
 		this.bitVectorsHashMap = new HashMap<String, OpenBitSet>(); 
 		this.recCount = 0;
 		this.unRecCount = 0;
@@ -48,12 +52,17 @@ public class SmaliParser {
 	
 	 public static void main(String[] args) {
 		SmaliParser smaliParser = new SmaliParser();
-		smaliParser.createHashMap(smaliParser.hashMapFile);
+		smaliParser.createHashMap(smaliParser.hashMapFile);		
+		smaliParser.topLevelTraversal(smaliParser.folder);		
 		
-		smaliParser.topLevelTraversal(smaliParser.folder);
+		double recPercent = (double)smaliParser.recognizedHashMap.size()/(double)smaliParser.featuresHashMap.size();
+		double unRecPercent = (double)smaliParser.unRecognizedHashMap.size()/(double)smaliParser.featuresHashMap.size();
 		
+		System.out.println("Recognized: " + smaliParser.recognizedHashMap.size() + " or " + recPercent + "%");
+		System.out.println("Unrecognized: " + smaliParser.unRecognizedHashMap.size() + " or " + unRecPercent + "%");
+		System.out.println("Total Features in hash: " + smaliParser.featuresHashMap.size() );
+		System.out.println("Total Methods parsed: " + smaliParser.count + "\n");
 		
-		System.out.println("Recognized: " + smaliParser.recCount + " Unrecognized: " + smaliParser.unRecCount + " Total: " + smaliParser.count );
 		smaliParser.compareBitVectors();
 		
 	 }
@@ -82,21 +91,28 @@ public class SmaliParser {
 			if (currentRecord.contains("invoke")){
 				tokens =  currentRecord.split(delimiter);
 				token = tokens[tokens.length-1];
+				this.count++;
+				
+				//if (token.startsWith("Landroid")){
+					//System.out.println(token);
+					if (featuresHashMap.containsKey(token)) {
+						bitVector.fastSet(featuresHashMap.get(token));
+						//System.out.println("Recognized method: " + token);
+						if (!recognizedHashMap.containsKey(token)) {
+							bw.write("R: " + token + "\n");
+							recognizedHashMap.put(token, count);
+						}
 						
-				//System.out.println(token);
-				if (featuresHashMap.containsKey(token)) {
-					bitVector.fastSet(featuresHashMap.get(token));
-					//System.out.println("Recognized method: " + token);
-					bw.write("R: " + token + "\n");
-					this.recCount++;
-					this.count++;
-				}
-				else{
-					//System.out.println("Unrecognized method: " + token);
-					bw.write("U: " + token + "\n");
-					this.unRecCount++;
-					this.count++;
-				}
+					}
+					else{
+						if (!unRecognizedHashMap.containsKey(token)) {
+							bw.write("U: " + token + "\n");
+							unRecognizedHashMap.put(token, count);
+						}
+					}
+				//}
+						
+				
 			}
 		}
 
@@ -150,11 +166,7 @@ public class SmaliParser {
 			
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
-			
-			 
-		   
-			
-			
+					
 			
 		    for (File fileEntry : folder.listFiles()) {
 		        if (fileEntry.isDirectory()) {
@@ -225,6 +237,7 @@ public class SmaliParser {
 			
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
+
 		
 			 for(Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitVectorsHashMap.entrySet().iterator(); iter1.hasNext(); ) {
 					Map.Entry<String, OpenBitSet> entry1 = iter1.next();

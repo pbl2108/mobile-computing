@@ -1,10 +1,15 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.commons.codec.binary.Hex;
+import org.apache.lucene.util.OpenBitSet;
 
 
 
@@ -15,17 +20,19 @@ public class SmaliParser {
 	//public String filePath = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\kidapp\\MngPage.smali";
 	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
 	public String hashMapFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\smali-methods.txt";
-	public String outputFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\testRun.txt";
+	public String outputFeatureFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\testRun.txt";
+	public String outputBitVectorFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\bitVectors.csv";
 	public File folder;
-	public HashMap<String, Integer> methodsHashMap;
+	public HashMap<String, Integer> featuresHashMap;
 	public long recCount;
 	public long unRecCount;
 	public long count;
 	
+	
 	public SmaliParser(){
 		this.features = new ArrayList<String>();
 		this.folder = new File(this.folderRoot);
-		this.methodsHashMap = new HashMap<String, Integer>(); 
+		this.featuresHashMap = new HashMap<String, Integer>(); 
 		this.recCount = 0;
 		this.unRecCount = 0;
 		this.count=0;
@@ -43,7 +50,7 @@ public class SmaliParser {
 		
 	 }
 	 
-	private void parseDelimitedFile(String filePath) throws Exception
+	private void parseDelimitedFile(String filePath, OpenBitSet bitVector) throws Exception
 	{
 	  
 	  FileReader fr = new FileReader(filePath);
@@ -55,7 +62,7 @@ public class SmaliParser {
 	  
 	  
 	  
-	  File file = new File(this.outputFile);
+	  File file = new File(this.outputFeatureFile);
 	  
 	// if file doesnt exists, then create it
 	if (!file.exists()) {
@@ -71,7 +78,8 @@ public class SmaliParser {
 			token = tokens[tokens.length-1];
 					
 			//System.out.println(token);
-			if (methodsHashMap.containsKey(token)) {
+			if (featuresHashMap.containsKey(token)) {
+				bitVector.fastSet(featuresHashMap.get(token));
 				//System.out.println("Recognized method: " + token);
 				bw.write("R: " + token + "\n");
 				this.recCount++;
@@ -102,10 +110,10 @@ public class SmaliParser {
 	        int bitIndex = 0;
 	 
 	        while ((str = in.readLine()) != null) { 
-                    if (methodsHashMap.containsKey(str)) {
+                    if (featuresHashMap.containsKey(str)) {
                         System.out.println("Duplicate method: " + str);
                     } else { 
-                    	methodsHashMap.put(str, bitIndex);
+                    	featuresHashMap.put(str, bitIndex);
                     	bitIndex++;
                     } 
              } 
@@ -122,24 +130,68 @@ public class SmaliParser {
 	
 	
 	public void topLevelTraversal(File folder) {
-	    for (File fileEntry : folder.listFiles()) {
-	        if (fileEntry.isDirectory()) {
-	            listFilesForFolder(fileEntry);
-	        } else {
-	        	//Do nothing
-	        }
-	    }
+		
+		try{
+			
+		
+			File file = new File(this.outputBitVectorFile);
+		  
+			// if file doesnt exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			
+			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			
+			 
+		   
+			
+			
+			
+		    for (File fileEntry : folder.listFiles()) {
+		        if (fileEntry.isDirectory()) {
+		        	
+		        	OpenBitSet bitVector = new OpenBitSet(this.featuresHashMap.size());
+		            listFilesForFolder(fileEntry, bitVector);
+		            
+		            if (!bitVector.isEmpty()){
+		            	//System.out.println(fileEntry.getName() + ", " + bitVector);
+		            	ByteArrayOutputStream baos = new ByteArrayOutputStream();  
+		    		    ObjectOutputStream oos = new ObjectOutputStream(baos); 
+		    		    oos.writeObject(bitVector);  
+		    		    oos.close();  
+		    		    byte[] bytes = baos.toByteArray();  
+		    		    bw.write(Hex.encodeHexString(bytes) + ", " + fileEntry.getName() + "\n");
+		            
+		            }
+		            
+		        } else {
+		        	//Do nothing
+		        }
+		    } 
+		    
+		    bw.close();
+		    
+		    
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	   
+	    
 	}
 	
-	public void listFilesForFolder(File folder) {
+	public void listFilesForFolder(File folder, OpenBitSet bitVector) {
 	    for (File fileEntry : folder.listFiles()) {
 	        if (fileEntry.isDirectory()) {
-	            listFilesForFolder(fileEntry);
+	            listFilesForFolder(fileEntry, bitVector);
 	        } else {
 	        	if (fileEntry.getName().endsWith(".smali"))
 	            {
 	        		try {
-	        			this.parseDelimitedFile(fileEntry.getAbsolutePath());
+	        			this.parseDelimitedFile(fileEntry.getAbsolutePath(), bitVector);
 	        			
 	        		} catch (Exception e) {
 	        			// TODO Auto-generated catch block

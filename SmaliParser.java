@@ -33,7 +33,8 @@ public class SmaliParser {
 	public int bitVectorsCount;
 	public long recCount;
 	public long unRecCount;
-	public long count;
+	public long totalCount;
+	public long indivdualMethodCount;
 	public double jaccardThreshold = .70;
 	
 	
@@ -46,7 +47,8 @@ public class SmaliParser {
 		this.bitVectorsHashMap = new HashMap<String, OpenBitSet>(); 
 		this.recCount = 0;
 		this.unRecCount = 0;
-		this.count = 0;
+		this.totalCount = 0;
+		this.indivdualMethodCount = 0;
 		this.bitVectorsCount = 0;
 	}
 	
@@ -55,13 +57,18 @@ public class SmaliParser {
 		smaliParser.createHashMap(smaliParser.hashMapFile);		
 		smaliParser.topLevelTraversal(smaliParser.folder);		
 		
-		double recPercent = (double)smaliParser.recognizedHashMap.size()/(double)smaliParser.featuresHashMap.size();
-		double unRecPercent = (double)smaliParser.unRecognizedHashMap.size()/(double)smaliParser.featuresHashMap.size();
+		double recPercent = 100*(double)smaliParser.recognizedHashMap.size()/(double)smaliParser.indivdualMethodCount;
+		double unRecPercent = 100*(double)smaliParser.unRecognizedHashMap.size()/(double)smaliParser.indivdualMethodCount;
+		double recCoverage = 100*(double)smaliParser.recognizedHashMap.size()/(double)smaliParser.featuresHashMap.size();
+		double unRecCoverage = 100*(double)smaliParser.unRecognizedHashMap.size()/(double)smaliParser.featuresHashMap.size();
 		
 		System.out.println("Recognized: " + smaliParser.recognizedHashMap.size() + " or " + recPercent + "%");
 		System.out.println("Unrecognized: " + smaliParser.unRecognizedHashMap.size() + " or " + unRecPercent + "%");
-		System.out.println("Total Features in hash: " + smaliParser.featuresHashMap.size() );
-		System.out.println("Total Methods parsed: " + smaliParser.count + "\n");
+		System.out.println("Recognized Coverage: " + recCoverage + "%");
+		System.out.println("Unrecognized Coverage: " + unRecCoverage + "%");
+		System.out.println("Total Features in Hash: " + smaliParser.featuresHashMap.size() );
+		System.out.println("Total Distinct Methods Found: " + smaliParser.indivdualMethodCount );
+		System.out.println("Total Methods Parsed: " + smaliParser.totalCount + "\n");
 		
 		smaliParser.compareBitVectors();
 		
@@ -91,23 +98,23 @@ public class SmaliParser {
 			if (currentRecord.contains("invoke")){
 				tokens =  currentRecord.split(delimiter);
 				token = tokens[tokens.length-1];
-				this.count++;
+				this.totalCount++;
 				
 				//if (token.startsWith("Landroid")){
-					//System.out.println(token);
 					if (featuresHashMap.containsKey(token)) {
 						bitVector.fastSet(featuresHashMap.get(token));
-						//System.out.println("Recognized method: " + token);
 						if (!recognizedHashMap.containsKey(token)) {
 							bw.write("R: " + token + "\n");
-							recognizedHashMap.put(token, count);
+							indivdualMethodCount++;
+							recognizedHashMap.put(token, indivdualMethodCount);
 						}
 						
 					}
 					else{
 						if (!unRecognizedHashMap.containsKey(token)) {
 							bw.write("U: " + token + "\n");
-							unRecognizedHashMap.put(token, count);
+							indivdualMethodCount++;
+							unRecognizedHashMap.put(token, indivdualMethodCount);
 						}
 					}
 				//}
@@ -115,9 +122,7 @@ public class SmaliParser {
 				
 			}
 		}
-
-	  
-
+		  
 	  bw.close();
 	  br.close();
 	  fw.close();

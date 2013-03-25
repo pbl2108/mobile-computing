@@ -36,6 +36,12 @@ public class SmaliParser {
 	public long totalCount;
 	public long indivdualMethodCount;
 	public double jaccardThreshold = .70;
+//	public long startTime;
+//	public long endSmaliParseTime;
+//	public long cmpStartTime;
+//	public long cmpEndTime;
+	public long dirCount;
+
 	
 	
 	public SmaliParser(){
@@ -50,12 +56,15 @@ public class SmaliParser {
 		this.totalCount = 0;
 		this.indivdualMethodCount = 0;
 		this.bitVectorsCount = 0;
+		this.dirCount = 0;
 	}
 	
 	 public static void main(String[] args) {
+		long startTime = System.currentTimeMillis();	 
 		SmaliParser smaliParser = new SmaliParser();
 		smaliParser.createHashMap(smaliParser.hashMapFile);		
-		smaliParser.topLevelTraversal(smaliParser.folder);		
+		smaliParser.topLevelTraversal(smaliParser.folder);
+		long endSmaliParseTime = System.currentTimeMillis();
 		
 		double recPercent = 100*(double)smaliParser.recognizedHashMap.size()/(double)smaliParser.indivdualMethodCount;
 		double unRecPercent = 100*(double)smaliParser.unRecognizedHashMap.size()/(double)smaliParser.indivdualMethodCount;
@@ -70,7 +79,14 @@ public class SmaliParser {
 		System.out.println("Total Distinct Methods Found: " + smaliParser.indivdualMethodCount );
 		System.out.println("Total Methods Parsed: " + smaliParser.totalCount + "\n");
 		
+		long bitVectorHashSize =  smaliParser.bitVectorsHashMap.size();
+		long cmpStartTime = System.currentTimeMillis();
 		smaliParser.compareBitVectors();
+		long cmpEndTime = System.currentTimeMillis();
+		
+		System.out.println("\nTotal time: " + (cmpEndTime - startTime) + " ms for " + bitVectorHashSize + " bitVectors");
+		System.out.println("Parse time: " + (endSmaliParseTime - startTime) + " ms or " + (double)(endSmaliParseTime - startTime)/(double)bitVectorHashSize + " ms/bitVector");
+		System.out.println("Comparison time: " + (cmpEndTime - cmpStartTime) + " ms or " + (double)(cmpEndTime - cmpStartTime)/(double)bitVectorHashSize + " ms/bitVector");
 		
 	 }
 	 
@@ -174,6 +190,8 @@ public class SmaliParser {
 					
 			
 		    for (File fileEntry : folder.listFiles()) {
+		    	dirCount++;
+		    	
 		        if (fileEntry.isDirectory()) {
 		        	
 		        	OpenBitSet bitVector = new OpenBitSet(this.featuresHashMap.size());

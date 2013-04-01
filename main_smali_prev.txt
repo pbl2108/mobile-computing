@@ -4158,5 +4158,13 @@ Start$1.smali
 Start.smali
 
 
-
 The total number: 92
+
+The apps failing to get correct folder:
+/Users/xuyiming/Desktop/tmp/com.e2.sexonthe-7-byte
+/Users/xuyiming/Desktop/tmp/com.e247.muzzia-1-byte
+/Users/xuyiming/Desktop/tmp/com.e2sdc.bdha-1-byte
+/Users/xuyiming/Desktop/tmp/com.e4software.abgguide-1-byte
+/Users/xuyiming/Desktop/tmp/com.ea.applock.trial-12-byte
+/Users/xuyiming/Desktop/tmp/com.ea.games.simsfreeplay_na-1007007-byte
+/Users/xuyiming/Desktop/tmp/com.ea.SWTORSK_na-3550-byte

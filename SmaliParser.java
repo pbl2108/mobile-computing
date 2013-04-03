@@ -21,30 +21,32 @@ public class SmaliParser {
 	private static final String separatorSign = "/";
 
 	public ArrayList<String> features;
-	// public String filePath =
-	// "C:\\Users\\Dfosak\\workspace\\MobileComputing\\kidapp\\MngPage.smali";
-	// public String folderRoot =
-	// "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
-	// public String hashMapFile =
-	// "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\smali-methods.txt";
-	// public String outputFeatureFile =
-	// "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\testRun.txt";
-	// public String outputBitVectorFile =
-	// "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\bitVectors.csv";
-	// public String outputSimFile =
-	// "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\similarities.txt";
-
+	public String filePath = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\kidapp\\MngPage.smali";
 	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
 	public String hashMapFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\smali-methods.txt";
 	public String outputFeatureFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\testRun.txt";
 	public String outputBitVectorFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\bitVectors.csv";
 	public String outputSimFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\similarities.txt";
+	public String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries.txt";
+
+	// public String folderRoot = "/home/peter/columbia/mob/sample-decompile";
+	// public String hashMapFile =
+	// "/home/peter/columbia/mob/helper_txts/smali-methods.txt";
+	// public String whitelistLibraries =
+	// "/home/peter/columbia/mob/helper_txts/whitelist_libraries.txt";
+	// public String outputFeatureFile =
+	// "/home/peter/columbia/mob/helper_txts/output/testRun.txt";
+	// public String outputBitVectorFile =
+	// "/home/peter/columbia/mob/helper_txts/output/bitVectors.csv";
+	// public String outputSimFile =
+	// "/home/peter/columbia/mob/helper_txts/output/similarities.txt";
 
 	public File folder;
 	public HashMap<String, Integer> featuresHashMap;
 	public HashMap<String, OpenBitSet> bitVectorsHashMap;
 	public HashMap<String, Long> recognizedHashMap;
 	public HashMap<String, Long> unRecognizedHashMap;
+	public ArrayList<String> whitelistLibsHashMap;
 	public int bitVectorsCount;
 	public long recCount;
 	public long unRecCount;
@@ -64,6 +66,7 @@ public class SmaliParser {
 		this.recognizedHashMap = new HashMap<String, Long>();
 		this.unRecognizedHashMap = new HashMap<String, Long>();
 		this.bitVectorsHashMap = new HashMap<String, OpenBitSet>();
+		this.whitelistLibsHashMap = new ArrayList<String>();
 		this.recCount = 0;
 		this.unRecCount = 0;
 		this.totalCount = 0;
@@ -76,6 +79,7 @@ public class SmaliParser {
 		long startTime = System.currentTimeMillis();
 		SmaliParser smaliParser = new SmaliParser();
 		smaliParser.createHashMap(smaliParser.hashMapFile);
+		smaliParser.loadWhitelistLibs(smaliParser.whitelistLibraries);
 		smaliParser.topLevelTraversal(smaliParser.folder);
 		long endSmaliParseTime = System.currentTimeMillis();
 
@@ -200,8 +204,34 @@ public class SmaliParser {
 		}
 	}
 
-	public void topLevelTraversal(File folder) {
+	private void loadWhitelistLibs(String filePath) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(filePath));
+			String str;
+			while ((str = in.readLine()) != null) {
+				str.replace("/", separatorSign);
+				whitelistLibsHashMap.add(str);
+			}
+			// Close buffered reader
+			in.close();
 
+		} catch (Exception e) {
+			// If something unexpected happened
+			// print exception information and quit
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	private Boolean isWhitelisted(File fileEntry) {
+		for (String lib : this.whitelistLibsHashMap) {
+			if (fileEntry.getPath().contains(lib))
+				return true;
+		}
+		return false;
+	}
+
+	public void topLevelTraversal(File folder) {
 		try {
 
 			File file = new File(this.outputBitVectorFile);
@@ -222,7 +252,7 @@ public class SmaliParser {
 					OpenBitSet bitVector = new OpenBitSet(
 							this.featuresHashMap.size());
 
-					fileEntry = toMainFolder(fileEntry);
+					//fileEntry = toMainFolder(fileEntry);
 					if (fileEntry == null)
 						continue;
 
@@ -253,6 +283,11 @@ public class SmaliParser {
 
 	public void listFilesForFolder(File folder, OpenBitSet bitVector) {
 		for (File fileEntry : folder.listFiles()) {
+			if (this.isWhitelisted(fileEntry)) {
+				System.out.println("WHITELISTED: " + fileEntry.getPath());
+				continue;
+			}
+
 			if (fileEntry.isDirectory()) {
 				listFilesForFolder(fileEntry, bitVector);
 			} else {

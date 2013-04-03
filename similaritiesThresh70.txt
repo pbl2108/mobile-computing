@@ -58,6 +58,7 @@ com.e4learn.VPowerSLs6-18-byte vs com.e4learn.VPowerSLs5-18-byte = 1.0
 com.e4learn.VPowerSLs6-18-byte vs com.e4learn.VPowerSLBCISsuper-2-byte = 0.934640522875817
 com.e4learn.VPowerSLs6-18-byte vs com.e4learn.VPowerSL-18-byte = 1.0
 com.e4learn.VPowerSLs6-18-byte vs com.e4learn.VPowerSLs4-18-byte = 1.0
+-------------------------------------------------------
 sample3-1-byte vs sample5-1-byte = 0.7926829268292683
 sample3-1-byte vs sample4-1-byte = 0.7926829268292683
 sample3-1-byte vs sample3-2-byte = 0.7926829268292683
@@ -71,6 +72,7 @@ a8.kv.dinnerware-1-byte vs a8.kv.halloween-2-byte = 1.0
 a8.kv.dinnerware-1-byte vs a8.kv.birds-11-byte = 0.9799789251844047
 a8.kv.dinnerware-1-byte vs a8.kv.back2school-3-byte = 1.0
 a8.kv.dinnerware-1-byte vs a8.kv.dice2012-6-byte = 0.9799789251844047
+
 sample5-1-byte vs sample4-1-byte = 1.0
 sample5-1-byte vs sample3-2-byte = 1.0
 sample5-1-byte vs sample2-1-byte = 1.0

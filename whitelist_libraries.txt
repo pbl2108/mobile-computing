@@ -1,6 +1,7 @@
 /anywheresoftware/b4a
 /android/annotation
 /android/support
+/com/adobe/air/
 /com/android
 /com/androidquery
 /com/amazon
@@ -15,6 +16,8 @@
 /com/google/mygson
 /com/google/api
 /com/google/common
+/com/google/appinventor
+/com/google/web
 /com/admob
 /com/phonegap
 /com/facebook
@@ -22,6 +25,7 @@
 /com/bugsense/trace
 /com/airpush
 /com/apperhand
+/com/adwhirl
 /com/applovin
 /com/chartboost
 /com/millennialmedia
@@ -38,6 +42,18 @@
 /com/tapjoy
 /com/loopj
 /com/sun
+/com/flurry
+/com/Leadbolt
+/com/urbanairship
+/com/mobclick
+/com/XaBHFmCkd
+/com/meslibs
+/com/openfeint
+/com/qbiki
+/com/appbrain
+/com/onbarcode/
+/com/twitter/android
+/cmn/Proguard
 /oauth/signpost
 /org/apache/cordova
 /org/apache/http
@@ -49,7 +65,7 @@
 /org/kxml2
 /org/xmlpull
 /org/metalev
-/org/osmdroid/
+/org/osmdroid
 /org/slf4j
 /org/hamcrest
 /org/junit
@@ -62,6 +78,7 @@
 /org/jsoup
 /org/achartengine
 /org/joda
+/pdftron/PDF
 /net/htmlparser/jericho
 /net/wigle
 /microsoft/mappoint
@@ -72,3 +89,4 @@
 /javax/jdo
 /twitter4j
 /myjava
+

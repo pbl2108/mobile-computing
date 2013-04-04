@@ -20,7 +20,6 @@ public class SmaliParser {
 	private static final String packageIndicator = "package=\"";
 	private static final String separatorSign = "/";
 
-	public ArrayList<String> features;
 	public String filePath = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\kidapp\\MngPage.smali";
 	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
 	public String hashMapFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\smali-methods.txt";
@@ -60,7 +59,6 @@ public class SmaliParser {
 	public long dirCount;
 
 	public SmaliParser() {
-		this.features = new ArrayList<String>();
 		this.folder = new File(this.folderRoot);
 		this.featuresHashMap = new HashMap<String, Integer>();
 		this.recognizedHashMap = new HashMap<String, Long>();

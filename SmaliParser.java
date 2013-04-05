@@ -20,7 +20,6 @@ public class SmaliParser {
 	private static final String packageIndicator = "package=\"";
 	private static final String separatorSign = "/";
 
-	public String filePath = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\kidapp\\MngPage.smali";
 	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
 	public String hashMapFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\smali-methods.txt";
 	public String outputFeatureFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\testRun.txt";
@@ -250,7 +249,12 @@ public class SmaliParser {
 					OpenBitSet bitVector = new OpenBitSet(
 							this.featuresHashMap.size());
 
-					//fileEntry = toMainFolder(fileEntry);
+					String packageName = getMainPackageName(folder);
+
+					if (packageName == null)
+						continue;
+					
+					fileEntry = toMainFolder(packageName);
 					if (fileEntry == null)
 						continue;
 
@@ -387,7 +391,7 @@ public class SmaliParser {
 	 * check Manifest.xml, if has get package name else return NULL means it is
 	 * not a smali folder
 	 */
-	private String getMainPackageName(File folder) throws IOException {
+	private String getMainPackageName(File folder) {
 
 		String buff;
 		BufferedReader in = null;
@@ -410,7 +414,12 @@ public class SmaliParser {
 			// do nothing
 		}
 
-		in.close();
+		try {
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -433,19 +442,7 @@ public class SmaliParser {
 	 * go to the main component folder as the name indicated return the
 	 * destination folder object
 	 */
-	private File toMainFolder(File folder) {
-
-		String packageName = null;
-
-		try {
-			packageName = getMainPackageName(folder);
-		} catch (IOException e) {
-
-		}
-
-		if (packageName == null)
-			return null;
-
+	private File toMainFolder(String packageName) {
 		File tmp = new File(folder.getAbsolutePath() + separatorSign + "smali"
 				+ separatorSign + packageName.replace(".", separatorSign));
 

@@ -14,6 +14,9 @@ public class apkDissembler {
 		private static final String keyFolderName = "META-INF";
 
 		/* default path */
+//		private String apktoolPath = "/Users/xuyiming/Desktop/apktool/apktool";
+//		private String apkPath = "/Users/xuyiming/Desktop/apks2";
+//		private String destPath = "/Users/xuyiming/Desktop/tmp";
 		private String apktoolPath = "/Users/xuyiming/Desktop/apktool/apktool";
 		private String apkPath = "/Users/xuyiming/Desktop/apks2";
 		private String destPath = "/Users/xuyiming/Desktop/tmp";
@@ -41,9 +44,9 @@ public class apkDissembler {
 				/* extract key and dissemble apk to get smali and manifest */
 				try {
 					//System.out.println("Start dissembling...");
-					//dissembleApk(fileEntry, apkName);
+					dissembleApk(fileEntry, apkName);
 					//Thread.sleep(500);
-					System.out.println(getAuthKey(fileEntry, apkName));
+					//System.out.println(getAuthKey(fileEntry, apkName));
 				} catch (Exception e) {
 					System.out.println("Error: " + apkName);
 				} //catch (InterruptedException e) {

@@ -2,104 +2,111 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+
 
 import org.apache.commons.io.FileUtils;
+import org.apache.lucene.util.OpenBitSet;
 
 
-public class apkDissembler {
+public class ApkDisassembler {
 	
 		private static final String apkSuffix = ".apk";
 		private static final String separator = "/";
 //		private static final String keyPath = "META-INF/CERT.RSA";
 //		private static final String keyFolderName = "META-INF";
 		private static final int fileLimit = 15;
+		private static final String apktoolPath = "/home/Dfosak/Desktop/apktool1.5.2/apktool";
+		private static final String apkPath = "/home/Dfosak/Desktop/apks";
+		private static final String destPath = "/home/Dfosak/Desktop/tmp";
+		private static final String fileListPath = "/home/Dfosak/Desktop/mobile-computing/apkList.txt";
 
 		/* default path */
 //		private String apktoolPath = "/Users/xuyiming/Desktop/apktool/apktool";
 //		private String apkPath = "/Users/xuyiming/Desktop/apks2";
 //		private String destPath = "/Users/xuyiming/Desktop/tmp";
-
-		private String apktoolPath = "/home/Dfosak/Desktop/apktool1.5.2/apktool";
-		private String apkPath = "/home/Dfosak/Desktop/apks";
-		private String destPath = "/home/Dfosak/Desktop/tmp";
-		private String fileListPath = "/home/Dfosak/Desktop/mobile-computing/apkList.txt";;
 		
 		public File topDir;
-		public ArrayList<File> apkList;
+		public File[] fileArray;
+		
+		public int currentFile;
 
 		
-		public apkDissembler() {
+		public ApkDisassembler() {
 			this.topDir = new File(apkPath);		// directory of apk folder
-			this.apkList = new ArrayList<File>();
+			this.currentFile = 0;
 		}
 		
-		/* dissemble all apks under the path indicated */
-		public void dissembleAll() {
+		/* disassemble all apks under the path indicated */
+		public void disassembleAll() {
+			this.fileArray = topDir.listFiles();
 			
-			File topDir = new File(apkPath);		// directory of apk folder
-			String apkName = null;					// name buffer
-			
-			for (File fileEntry : topDir.listFiles()) {
-				apkName = getPureName(apkName);
-
-				
-				/* extract key and dissemble apk to get smali and manifest */
-				try {
-					//System.out.println("Start dissembling...");
-					
-					dissembleApk(fileEntry, apkName);
-					//FileUtils.deleteDirectory(new File(destPath + separator + apkName));
-					//Thread.sleep(500);
-					//System.out.println(getAuthKey(fileEntry, apkName));
-				} catch (Exception e) {
-					System.out.println("Error: " + apkName);
-				} 
-				
-				System.out.println();
-			}
+//			File topDir = new File(apkPath);		// directory of apk folder
+//			String apkName = null;					// name buffer
+//			
+//			for (File fileEntry : topDir.listFiles()) {
+//				apkName = getPureName(apkName);
+//
+//				
+//				/* extract key and disassemble apk to get smali and manifest */
+//				try {
+//					//System.out.println("Start dissembling...");
+//					
+//					disassembleApk(fileEntry, apkName);
+//					//FileUtils.deleteDirectory(new File(destPath + separator + apkName));
+//					//Thread.sleep(500);
+//					//System.out.println(getAuthKey(fileEntry, apkName));
+//				} catch (Exception e) {
+//					System.out.println("Error: " + apkName);
+//				} 
+//				
+//			}
 		}
 		
-		/* dissemble the selected list of apks under the path indicated */
-		public void dissembleList() {
+		/* disassemble the next apks in FileArray and returns a file pointer to the newly created directory */
+		public File disassembleNextFile() {
+			
+			if (currentFile >= fileArray.length)
+				return null;
 			
 			String apkName = null;				// name buffer
 			
-			for (File fileEntry : apkList) {
+			File fileEntry = fileArray[currentFile];
 				
-				/* extract key and dissemble apk to get smali and manifest */
-				try {
-					apkName = getPureName(apkName);
-					
-					//System.out.println("Start dissembling...");
-					dissembleApk(fileEntry, fileEntry.getName());
-					//FileUtils.deleteDirectory(new File(destPath + separator + apkName));
-				} catch (Exception e) {
-					System.out.println("Error: " + apkName);
-				} 
+			/* extract key and disassemble apk to get smali and manifest */
+			try {
+				apkName = getPureName(fileEntry.getName());
 				
-			}
+				//System.out.println("Start dissembling...");
+				disassembleApk(fileEntry, apkName);
+				
+			} catch (Exception e) {
+				System.out.println("Error: " + apkName);
+			} 
+			
+			currentFile++;
+			return new File(destPath + separator + apkName);
+				
 		}
 		
 		
 		public void getRandomFiles() {
-			int fileCount = 0;
 			int idx;
-			
+			int fileCount = 0;
 			File fileEntry;
-			File[] fileArray = topDir.listFiles();
+			File[] files = topDir.listFiles();
+			this.fileArray = new File[fileLimit];
 					
 			while (fileCount < fileLimit){
 			
-				idx = (int)(Math.random()*fileArray.length);
+				idx = (int)(Math.random()*files.length);
 				
-				fileEntry = fileArray[idx];
+				fileEntry = files[idx];
 				
 				if (!isApkFile(fileEntry.getName())) {
 					continue;
 					// skip non-apk file
 				}else{
-					apkList.add(fileEntry);
+					fileArray[fileCount] = fileEntry;
 				}
 				
 				fileCount++;
@@ -138,8 +145,8 @@ public class apkDissembler {
 //	        return sb.toString();
 //		}
 		
-		private void dissembleApk(File apk, String pureName) throws Exception {
-			Process p = Runtime.getRuntime().exec(getDissembleCmd(apk, pureName));
+		private void disassembleApk(File apk, String pureName) throws Exception {
+			Process p = Runtime.getRuntime().exec(getDisassembleCmd(apk, pureName));
 			p.waitFor();
 			return;
 		}
@@ -160,7 +167,7 @@ public class apkDissembler {
 			return "mv " + apkPath + separator + keyFolderName + " " + getDestFolderName(name);
 		}*/
 		
-		private String getDissembleCmd(File apk, String name) {
+		private String getDisassembleCmd(File apk, String name) {
 			return apktoolPath + " d " + apk.getAbsolutePath() + " " + getDestFolderName(name);
 		}
 		
@@ -170,9 +177,9 @@ public class apkDissembler {
 			return name.substring(0, name.lastIndexOf(apkSuffix));
 		}
 		
-		private void printDissembleList() {
+		public void printDisassembleList() {
 			try {
-				File file = new File(this.fileListPath);
+				File file = new File(fileListPath);
 				
 				if (!file.exists()) {
 					file.createNewFile();
@@ -181,7 +188,7 @@ public class apkDissembler {
 				FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				
-				for (File fileEntry : apkList) 
+				for (File fileEntry : fileArray) 
 					bw.write(fileEntry.getAbsolutePath() + "\n");
 				
 				bw.close();
@@ -197,13 +204,30 @@ public class apkDissembler {
 		public static void main(String[] args) {
 			long startTime = System.currentTimeMillis();
 
-			apkDissembler ad = new apkDissembler();
-			ad.getRandomFiles();
-			ad.dissembleList();
-			ad.printDissembleList();
-			//ad.dissembleAll();
-
+			ApkDisassembler ad = new ApkDisassembler();
+			SmaliParser sp = new SmaliParser();
+			BitSetBank bsb = new BitSetBank();
+			
+			File currentDir;
+			
+			//ad.getRandomFiles();
+			ad.disassembleAll();
+			
+			while((currentDir = ad.disassembleNextFile()) != null){
+				OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
+				sp.apkDirectoryTraversal(currentDir, bitSet);
+				bsb.add(currentDir.getName(), bitSet);
+				//FileUtils.deleteDirectory(new File(destPath + separator + apkName));
+			}
+			
+			//bsb.writeToSerial();
+			ad.printDisassembleList();
+			
+			bsb.loadAuthorsMap();
+			bsb.compareBitSetBank();
+			
 			long endTime = System.currentTimeMillis();
+			
 			
 			System.out.println("\nTotal time: " + (endTime - startTime));
 		}

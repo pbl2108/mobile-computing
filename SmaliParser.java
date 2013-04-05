@@ -1,19 +1,11 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import org.apache.commons.codec.binary.Hex;
 import org.apache.lucene.util.OpenBitSet;
 
 public class SmaliParser {
@@ -22,17 +14,15 @@ public class SmaliParser {
 	private static final String packageIndicator = "package=\"";
 	private static final String separatorSign = "/";
 
-	public String folderRoot = "/home/Dfosak/Desktop/apk-decompile";
-	public String hashMapFile = "/home/Dfosak/Desktop/mobile-computing/smali-methods.txt";
-	public String outputFeatureFile = "/home/Dfosak/Desktop/mobile-computing/testRun.txt";
-	public String outputBitVectorFile = "/home/Dfosak/Desktop/mobile-computing/bitVectors.csv";
-	public String outputSimFile = "/home/Dfosak/Desktop/mobile-computing/similarities.txt";
-	public String whitelistLibraries = "/home/Dfosak/Desktop/mobile-computing/whitelist_libraries.txt";
+	private static final String folderRoot = "/home/Dfosak/Desktop/apk-decompile";
+	private static final String featuresMapPath = "/home/Dfosak/Desktop/mobile-computing/smali-methods.txt";
+	private static final String outputFeaturePath = "/home/Dfosak/Desktop/mobile-computing/testRun.txt";
+	private static final String whitelistLibraries = "/home/Dfosak/Desktop/mobile-computing/whitelist_libraries.txt";
 	
 //	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
 //	public String hashMapFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\smali-methods.txt";
 //	public String outputFeatureFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\testRun.txt";
-//	public String outputBitVectorFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\bitVectors.csv";
+//	public String outputBitVectorFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\bitSets.csv";
 //	public String outputSimFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\similarities.txt";
 //	public String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries.txt";
 
@@ -45,17 +35,17 @@ public class SmaliParser {
 	// public String outputFeatureFile =
 	// "/home/peter/columbia/mob/helper_txts/output/testRun.txt";
 	// public String outputBitVectorFile =
-	// "/home/peter/columbia/mob/helper_txts/output/bitVectors.csv";
+	// "/home/peter/columbia/mob/helper_txts/output/bitSets.csv";
 	// public String outputSimFile =
 	// "/home/peter/columbia/mob/helper_txts/output/similarities.txt";
 
 	public File folder;
 	public HashMap<String, Integer> featuresHashMap;
-	public HashMap<String, OpenBitSet> bitVectorsHashMap;
+	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, Long> recognizedHashMap;
 	public HashMap<String, Long> unRecognizedHashMap;
-	public ArrayList<String> whitelistLibsHashMap;
-	public int bitVectorsCount;
+	public ArrayList<String> whitelistLibsArray;
+	public int bitSetsCount;
 	public long recCount;
 	public long unRecCount;
 	public long totalCount;
@@ -66,28 +56,30 @@ public class SmaliParser {
 	// public long cmpStartTime;
 	// public long cmpEndTime;
 	public long dirCount;
+	public int featuresCount;
 
 	public SmaliParser() {
-		this.folder = new File(this.folderRoot);
+		this.folder = new File(folderRoot);
 		this.featuresHashMap = new HashMap<String, Integer>();
 		this.recognizedHashMap = new HashMap<String, Long>();
 		this.unRecognizedHashMap = new HashMap<String, Long>();
-		this.bitVectorsHashMap = new HashMap<String, OpenBitSet>();
-		this.whitelistLibsHashMap = new ArrayList<String>();
+		this.bitSetsHashMap = new HashMap<String, OpenBitSet>();
+		this.whitelistLibsArray = new ArrayList<String>();
 		this.recCount = 0;
 		this.unRecCount = 0;
 		this.totalCount = 0;
 		this.indivdualMethodCount = 0;
-		this.bitVectorsCount = 0;
+		this.bitSetsCount = 0;
 		this.dirCount = 0;
+		this.loadFeaturesHashMap();
+		this.loadWhitelistLibs();
+		this.featuresCount = featuresHashMap.size();
 	}
 
 	public static void main(String[] args) {
 		long startTime = System.currentTimeMillis();
 		SmaliParser smaliParser = new SmaliParser();
-		smaliParser.createHashMap(smaliParser.hashMapFile);
-		smaliParser.loadWhitelistLibs(smaliParser.whitelistLibraries);
-		smaliParser.topLevelTraversal(smaliParser.folder);
+		//smaliParser.topLevelTraversal(smaliParser.folder);
 		long endSmaliParseTime = System.currentTimeMillis();
 
 		double recPercent = 100 * (double) smaliParser.recognizedHashMap.size()
@@ -118,38 +110,49 @@ public class SmaliParser {
 				+ "\n");
 		
 		
-		FileOutputStream fos;
-		try {
-			fos = new FileOutputStream("bitVectorMap.ser");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(smaliParser.bitVectorsHashMap);
-			oos.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-
-		long bitVectorHashSize = smaliParser.bitVectorsHashMap.size();
+		long bitSetHashSize = smaliParser.bitSetsHashMap.size();
 		long cmpStartTime = System.currentTimeMillis();
-		smaliParser.compareBitVectors();
+		//smaliParser.compareBitVectors();
 		long cmpEndTime = System.currentTimeMillis();
 
 		System.out.println("\nTotal time: " + (cmpEndTime - startTime)
-				+ " ms for " + bitVectorHashSize + " bitVectors");
+				+ " ms for " + bitSetHashSize + " bitSets");
 		System.out.println("Parse time: " + (endSmaliParseTime - startTime)
 				+ " ms or " + (double) (endSmaliParseTime - startTime)
-				/ (double) bitVectorHashSize + " ms/bitVector");
+				/ (double) bitSetHashSize + " ms/bitSet");
 		System.out.println("Comparison time: " + (cmpEndTime - cmpStartTime)
 				+ " ms or " + (double) (cmpEndTime - cmpStartTime)
-				/ (double) bitVectorHashSize + " ms/bitVector");
+				/ (double) bitSetHashSize + " ms/bitSet");
 
 	}
 
-	private void parseDelimitedFile(String filePath, OpenBitSet bitVector)
+	private void parseDelimitedFile(String filePath, OpenBitSet bitSet)
+			throws Exception {
+
+		FileReader fr = new FileReader(filePath);
+		BufferedReader br = new BufferedReader(fr);
+		String currentRecord;
+		String delimiter = "\\s+";
+		String tokens[];
+		String token;
+		
+		//System.out.println(filePath);
+
+		while ((currentRecord = br.readLine()) != null) {
+			if (currentRecord.contains("invoke")) {
+				tokens = currentRecord.split(delimiter);
+				token = tokens[tokens.length - 1];
+
+				if (featuresHashMap.containsKey(token)) 
+					bitSet.fastSet(featuresHashMap.get(token));
+			}
+		}
+		br.close();
+		fr.close();
+
+	}
+	
+	public void parseDelimitedFile(String filePath, OpenBitSet bitSet, boolean debug)
 			throws Exception {
 
 		FileReader fr = new FileReader(filePath);
@@ -159,7 +162,7 @@ public class SmaliParser {
 		String tokens[];
 		String token;
 
-		File file = new File(this.outputFeatureFile);
+		File file = new File(outputFeaturePath);
 
 		// if file doesnt exists, then create it
 		if (!file.exists()) {
@@ -177,7 +180,7 @@ public class SmaliParser {
 
 				// if (token.startsWith("Landroid")){
 				if (featuresHashMap.containsKey(token)) {
-					bitVector.fastSet(featuresHashMap.get(token));
+					bitSet.fastSet(featuresHashMap.get(token));
 					if (!recognizedHashMap.containsKey(token)) {
 						bw.write("R: " + token + "\n");
 						indivdualMethodCount++;
@@ -199,82 +202,63 @@ public class SmaliParser {
 		bw.close();
 		br.close();
 		fw.close();
+		fr.close();
 	}
 
-	private void createHashMap(String filePath) {
+	private void loadFeaturesHashMap() {
 		try {
 
-			BufferedReader in = new BufferedReader(new FileReader(filePath));
+			BufferedReader in = new BufferedReader(new FileReader(featuresMapPath));
 			String str;
 			int bitIndex = 0;
 
 			while ((str = in.readLine()) != null) {
-				if (featuresHashMap.containsKey(str)) {
-					System.out.println("Duplicate method: " + str);
-				} else {
-					featuresHashMap.put(str, bitIndex);
-					bitIndex++;
-				}
+				featuresHashMap.put(str, bitIndex);
+				bitIndex++;
 			}
 			// Close buffered reader
 			in.close();
 
 		} catch (Exception e) {
-			// If something unexpected happened
-			// print exception information and quit
 			e.printStackTrace();
 			System.exit(1);
 		}
 	}
 
-	private void loadWhitelistLibs(String filePath) {
+	private void loadWhitelistLibs() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(filePath));
+			BufferedReader in = new BufferedReader(new FileReader(whitelistLibraries));
 			String str;
 			while ((str = in.readLine()) != null) {
 				str.replace("/", separatorSign);
-				whitelistLibsHashMap.add(str);
+				whitelistLibsArray.add(str);
 			}
 			// Close buffered reader
 			in.close();
 
 		} catch (Exception e) {
-			// If something unexpected happened
-			// print exception information and quit
 			e.printStackTrace();
 			System.exit(1);
 		}
 	}
 
 	private Boolean isWhitelisted(File fileEntry) {
-		for (String lib : this.whitelistLibsHashMap) {
+		for (String lib : this.whitelistLibsArray) {
 			if (fileEntry.getPath().contains(lib))
 				return true;
 		}
 		return false;
 	}
 
-	public void topLevelTraversal(File folder) {
+	//Traverses root folder housing all the decompiled apk folders
+	public void apkRootTraversal(File folder, BitSetBank bsb) {
 		try {
-
-			File file = new File(this.outputBitVectorFile);
-
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-
-			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-			BufferedWriter bw = new BufferedWriter(fw);
 
 			for (File fileEntry : folder.listFiles()) {
 				dirCount++;
 
 				if (fileEntry.isDirectory()) {
-
-					OpenBitSet bitVector = new OpenBitSet(
-							this.featuresHashMap.size());
-
+					
 					String packageName = getMainPackageName(folder);
 
 					if (packageName == null)
@@ -284,45 +268,56 @@ public class SmaliParser {
 					if (fileEntry == null)
 						continue;
 
-					listFilesForFolder(fileEntry, bitVector);
+					OpenBitSet bitSet = new OpenBitSet(this.featuresCount);
+					listFilesForFolder(fileEntry, bitSet);
+					bsb.add(fileEntry.getName(), bitSet);
 
-					if (!bitVector.isEmpty()) {
-						// System.out.println(fileEntry.getName() + ", " +
-						// bitVector);
-						bw.write(this.bitVectorToString(bitVector) + ", "
-								+ fileEntry.getName() + "\n");
-						bitVectorsHashMap.put(fileEntry.getName(), bitVector);
-					}
-
-				} else {
-					// Do nothing
 				}
 			}
-
-			bw.close();
-			fw.close();
-
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	//Traverses the decompiled folder that was produced from an APK
+	public void apkDirectoryTraversal(File folder, OpenBitSet bitSet) {
+		try {
+			
+//			System.out.println("\n" + folder.getAbsolutePath());
+//			System.out.println("-------------------------------------------");
+			
+			String packageName = getMainPackageName(folder);
 
+			if (packageName == null)
+				return;
+			
+			File fileEntry = toMainFolder(packageName);
+			if (fileEntry == null)
+				fileEntry = folder;
+		
+
+			listFilesForFolder(fileEntry, bitSet);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void listFilesForFolder(File folder, OpenBitSet bitVector) {
+	public void listFilesForFolder(File folder, OpenBitSet bitSet) {
 		for (File fileEntry : folder.listFiles()) {
-			if (this.isWhitelisted(fileEntry)) {
-				System.out.println("WHITELISTED: " + fileEntry.getPath());
+			if (isWhitelisted(fileEntry)) {
+				//System.out.println("WHITELISTED: " + fileEntry.getPath());
 				continue;
 			}
 
 			if (fileEntry.isDirectory()) {
-				listFilesForFolder(fileEntry, bitVector);
+				listFilesForFolder(fileEntry, bitSet);
 			} else {
 				if (fileEntry.getName().endsWith(".smali")) {
 					try {
 						this.parseDelimitedFile(fileEntry.getAbsolutePath(),
-								bitVector);
+								bitSet);
 
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -333,85 +328,7 @@ public class SmaliParser {
 		}
 	}
 
-	public void compareBitVectors() {
 
-		OpenBitSet bitVector1;
-		OpenBitSet bitVector2;
-		double jSim;
-
-		try {
-
-			File file = new File(this.outputSimFile);
-
-			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-
-			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-			BufferedWriter bw = new BufferedWriter(fw);
-
-			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitVectorsHashMap
-					.entrySet().iterator(); iter1.hasNext();) {
-				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-				bitVector1 = entry1.getValue();
-				iter1.remove();
-				bw.write("Jaccard Similarity for " + entry1.getKey()
-						+ " against:\n");
-
-				for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitVectorsHashMap
-						.entrySet().iterator(); iter2.hasNext();) {
-					Map.Entry<String, OpenBitSet> entry2 = iter2.next();
-					bitVector2 = entry2.getValue();
-					jSim = this.JaccardSim(bitVector1, bitVector2);
-					bw.write("\t" + entry2.getKey() + " = " + jSim + "\n");
-
-					if (jSim > jaccardThreshold)
-						System.out.println(entry1.getKey() + " vs "
-								+ entry2.getKey() + " = " + jSim);
-
-				}
-			}
-
-			bw.close();
-			fw.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public String bitVectorToString(OpenBitSet bitVector) {
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
-			oos.writeObject(bitVector);
-			oos.close();
-			byte[] bytes = baos.toByteArray();
-			return (Hex.encodeHexString(bytes));
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public double JaccardSim(OpenBitSet bitVector1, OpenBitSet bitVector2) {
-
-		OpenBitSet bitVectorIntersect = (OpenBitSet) bitVector1.clone();
-		OpenBitSet bitVectorUnion = (OpenBitSet) bitVector1.clone();
-
-		bitVectorIntersect.intersect(bitVector2);
-		bitVectorUnion.union(bitVector2);
-
-		double jaccardSim = (double) bitVectorIntersect.cardinality()
-				/ (double) bitVectorUnion.cardinality();
-		// System.out.println(bitVectorIntersect.cardinality() + " " +
-		// bitVectorUnion.cardinality() + " " + jaccardSim);
-
-		return jaccardSim;
-	}
 
 	/*
 	 * check Manifest.xml, if has get package name else return NULL means it is

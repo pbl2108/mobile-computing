@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,45 +18,68 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.lucene.util.OpenBitSet;
 
 
-public class BitVector {
+public class BitSetBank {
 
-	public static final String serialBitVectorMap ="/home/Dfosak/Desktop/mobile-computing/bitVectorMap.ser";
+	public static final String serialBitSetBankMap ="/home/Dfosak/Desktop/mobile-computing/bitSetMap.ser";
 	public static final String outputSimPath = "/home/Dfosak/Desktop/mobile-computing/similarities.txt";
 	public static final String authorsMapPath = "/home/Dfosak/Desktop/mobile-computing/apkSignatures.csv";
 	
-	public HashMap<String, OpenBitSet> bitVectorsHashMap;
+	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, String> authorsMap;
 	public double jaccardThreshold = .70;
 	
-	public BitVector() {
-		this.bitVectorsHashMap = new HashMap<String, OpenBitSet>();
+	public BitSetBank() {
+		this.bitSetsHashMap = new HashMap<String, OpenBitSet>();
 		this.authorsMap = new HashMap<String, String>();
 
 	}
 	
-	public static void main(String[] args) {
-		BitVector bitVector = new BitVector();
-		bitVector.readSerialBitVector();
-		bitVector.loadAuthorsMap();
-		
-		long bitVectorHashSize = bitVector.bitVectorsHashMap.size();
-		long cmpStartTime = System.currentTimeMillis();
-		
-		bitVector.compareBitVectors();
-		
-		long cmpEndTime = System.currentTimeMillis();
+//	public static void main(String[] args) {
+//		BitSetBank bsb = new BitSetBank();
+//		bsb.readFromSerial();
+//		bsb.loadAuthorsMap();
+//		
+//		long bitSetHashSize = bsb.bitSetsHashMap.size();
+//		long cmpStartTime = System.currentTimeMillis();
+//		
+//		bsb.compareBitSetBank();
+//		
+//		long cmpEndTime = System.currentTimeMillis();
+//	
+//
+//		System.out.println("Comparison time: " + (cmpEndTime - cmpStartTime)
+//				+ " ms or " + (double) (cmpEndTime - cmpStartTime)
+//				/ (double) bitSetHashSize + " ms/bitSet");
+//	}
 	
-
-		System.out.println("Comparison time: " + (cmpEndTime - cmpStartTime)
-				+ " ms or " + (double) (cmpEndTime - cmpStartTime)
-				/ (double) bitVectorHashSize + " ms/bitVector");
+	public void writeToSerial() {
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream("bitSetMap.ser");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(this.bitSetsHashMap);
+			oos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	private void readSerialBitVector() {
+	public void add(String fileName, OpenBitSet bitSet) {
+		if (!bitSet.isEmpty()) 
+			bitSetsHashMap.put(fileName, bitSet);
+		else
+			System.out.println(fileName + " failed BitSet");
+	}
+	
+	public void readFromSerial() {
 		try {
-			FileInputStream fis = new FileInputStream(serialBitVectorMap);
+			FileInputStream fis = new FileInputStream(serialBitSetBankMap);
 	        ObjectInputStream ois = new ObjectInputStream(fis);
-	        bitVectorsHashMap = (HashMap<String, OpenBitSet>) ois.readObject();
+	        bitSetsHashMap = (HashMap<String, OpenBitSet>) ois.readObject();
 	        ois.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -69,11 +93,11 @@ public class BitVector {
 		}
 	}
 	
-	public String bitVectorToString(OpenBitSet bitVector) {
+	public String bitSetToString(OpenBitSet bitSet) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
-			oos.writeObject(bitVector);
+			oos.writeObject(bitSet);
 			oos.close();
 			byte[] bytes = baos.toByteArray();
 			return (Hex.encodeHexString(bytes));
@@ -92,8 +116,6 @@ public class BitVector {
 			String delimiter = "\\s+";
 			String currentLine;
 			String tokens[];
-			String token;
-			int bitIndex = 0;
 
 			while ((currentLine = in.readLine()) != null) {
 					tokens = currentLine.split(delimiter);
@@ -107,10 +129,10 @@ public class BitVector {
 		}
 	}
 	
-	public void compareBitVectors() {
+	public void compareBitSetBank() {
 
-		OpenBitSet bitVector1;
-		OpenBitSet bitVector2;
+		OpenBitSet bitSet1;
+		OpenBitSet bitSet2;
 		double jSim;
 
 		try {
@@ -125,19 +147,19 @@ public class BitVector {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
 
-			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitVectorsHashMap
+			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap
 					.entrySet().iterator(); iter1.hasNext();) {
 				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-				bitVector1 = entry1.getValue();
+				bitSet1 = entry1.getValue();
 				iter1.remove();
 				bw.write("Jaccard Similarity for " + entry1.getKey()
 						+ " against:\n");
 
-				for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitVectorsHashMap
+				for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitSetsHashMap
 						.entrySet().iterator(); iter2.hasNext();) {
 					Map.Entry<String, OpenBitSet> entry2 = iter2.next();
-					bitVector2 = entry2.getValue();
-					jSim = this.JaccardSim(bitVector1, bitVector2);
+					bitSet2 = entry2.getValue();
+					jSim = this.JaccardSim(bitSet1, bitSet2);
 					bw.write("\t" + entry2.getKey() + " = " + jSim + "\n");
 
 					if (jSim > jaccardThreshold && isDifferentAuthors(entry1.getKey(), entry2.getKey()))
@@ -181,18 +203,18 @@ public class BitVector {
 		return (!hash1.equals(hash2));
 	}
 
-	public double JaccardSim(OpenBitSet bitVector1, OpenBitSet bitVector2) {
+	public double JaccardSim(OpenBitSet bitSet1, OpenBitSet bitSet2) {
 
-		OpenBitSet bitVectorIntersect = (OpenBitSet) bitVector1.clone();
-		OpenBitSet bitVectorUnion = (OpenBitSet) bitVector1.clone();
+		OpenBitSet bitSetIntersect = (OpenBitSet) bitSet1.clone();
+		OpenBitSet bitSetUnion = (OpenBitSet) bitSet1.clone();
 
-		bitVectorIntersect.intersect(bitVector2);
-		bitVectorUnion.union(bitVector2);
+		bitSetIntersect.intersect(bitSet2);
+		bitSetUnion.union(bitSet2);
 
-		double jaccardSim = (double) bitVectorIntersect.cardinality()
-				/ (double) bitVectorUnion.cardinality();
-		// System.out.println(bitVectorIntersect.cardinality() + " " +
-		// bitVectorUnion.cardinality() + " " + jaccardSim);
+		double jaccardSim = (double) bitSetIntersect.cardinality()
+				/ (double) bitSetUnion.cardinality();
+		// System.out.println(bitSetIntersect.cardinality() + " " +
+		// bitSetUnion.cardinality() + " " + jaccardSim);
 
 		return jaccardSim;
 	}

@@ -205,26 +205,27 @@ public class ApkDisassembler {
 			long startTime = System.currentTimeMillis();
 
 			ApkDisassembler ad = new ApkDisassembler();
-			SmaliParser sp = new SmaliParser();
-			BitSetBank bsb = new BitSetBank();
+//			SmaliParser sp = new SmaliParser();
+//			BitSetBank bsb = new BitSetBank();
+//			
+//			File currentDir;
 			
-			File currentDir;
+			ad.getRandomFiles();
+			//ad.disassembleAll();
 			
-			//ad.getRandomFiles();
-			ad.disassembleAll();
-			
-			while((currentDir = ad.disassembleNextFile()) != null){
-				OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
-				sp.apkDirectoryTraversal(currentDir, bitSet);
-				bsb.add(currentDir.getName(), bitSet);
-				//FileUtils.deleteDirectory(new File(destPath + separator + apkName));
-			}
+//			while((currentDir = ad.disassembleNextFile()) != null){
+//				System.out.println(currentDir.getName());
+//				OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
+//				sp.apkDirectoryTraversal(currentDir, bitSet);
+//				bsb.add(currentDir.getName(), bitSet);
+//				FileUtils.deleteDirectory(new File(destPath + separator + apkName));
+//			}
 			
 			//bsb.writeToSerial();
 			ad.printDisassembleList();
 			
-			bsb.loadAuthorsMap();
-			bsb.compareBitSetBank();
+//			bsb.loadAuthorsMap();
+//			bsb.compareBitSetBank();
 			
 			long endTime = System.currentTimeMillis();
 			

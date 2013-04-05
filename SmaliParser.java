@@ -293,9 +293,11 @@ public class SmaliParser {
 //				return;
 			
 			//File fileEntry = toMainFolder(packageName);
-			File fileEntry = toMainActivityFolder(folder);
-			if (fileEntry == null)
-				fileEntry = folder;
+			//File fileEntry = toMainActivityFolder(folder);
+			//if (fileEntry == null)
+			//	fileEntry = folder;
+			
+			File fileEntry = folder;
 		
 
 			listFilesForFolder(fileEntry, bitSet);

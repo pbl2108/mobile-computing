@@ -19,6 +19,7 @@ public class apkDissembler {
 //		private String apktoolPath = "/Users/xuyiming/Desktop/apktool/apktool";
 //		private String apkPath = "/Users/xuyiming/Desktop/apks2";
 //		private String destPath = "/Users/xuyiming/Desktop/tmp";
+
 		private String apktoolPath = "/home/Dfosak/Desktop/apktool1.5.2/apktool";
 		private String apkPath = "/home/Dfosak/Desktop/apks";
 		private String destPath = "/home/Dfosak/Desktop/tmp";
@@ -26,6 +27,7 @@ public class apkDissembler {
 		
 		public File topDir;
 		public ArrayList<File> apkList;
+
 		
 		public apkDissembler() {
 			this.topDir = new File(apkPath);		// directory of apk folder
@@ -45,9 +47,9 @@ public class apkDissembler {
 				/* extract key and dissemble apk to get smali and manifest */
 				try {
 					//System.out.println("Start dissembling...");
+					
 					dissembleApk(fileEntry, apkName);
 					//FileUtils.deleteDirectory(new File(destPath + separator + apkName));
-					
 					//Thread.sleep(500);
 					//System.out.println(getAuthKey(fileEntry, apkName));
 				} catch (Exception e) {

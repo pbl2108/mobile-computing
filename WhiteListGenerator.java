@@ -38,6 +38,22 @@ public class WhiteListGenerator {
 	}
 	
 	public static void main(String[] args) {
+		
+		// Get current size of heap in bytes
+		long heapSize = Runtime.getRuntime().totalMemory();
+
+		// Get maximum size of heap in bytes. The heap cannot grow beyond this size.
+		// Any attempt will result in an OutOfMemoryException.
+		long heapMaxSize = Runtime.getRuntime().maxMemory();
+
+		// Get amount of free memory within the heap in bytes. This size will increase
+		// after garbage collection and decrease as new objects are created.
+		long heapFreeSize = Runtime.getRuntime().freeMemory();
+		
+		System.out.println("current heap size = " + heapSize);
+		System.out.println("heap max size = " + heapMaxSize);
+		System.out.println("heap free size = " + heapFreeSize);
+		
 		long startTime = System.currentTimeMillis();
 		WhiteListGenerator whiteListGen = new WhiteListGenerator();
 		whiteListGen.loadWhitelistLibs(whiteListGen.whitelistLibraries);

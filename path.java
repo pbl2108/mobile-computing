@@ -12,9 +12,14 @@ public class path {
 	private static final String manifestName = "AndroidManifest.xml";
 	private static final String packageIndicator = "package=\"";
 	private static final String separatorSign = "/";
+	private static String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries2.txt";
+	private static ArrayList<String> whitelistLibsArray;
 	
 	public static void main(String[] args) {
-		String target = "/Users/xuyiming/Desktop/tmp2";
+		//String target = "/Users/xuyiming/Desktop/tmp2";
+		String target = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
+		whitelistLibsArray = new ArrayList<String>();
+		loadWhitelistLibs(whitelistLibraries);
 		File file = new File(target);
 		int count = 0;
 		FileWriter fw = null;
@@ -22,23 +27,26 @@ public class path {
 		File tmp;
 		ArrayList<String> fail = new ArrayList<String>();
 		try {
-			fw = new FileWriter("/Users/xuyiming/Desktop/main_smali2.txt");
+			//fw = new FileWriter("/Users/xuyiming/Desktop/main_smali2.txt");
+			fw = new FileWriter("C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\mainComponent.txt");
 			out = new BufferedWriter(fw);
 		
 		 for (File fileEntry : file.listFiles()) {
 			 if (fileEntry.isDirectory()) {
 				 tmp = toMainActivityFolder(fileEntry);
 					if (tmp == null) {
-						if (fileEntry.getAbsolutePath().endsWith("-byte"))
-							fail.add(fileEntry.getAbsolutePath());
-						continue;
+						if (!fileEntry.getAbsolutePath().endsWith("-byte"))
+							continue;
+						else{
+							//fileEntry remains the top level of the smali directory
+						}
 					} else {
 						fileEntry = tmp;
 					}
 				out.write("--------------------\n");
 				out.write(fileEntry.getAbsolutePath() + "\n");
 				listFilesForFolder(fileEntry, out);
-					count ++;
+				count ++;
 			 }
 		 }
 		 out.write("\n\nThe total number: " + count + "\n\nThe apps failing to get correct folder:\n");
@@ -55,17 +63,49 @@ public class path {
 		
 	}
 	
-	static public void listFilesForFolder(File folder, BufferedWriter bw) throws IOException {
-		
-		for (File fileEntry : folder.listFiles()) {
-	        if (fileEntry.isDirectory()) {
-	            listFilesForFolder(fileEntry, bw);
-	        } else {
-	        	bw.write(fileEntry.getName() + "\n");
-	        }
+	static private void loadWhitelistLibs(String filePath) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(filePath));
+			String str;
+			while ((str = in.readLine()) != null) {
+				str.replace("/", separatorSign);
+				whitelistLibsArray.add(str);
+			}
+			// Close buffered reader
+			in.close();
+
+		} catch (Exception e) {
+			// If something unexpected happened
+			// print exception information and quit
+			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 	
+	static public void listFilesForFolder(File folder, BufferedWriter bw) throws IOException {
+		for (File fileEntry : folder.listFiles()) {
+			if (isWhitelisted(fileEntry)) {
+				System.out.println("WHITELISTED: " + fileEntry.getPath());
+				continue;
+			}
+		
+	        if (fileEntry.isDirectory()) {
+	            listFilesForFolder(fileEntry, bw);
+	        } else {
+	        	if (fileEntry.getName().endsWith(".smali")) 
+	        		bw.write(fileEntry.getName() + "\n");
+	        }
+			
+		}
+	}
+	
+	static private Boolean isWhitelisted(File fileEntry) {
+		for (String lib : whitelistLibsArray) {
+			if (fileEntry.getPath().contains(lib))
+				return true;
+		}
+		return false;
+	}
 	
 	/* check Manifest.xml, if has get package name
 	 * else return NULL means it is not a smali folder */

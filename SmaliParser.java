@@ -76,55 +76,55 @@ public class SmaliParser {
 		this.featuresCount = featuresHashMap.size();
 	}
 
-	public static void main(String[] args) {
-		long startTime = System.currentTimeMillis();
-		SmaliParser smaliParser = new SmaliParser();
-		//smaliParser.topLevelTraversal(smaliParser.folder);
-		long endSmaliParseTime = System.currentTimeMillis();
-
-		double recPercent = 100 * (double) smaliParser.recognizedHashMap.size()
-				/ (double) smaliParser.indivdualMethodCount;
-		double unRecPercent = 100
-				* (double) smaliParser.unRecognizedHashMap.size()
-				/ (double) smaliParser.indivdualMethodCount;
-		double recCoverage = 100
-				* (double) smaliParser.recognizedHashMap.size()
-				/ (double) smaliParser.featuresHashMap.size();
-		double unRecCoverage = 100
-				* (double) smaliParser.unRecognizedHashMap.size()
-				/ (double) smaliParser.featuresHashMap.size();
-
-		System.out.println("Recognized: "
-				+ smaliParser.recognizedHashMap.size() + " or " + recPercent
-				+ "%");
-		System.out.println("Unrecognized: "
-				+ smaliParser.unRecognizedHashMap.size() + " or "
-				+ unRecPercent + "%");
-		System.out.println("Recognized Coverage: " + recCoverage + "%");
-		System.out.println("Unrecognized Coverage: " + unRecCoverage + "%");
-		System.out.println("Total Features in Hash: "
-				+ smaliParser.featuresHashMap.size());
-		System.out.println("Total Distinct Methods Found: "
-				+ smaliParser.indivdualMethodCount);
-		System.out.println("Total Methods Parsed: " + smaliParser.totalCount
-				+ "\n");
-		
-		
-		long bitSetHashSize = smaliParser.bitSetsHashMap.size();
-		long cmpStartTime = System.currentTimeMillis();
-		//smaliParser.compareBitVectors();
-		long cmpEndTime = System.currentTimeMillis();
-
-		System.out.println("\nTotal time: " + (cmpEndTime - startTime)
-				+ " ms for " + bitSetHashSize + " bitSets");
-		System.out.println("Parse time: " + (endSmaliParseTime - startTime)
-				+ " ms or " + (double) (endSmaliParseTime - startTime)
-				/ (double) bitSetHashSize + " ms/bitSet");
-		System.out.println("Comparison time: " + (cmpEndTime - cmpStartTime)
-				+ " ms or " + (double) (cmpEndTime - cmpStartTime)
-				/ (double) bitSetHashSize + " ms/bitSet");
-
-	}
+//	public static void main(String[] args) {
+//		long startTime = System.currentTimeMillis();
+//		SmaliParser smaliParser = new SmaliParser();
+//		//smaliParser.topLevelTraversal(smaliParser.folder);
+//		long endSmaliParseTime = System.currentTimeMillis();
+//
+//		double recPercent = 100 * (double) smaliParser.recognizedHashMap.size()
+//				/ (double) smaliParser.indivdualMethodCount;
+//		double unRecPercent = 100
+//				* (double) smaliParser.unRecognizedHashMap.size()
+//				/ (double) smaliParser.indivdualMethodCount;
+//		double recCoverage = 100
+//				* (double) smaliParser.recognizedHashMap.size()
+//				/ (double) smaliParser.featuresHashMap.size();
+//		double unRecCoverage = 100
+//				* (double) smaliParser.unRecognizedHashMap.size()
+//				/ (double) smaliParser.featuresHashMap.size();
+//
+//		System.out.println("Recognized: "
+//				+ smaliParser.recognizedHashMap.size() + " or " + recPercent
+//				+ "%");
+//		System.out.println("Unrecognized: "
+//				+ smaliParser.unRecognizedHashMap.size() + " or "
+//				+ unRecPercent + "%");
+//		System.out.println("Recognized Coverage: " + recCoverage + "%");
+//		System.out.println("Unrecognized Coverage: " + unRecCoverage + "%");
+//		System.out.println("Total Features in Hash: "
+//				+ smaliParser.featuresHashMap.size());
+//		System.out.println("Total Distinct Methods Found: "
+//				+ smaliParser.indivdualMethodCount);
+//		System.out.println("Total Methods Parsed: " + smaliParser.totalCount
+//				+ "\n");
+//		
+//		
+//		long bitSetHashSize = smaliParser.bitSetsHashMap.size();
+//		long cmpStartTime = System.currentTimeMillis();
+//		//smaliParser.compareBitVectors();
+//		long cmpEndTime = System.currentTimeMillis();
+//
+//		System.out.println("\nTotal time: " + (cmpEndTime - startTime)
+//				+ " ms for " + bitSetHashSize + " bitSets");
+//		System.out.println("Parse time: " + (endSmaliParseTime - startTime)
+//				+ " ms or " + (double) (endSmaliParseTime - startTime)
+//				/ (double) bitSetHashSize + " ms/bitSet");
+//		System.out.println("Comparison time: " + (cmpEndTime - cmpStartTime)
+//				+ " ms or " + (double) (cmpEndTime - cmpStartTime)
+//				/ (double) bitSetHashSize + " ms/bitSet");
+//
+//	}
 
 	private void parseDelimitedFile(String filePath, OpenBitSet bitSet)
 			throws Exception {

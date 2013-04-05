@@ -14,7 +14,7 @@ public class path {
 	private static final String separatorSign = "/";
 	
 	public static void main(String[] args) {
-		String target = "/Users/xuyiming/Desktop/tmp";
+		String target = "/Users/xuyiming/Desktop/tmp2";
 		File file = new File(target);
 		int count = 0;
 		FileWriter fw = null;
@@ -27,7 +27,7 @@ public class path {
 		
 		 for (File fileEntry : file.listFiles()) {
 			 if (fileEntry.isDirectory()) {
-				 tmp = toMainFolder(fileEntry);
+				 tmp = toMainActivityFolder(fileEntry);
 					if (tmp == null) {
 						if (fileEntry.getAbsolutePath().endsWith("-byte"))
 							fail.add(fileEntry.getAbsolutePath());
@@ -80,7 +80,7 @@ public class path {
 
 			while ((buff = in.readLine()) != null) {
 
-				buff = extractPackageName(buff);
+				buff = extractPackageName(buff, packageIndicator);
 				if (buff != null) {
 					in.close();
 					return buff;
@@ -95,13 +95,13 @@ public class path {
 		return null;
 	}
 
-	static private String extractPackageName(String line) {
+	static private String extractPackageName(String line, String sign) {
 
-		int index = line.indexOf(packageIndicator);
+		int index = line.indexOf(sign);
 		if (index == -1)
 			return null;
 		else
-			index += packageIndicator.length();	// move to the start of the name
+			index += sign.length();	// move to the start of the name
 
 		int endIndex = line.indexOf("\"", index);
 		if (endIndex == -1)
@@ -126,6 +126,59 @@ public class path {
 			return null;
 
 		File tmp = new File(folder.getAbsolutePath() + separatorSign + "smali" + separatorSign + packageName.replace(".", separatorSign));
+
+		if (tmp.exists())
+			return tmp;
+		else
+			return null;
+	}
+	
+	static private String getMainActivityPath(File folder) throws IOException {
+		
+		String buff;
+		String nearestName = null;
+		BufferedReader in = null;
+
+		try {
+			in = new BufferedReader(new FileReader(folder.getAbsolutePath() + separatorSign + manifestName));
+
+			while ((buff = in.readLine()) != null) {
+
+				/* if the line is activity attributes, get the name of this attribute */
+				if (buff.contains("<activity") && buff.contains("android:name=\""))
+					nearestName = extractPackageName(buff, "android:name=\"");
+				else if (buff.contains("android.intent.action.MAIN")) {
+					in.close();
+					return nearestName;
+				}
+			}
+
+		} catch (Exception e) {
+			// do nothing
+		}
+
+		in.close();
+		return null;
+	}
+	
+	/* return the file object of the folder containing main activity 
+	 * return null means no such folder or same with main component folder */
+	static private File toMainActivityFolder(File folder) {
+		
+		String activityName = null;
+		
+		try {
+			activityName = getMainActivityPath(folder);
+			if (activityName != null)
+				System.out.println(activityName);
+		} catch (Exception e) {
+			
+		}
+			
+		if (activityName == null || activityName.startsWith(".") || !activityName.contains("."))
+			return null;
+
+		File tmp = new File(folder.getAbsolutePath() + separatorSign + "smali" + separatorSign + activityName.substring(0, activityName.lastIndexOf(".")).replace(".", separatorSign));
 
 		if (tmp.exists())
 			return tmp;

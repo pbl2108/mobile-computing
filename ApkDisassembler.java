@@ -15,10 +15,10 @@ public class ApkDisassembler {
 //		private static final String keyPath = "META-INF/CERT.RSA";
 //		private static final String keyFolderName = "META-INF";
 		private static final int fileLimit = 15;
-		private static final String apktoolPath = "/home/Dfosak/Desktop/apktool1.5.2/apktool";
-		private static final String apkPath = "/home/Dfosak/Desktop/apks";
-		private static final String destPath = "/home/Dfosak/Desktop/tmp";
-		private static final String fileListPath = "/home/Dfosak/Desktop/mobile-computing/apkList.txt";
+		private static final String apktoolPath = "/home/ewg2115/mobile-computing/apktool1.5.2/apktool";
+		private static final String apkPath = "/home/ewg2115/Desktop/aa";
+		private static final String destPath = "/home/ewg2115/Desktop/tmp";
+		private static final String fileListPath = "/home/ewg2115/Desktop/mobile-computing/apkList.txt";
 
 		/* default path */
 //		private String apktoolPath = "/Users/xuyiming/Desktop/apktool/apktool";

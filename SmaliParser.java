@@ -14,10 +14,10 @@ public class SmaliParser {
 	private static final String packageIndicator = "package=\"";
 	private static final String separatorSign = "/";
 
-	private static final String folderRoot = "/home/Dfosak/Desktop/apk-decompile";
-	private static final String featuresMapPath = "/home/Dfosak/Desktop/mobile-computing/smali-methods.txt";
-	private static final String outputFeaturePath = "/home/Dfosak/Desktop/mobile-computing/testRun.txt";
-	private static final String whitelistLibraries = "/home/Dfosak/Desktop/mobile-computing/whitelist_libraries.txt";
+	private static final String folderRoot = "/home/ewg2115/Desktop/aa";
+	private static final String featuresMapPath = "/home/ewg2115/Desktop/mobile-computing/smali-methods.txt";
+	private static final String outputFeaturePath = "/home/ewg2115/Desktop/mobile-computing/testRun.txt";
+	private static final String whitelistLibraries = "/home/ewg2115/Desktop/mobile-computing/whitelist_libraries.txt";
 	
 //	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
 //	public String hashMapFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\smali-methods.txt";

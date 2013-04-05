@@ -20,9 +20,9 @@ import org.apache.lucene.util.OpenBitSet;
 
 public class BitSetBank {
 
-	public static final String serialBitSetBankMap ="/home/Dfosak/Desktop/mobile-computing/bitSetMap.ser";
-	public static final String outputSimPath = "/home/Dfosak/Desktop/mobile-computing/similarities.txt";
-	public static final String authorsMapPath = "/home/Dfosak/Desktop/mobile-computing/apkSignatures.csv";
+	public static final String serialBitSetBankMap ="/home/ewg2115/Desktop/mobile-computing/bitSetMap.ser";
+	public static final String outputSimPath = "/home/ewg2115/Desktop/mobile-computing/similarities.txt";
+	public static final String authorsMapPath = "/home/ewg2115/Desktop/mobile-computing/apkSignatures.csv";
 	
 	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, String> authorsMap;

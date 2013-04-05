@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,13 +22,19 @@ public class SmaliParser {
 	private static final String packageIndicator = "package=\"";
 	private static final String separatorSign = "/";
 
-	public String filePath = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\kidapp\\MngPage.smali";
-	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
-	public String hashMapFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\smali-methods.txt";
-	public String outputFeatureFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\testRun.txt";
-	public String outputBitVectorFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\bitVectors.csv";
-	public String outputSimFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\similarities.txt";
-	public String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries.txt";
+	public String folderRoot = "/home/Dfosak/Desktop/apk-decompile";
+	public String hashMapFile = "/home/Dfosak/Desktop/mobile-computing/smali-methods.txt";
+	public String outputFeatureFile = "/home/Dfosak/Desktop/mobile-computing/testRun.txt";
+	public String outputBitVectorFile = "/home/Dfosak/Desktop/mobile-computing/bitVectors.csv";
+	public String outputSimFile = "/home/Dfosak/Desktop/mobile-computing/similarities.txt";
+	public String whitelistLibraries = "/home/Dfosak/Desktop/mobile-computing/whitelist_libraries.txt";
+	
+//	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
+//	public String hashMapFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\smali-methods.txt";
+//	public String outputFeatureFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\testRun.txt";
+//	public String outputBitVectorFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\bitVectors.csv";
+//	public String outputSimFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\similarities.txt";
+//	public String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries.txt";
 
 	// public String folderRoot = "/home/peter/columbia/mob/sample-decompile";
 	// public String hashMapFile =
@@ -107,6 +115,22 @@ public class SmaliParser {
 				+ smaliParser.indivdualMethodCount);
 		System.out.println("Total Methods Parsed: " + smaliParser.totalCount
 				+ "\n");
+		
+		
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream("bitVectorMap.ser");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(smaliParser.bitVectorsHashMap);
+			oos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
 		long bitVectorHashSize = smaliParser.bitVectorsHashMap.size();
 		long cmpStartTime = System.currentTimeMillis();

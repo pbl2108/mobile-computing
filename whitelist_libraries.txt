@@ -89,4 +89,3 @@
 /javax/jdo
 /twitter4j
 /myjava
-

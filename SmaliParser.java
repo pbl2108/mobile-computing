@@ -287,12 +287,13 @@ public class SmaliParser {
 //			System.out.println("\n" + folder.getAbsolutePath());
 //			System.out.println("-------------------------------------------");
 			
-			String packageName = getMainPackageName(folder);
-
-			if (packageName == null)
-				return;
+//			String packageName = getMainPackageName(folder);
+//
+//			if (packageName == null)
+//				return;
 			
-			File fileEntry = toMainFolder(packageName);
+			//File fileEntry = toMainFolder(packageName);
+			File fileEntry = toMainActivityFolder(folder);
 			if (fileEntry == null)
 				fileEntry = folder;
 		
@@ -327,7 +328,6 @@ public class SmaliParser {
 			}
 		}
 	}
-
 
 
 	/*
@@ -394,4 +394,74 @@ public class SmaliParser {
 		else
 			return null;
 	}
+	
+	private String getMainActivityPath(File folder) throws IOException {
+		
+		String buff;
+		String nearestName = null;
+		BufferedReader in = null;
+
+		try {
+			in = new BufferedReader(new FileReader(folder.getAbsolutePath() + separatorSign + manifestName));
+
+			while ((buff = in.readLine()) != null) {
+
+				/* if the line is activity attributes, get the name of this attribute */
+				if (buff.contains("<activity") && buff.contains("android:name=\""))
+					nearestName = extractPackageName(buff, "android:name=\"");
+				else if (buff.contains("android.intent.action.MAIN")) {
+					in.close();
+					return nearestName;
+				}
+			}
+
+		} catch (Exception e) {
+			// do nothing
+		}
+
+		in.close();
+		return null;
+	}
+	
+	static private String extractPackageName(String line, String sign) {
+
+		int index = line.indexOf(sign);
+		if (index == -1)
+			return null;
+		else
+			index += sign.length();	// move to the start of the name
+
+		int endIndex = line.indexOf("\"", index);
+		if (endIndex == -1)
+			return null;
+
+		return line.substring(index, endIndex);
+	}
+	
+	/* return the file object of the folder containing main activity 
+	 * return null means no such folder or same with main component folder */
+	private File toMainActivityFolder(File folder) {
+		
+		String activityName = null;
+		
+		try {
+			activityName = getMainActivityPath(folder);
+			//if (activityName != null)
+				//System.out.println(activityName);
+		} catch (Exception e) {
+			
+		}
+			
+		if (activityName == null || activityName.startsWith(".") || !activityName.contains("."))
+			return null;
+
+		File tmp = new File(folder.getAbsolutePath() + separatorSign + "smali" + separatorSign + activityName.substring(0, activityName.lastIndexOf(".")).replace(".", separatorSign));
+		
+		if (tmp.exists()){
+			System.out.println(tmp.getAbsolutePath());
+			return tmp;
+		}else
+			return null;
+	}
+
 }

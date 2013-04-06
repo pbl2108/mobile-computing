@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 signatures_file = open("apkSignatures.csv", "w")
-apkDirectory = "/home/Dfosak/Desktop/apks"
+apkDirectory = "/home/ewg2115/aa"
 
 startTime = datetime.now()
 

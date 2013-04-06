@@ -3,12 +3,15 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.apache.commons.io.FileUtils;
 
 
 
@@ -21,16 +24,24 @@ public class WhiteListGenerator {
 	public File folder;
 	public File folder2;
 	private static final String separatorSign = "/";
-	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
-	public String folderRoot2 = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile2";
-	public String whiteListClassFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_classes.txt";
-	public String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries2.txt";
+//	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
+//	public String folderRoot2 = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile2";
+//	public String whiteListClassFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_classes.txt";
+//	public String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries2.txt";
+
+	private static final String folderRoot = "/home/ewg2115/aa";
+	private static final String whiteListClassFile = "/home/ewg2115/mobile-computing/whitelist_classes.txt"";
+	private static final String whitelistLibraries = "/home/ewg2115/mobile-computing/whitelist_libraries.txt";
+	
+//	private static final String folderRoot = "/home/Dfosak/Desktop/apks";
+//	private static final String whiteListClassFile = "/home/Dfosak/Desktop/mobile-computing/whitelist_classes.txt";
+//	private static final String whiteListLibraries = "/home/Dfosak/Desktop/mobile-computing/whitelist_libraries2.txt";
+	
 	public ArrayList<String> whitelistLibsArray;
 	
 	
 	public WhiteListGenerator() {
-		this.folder = new File(this.folderRoot);
-		this.folder2 = new File(this.folderRoot2);
+		this.folder = new File(folderRoot);
 		this.whiteListHashMap = new HashMap<String, Integer>();
 		this.whitelistLibsArray = new ArrayList<String>();
 		dirCount = 0;
@@ -55,11 +66,33 @@ public class WhiteListGenerator {
 		System.out.println("heap free size = " + heapFreeSize);
 		
 		long startTime = System.currentTimeMillis();
+		
+
+		ApkDisassembler ad = new ApkDisassembler();
 		WhiteListGenerator whiteListGen = new WhiteListGenerator();
-		whiteListGen.loadWhitelistLibs(whiteListGen.whitelistLibraries);
-		whiteListGen.topLevelTraversal(whiteListGen.folder);
-		whiteListGen.topLevelTraversal(whiteListGen.folder2);
+		
+		whiteListGen.loadWhitelistLibs(whiteListLibraries);
+		
+		File currentDir;
+		
+		//ad.getRandomFiles();
+		ad.disassembleAll();
+		
+		while((currentDir = ad.disassembleNextFile()) != null){
+			whiteListGen.listFilesForFolder(currentDir);
+			try {
+				FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		ad.printDisassembleList();
+
+		
 		long endTime = System.currentTimeMillis();
+		
 		
 		System.out.println("Total classes in Hash: "
 				+ whiteListGen.whiteListHashMap.size());
@@ -155,7 +188,7 @@ public class WhiteListGenerator {
 	        TreeMap<String,Integer> sorted_map = new TreeMap<String,Integer>(bvc);
 	        sorted_map.putAll(whiteListHashMap);
 			
-			File file = new File(this.whiteListClassFile);
+			File file = new File(whiteListClassFile);
 
 			// if file doesnt exists, then create it
 			if (!file.exists()) {

@@ -14,11 +14,16 @@ public class ApkDisassembler {
 		private static final String separator = "/";
 //		private static final String keyPath = "META-INF/CERT.RSA";
 //		private static final String keyFolderName = "META-INF";
-		private static final int fileLimit = 15;
+		private static final int fileLimit = 10000;
 		private static final String apktoolPath = "/home/ewg2115/mobile-computing/apktool1.5.2/apktool";
-		private static final String apkPath = "/home/ewg2115/Desktop/aa";
-		private static final String destPath = "/home/ewg2115/Desktop/tmp";
-		private static final String fileListPath = "/home/ewg2115/Desktop/mobile-computing/apkList.txt";
+		private static final String apkPath = "/home/ewg2115/aa";
+		private static final String destPath = "/home/ewg2115/tmp";
+		private static final String fileListPath = "/home/ewg2115/mobile-computing/apkList.txt";
+		
+//		private static final String apktoolPath = "/home/Dfosak/Desktop/mobile-computing/apktool1.5.2/apktool";
+//		private static final String apkPath = "/home/Dfosak/Desktop/apks";
+//		private static final String destPath = "/home/Dfosak/Desktop/tmp";
+//		private static final String fileListPath = "/home/Dfosak/Desktop/mobile-computing/apkList.txt";
 
 		/* default path */
 //		private String apktoolPath = "/Users/xuyiming/Desktop/apktool/apktool";
@@ -205,23 +210,28 @@ public class ApkDisassembler {
 			long startTime = System.currentTimeMillis();
 
 			ApkDisassembler ad = new ApkDisassembler();
-//			SmaliParser sp = new SmaliParser();
-//			BitSetBank bsb = new BitSetBank();
-//			
-//			File currentDir;
+			SmaliParser sp = new SmaliParser();
+			BitSetBank bsb = new BitSetBank();
+			
+			File currentDir;
 			
 			ad.getRandomFiles();
 			//ad.disassembleAll();
 			
-//			while((currentDir = ad.disassembleNextFile()) != null){
-//				System.out.println(currentDir.getName());
-//				OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
-//				sp.apkDirectoryTraversal(currentDir, bitSet);
-//				bsb.add(currentDir.getName(), bitSet);
-//				FileUtils.deleteDirectory(new File(destPath + separator + apkName));
-//			}
+			while((currentDir = ad.disassembleNextFile()) != null){
+				System.out.println(currentDir.getName());
+				OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
+				sp.apkDirectoryTraversal(currentDir, bitSet);
+				bsb.add(currentDir.getName(), bitSet);
+				try {
+					FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			
-			//bsb.writeToSerial();
+			bsb.writeToSerial();
 			ad.printDisassembleList();
 			
 //			bsb.loadAuthorsMap();

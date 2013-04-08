@@ -68,7 +68,7 @@ public class WhiteListGenerator {
 		long startTime = System.currentTimeMillis();
 		
 
-		ApkDisassembler ad = new ApkDisassembler();
+		ApkDisassembler ad = new ApkDisassembler("/home/Dfosak/Desktop/apks", "/home/Dfosak/Desktop/tmp");
 		WhiteListGenerator whiteListGen = new WhiteListGenerator();
 		
 		whiteListGen.loadWhitelistLibs(whiteListLibraries);

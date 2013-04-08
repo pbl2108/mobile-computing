@@ -4,32 +4,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
-import org.apache.commons.io.FileUtils;
-import org.apache.lucene.util.OpenBitSet;
-
-
 public class ApkDisassembler {
 	
 		private static final String apkSuffix = ".apk";
 		private static final String separator = "/";
-//		private static final String keyPath = "META-INF/CERT.RSA";
-//		private static final String keyFolderName = "META-INF";
-		private static final int fileLimit = 10000;
-//		private static final String apktoolPath = "/home/ewg2115/mobile-computing/apktool1.5.2/apktool";
-//		private static final String apkPath = "/home/ewg2115/aa";
-//		private static final String destPath = "/home/ewg2115/tmp";
-//		private static final String fileListPath = "/home/ewg2115/mobile-computing/apkList.txt";
 		
-//		private static final String apktoolPath = "/home/Dfosak/Desktop/mobile-computing/apktool1.5.2/apktool";
-//		private static final String apkPath = "/home/Dfosak/Desktop/apks";
-//		private static final String destPath = "/home/Dfosak/Desktop/tmp";
-//		private static final String fileListPath = "/home/Dfosak/Desktop/mobile-computing/apkList.txt";
+		private static final String apktoolPath = "apktool1.5.2/apktool";
+		private static final String fileListPath = "apkList_";
 
-		/* default path */
-		private static final String apktoolPath = "/Users/xuyiming/Desktop/apktool/apktool";
-		private static final String apkPath = "/Users/xuyiming/Desktop/apks2";
-		private static final String destPath = "/Users/xuyiming/Desktop/tmp";
-		private static final String fileListPath = "/Users/xuyiming/Desktop/apkList.txt";
+		public String apkPath;
+		public String destPath;
 		
 		public File topDir;
 		public File[] fileArray;
@@ -37,35 +21,16 @@ public class ApkDisassembler {
 		public int currentFile;
 
 		
-		public ApkDisassembler() {
+		public ApkDisassembler(String apkPath, String destPath) {
 			this.topDir = new File(apkPath);		// directory of apk folder
 			this.currentFile = 0;
+			this.apkPath = apkPath;
+			this.destPath = destPath;
 		}
 		
 		/* disassemble all apks under the path indicated */
 		public void disassembleAll() {
 			this.fileArray = topDir.listFiles();
-			
-//			File topDir = new File(apkPath);		// directory of apk folder
-//			String apkName = null;					// name buffer
-//			
-//			for (File fileEntry : topDir.listFiles()) {
-//				apkName = getPureName(apkName);
-//
-//				
-//				/* extract key and disassemble apk to get smali and manifest */
-//				try {
-//					//System.out.println("Start dissembling...");
-//					
-//					disassembleApk(fileEntry, apkName);
-//					//FileUtils.deleteDirectory(new File(destPath + separator + apkName));
-//					//Thread.sleep(500);
-//					//System.out.println(getAuthKey(fileEntry, apkName));
-//				} catch (Exception e) {
-//					System.out.println("Error: " + apkName);
-//				} 
-//				
-//			}
 		}
 		
 		/* disassemble the next apks in FileArray and returns a file pointer to the newly created directory */
@@ -95,7 +60,7 @@ public class ApkDisassembler {
 		}
 		
 		
-		public void getRandomFiles() {
+		public void getRandomFiles(int fileLimit) {
 			int idx;
 			int fileCount = 0;
 			File fileEntry;
@@ -119,37 +84,29 @@ public class ApkDisassembler {
 			}
 		}
 		
-//		/* unzip the key and copy it to destination folder */
-//		private String getAuthKey(File apk, String pureName) throws Exception {
-//			//String cmd = getCopyCmd(pureName);
-//			//System.out.println(cmd);
-//			Process p = Runtime.getRuntime().exec(getUnzipCmd(apk, pureName));
-//			
-//			p.waitFor();
-//			
-//			MessageDigest md = MessageDigest.getInstance("MD5");
-//			//System.out.println(getDestFolderName(pureName) + separator + keyPath);
-//	        FileInputStream fis = new FileInputStream(getDestFolderName(pureName) + separator + keyPath);
-//	 
-//	        byte[] dataBytes = new byte[1024];
-//	 
-//	        int nread = 0; 
-//	        fis.read(dataBytes, 0, 56);
-//	        System.out.printf("%x\n", dataBytes[54]);
-//	        System.out.printf("%x\n", dataBytes[55]);
-//	        
-//	        while ((nread = fis.read(dataBytes)) != -1) {
-//	          md.update(dataBytes, 0, nread);
-//	        };
-//			
-//			byte[] digest = md.digest();
-//			StringBuffer sb = new StringBuffer();
-//	        for (int i = 0; i < digest.length; i++) {
-//	          sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
-//	        }
-//	        
-//	        return sb.toString();
-//		}
+		public void getFileSection(int divisor, int sectionNumber) {
+			int idx;
+			int fileCount = 0;
+			
+			File[] files = topDir.listFiles();
+			
+			int arrayLength = files.length/divisor;
+			idx = (files.length*sectionNumber)/divisor;
+			int endIdx = arrayLength + idx;
+			
+			if (divisor == sectionNumber)
+				this.fileArray = new File[files.length - idx];
+			else
+				this.fileArray = new File[arrayLength];
+					
+			while (fileCount < endIdx){
+				fileArray[fileCount] = files[idx];
+								
+				idx++;
+				fileCount++;
+			}
+		}
+		
 		
 		private void disassembleApk(File apk, String pureName) throws Exception {
 			Process p = Runtime.getRuntime().exec(getDisassembleCmd(apk, pureName));
@@ -207,44 +164,9 @@ public class ApkDisassembler {
 			
 		}
 		
-		public static void main(String[] args) {
-			long startTime = System.currentTimeMillis();
-
-			ApkDisassembler ad = new ApkDisassembler();
-			SmaliParser sp = new SmaliParser();
-			BitSetBank bsb = new BitSetBank();
-			
-			File currentDir;
-			int i =0;
-			//ad.getRandomFiles();
-			ad.disassembleAll();
-			
-			while((currentDir = ad.disassembleNextFile()) != null){
-				i++;
-				//System.out.println(currentDir.getName());
-//				OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
-//				sp.apkDirectoryTraversal(currentDir, bitSet);
-//				bsb.add(currentDir.getName(), bitSet);
-//				try {
-//					FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-			}
-			
-//			bsb.writeToSerial();
-//			ad.printDisassembleList();
-			
-//			bsb.loadAuthorsMap();
-//			bsb.compareBitSetBank();
-			
-			long endTime = System.currentTimeMillis();
-			
-			
-			System.out.println("\nTotal time: " + (endTime - startTime) + " ms");
-			System.out.println("\nAverage time for 1 out of " + bsb.bitSetsHashMap.size() +  " app: " + (endTime - startTime)/bsb.bitSetsHashMap.size() + " apps/ms");
-		}
+		
+		
+		
 
 
 }

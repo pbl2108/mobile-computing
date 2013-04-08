@@ -20,9 +20,9 @@ import org.apache.lucene.util.OpenBitSet;
 
 public class BitSetBank {
 
-	public static final String serialBitSetBankMap ="/home/ewg2115/mobile-computing/bitSetMap.ser";
-	public static final String outputSimPath = "/home/ewg2115/mobile-computing/similarities.txt";
-	public static final String authorsMapPath = "/home/ewg2115/mobile-computing/apkSignatures.csv";
+	public static final String serialBitSetBankMap ="bitSetMap.ser";
+	public static final String outputSimPath = "similarities.txt";
+	public static final String authorsMapPath = "apkSignatures.csv";
 	
 	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, String> authorsMap;
@@ -34,28 +34,10 @@ public class BitSetBank {
 
 	}
 	
-//	public static void main(String[] args) {
-//		BitSetBank bsb = new BitSetBank();
-//		bsb.readFromSerial();
-//		bsb.loadAuthorsMap();
-//		
-//		long bitSetHashSize = bsb.bitSetsHashMap.size();
-//		long cmpStartTime = System.currentTimeMillis();
-//		
-//		bsb.compareBitSetBank();
-//		
-//		long cmpEndTime = System.currentTimeMillis();
-//	
-//
-//		System.out.println("Comparison time: " + (cmpEndTime - cmpStartTime)
-//				+ " ms or " + (double) (cmpEndTime - cmpStartTime)
-//				/ (double) bitSetHashSize + " ms/bitSet");
-//	}
-	
 	public void writeToSerial() {
 		FileOutputStream fos;
 		try {
-			fos = new FileOutputStream("bitSetMap.ser");
+			fos = new FileOutputStream(serialBitSetBankMap);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(this.bitSetsHashMap);
 			oos.close();
@@ -72,7 +54,7 @@ public class BitSetBank {
 		if (!bitSet.isEmpty()) 
 			bitSetsHashMap.put(fileName, bitSet);
 		else
-			System.out.println(fileName + " failed BitSet");
+			System.out.println("No bits set for: " + fileName + ", Excluding package..." );
 	}
 	
 	public void readFromSerial() {

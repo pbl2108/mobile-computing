@@ -31,7 +31,7 @@ public class SmaliParser {
 //	public String outputSimFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\similarities.txt";
 //	public String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries.txt";
 
-
+	//PETER
 	// public String folderRoot = "/home/peter/columbia/mob/sample-decompile";
 	// public String hashMapFile =
 	// "/home/peter/columbia/mob/helper_txts/smali-methods.txt";

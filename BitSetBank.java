@@ -129,7 +129,7 @@ public class BitSetBank {
 	public void compareBitSetBank(OpenBitSet x, OpenBitSet y) {
 	}
 	
-	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, KdTree kdtree) {
+	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, kdtreeCompare kdtree) {
 		OpenBitSet bitSet1;
 		
 		double jSimX, jSimY;
@@ -154,7 +154,7 @@ public class BitSetBank {
 				jSimY = this.JaccardSim(y, bitSet1);
 				
 				/*insert code for KD-tree*/
-				kdtree.insertNode(entry1.getKey(), jSimX, jSimY);
+				kdtree.insertKdtree(entry1.getKey(), jSimX, jSimY);
 
 				/*if (jSim > jaccardThreshold && isDifferentAuthors(entry1.getKey(), entry2.getKey()))
 					System.out.println(entry1.getKey() + " vs " + entry2.getKey() + " = " + jSim);*/
@@ -294,5 +294,13 @@ public class BitSetBank {
 		// bitSetUnion.cardinality() + " " + jaccardSim);
 
 		return jaccardSim;
+	}
+	
+	public double JaccardSim(String name1, String name2) {
+		return JaccardSim(getBitSetByName(name1), getBitSetByName(name2));
+	}
+	
+	public OpenBitSet getBitSetByName(String name) {
+		return this.bitSetsHashMap.get(name);
 	}
 }

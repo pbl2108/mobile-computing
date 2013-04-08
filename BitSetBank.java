@@ -17,24 +17,23 @@ import java.util.Map;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.lucene.util.OpenBitSet;
 
-
 public class BitSetBank {
 
-	public static final String serialBitSetBankMap ="bitSetMap.ser";
+	public static final String serialBitSetBankMap = "bitSetMap.ser";
 	public static final String outputSimPath = "similarities.txt";
 	public static final String authorsMapPath = "apkSignatures.csv";
-	
+
 	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, String> authorsMap;
 	public double jaccardThreshold = .70;
-	public MySQLAccess mySQL;
-	
+	//public MySQLAccess mySQL;
+
 	public BitSetBank() {
 		this.bitSetsHashMap = new HashMap<String, OpenBitSet>();
 		this.authorsMap = new HashMap<String, String>();
-		mySQL = new MySQLAccess(); 
+		//mySQL = new MySQLAccess();
 	}
-	
+
 	public void writeToSerial() {
 		FileOutputStream fos;
 		try {
@@ -50,28 +49,35 @@ public class BitSetBank {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void add(String fileName, OpenBitSet bitSet) {
 		if (!bitSet.isEmpty()) {
 			bitSetsHashMap.put(fileName, bitSet);
 
-			try {
+			/*try {
 				mySQL.insert(fileName, bitSet, "md5", 1.0, 1.0, 1.0);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-		}
-		else
-			System.out.println("No bits set for: " + fileName + ", Excluding package..." );
+			}*/
+		} else
+			System.out.println("No bits set for: " + fileName
+					+ ", Excluding package...");
 	}
-	
+
 	public void readFromSerial() {
+		readFromSerial("");
+	}
+
+	public void readFromSerial(String filePath) {
 		try {
-			FileInputStream fis = new FileInputStream(serialBitSetBankMap);
-	        ObjectInputStream ois = new ObjectInputStream(fis);
-	        bitSetsHashMap = (HashMap<String, OpenBitSet>) ois.readObject();
-	        ois.close();
+			if (filePath == null || filePath.isEmpty())
+				filePath = serialBitSetBankMap;
+
+			FileInputStream fis = new FileInputStream(filePath);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			bitSetsHashMap = (HashMap<String, OpenBitSet>) ois.readObject();
+			ois.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,7 +89,7 @@ public class BitSetBank {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String bitSetToString(OpenBitSet bitSet) {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -99,17 +105,18 @@ public class BitSetBank {
 			return null;
 		}
 	}
-	
+
 	public void loadAuthorsMap() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(authorsMapPath));
+			BufferedReader in = new BufferedReader(new FileReader(
+					authorsMapPath));
 			String delimiter = "\\s+";
 			String currentLine;
 			String tokens[];
 
 			while ((currentLine = in.readLine()) != null) {
-					tokens = currentLine.split(delimiter);
-					authorsMap.put(tokens[0], tokens[1]);
+				tokens = currentLine.split(delimiter);
+				authorsMap.put(tokens[0], tokens[1]);
 			}
 			// Close buffered reader
 			in.close();
@@ -118,7 +125,97 @@ public class BitSetBank {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, KdTree kdtree) {
+		OpenBitSet bitSet1;
+		double jSimX, jSimY;
+
+		try {
+			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
+				bitSet1 = entry1.getValue();
+				iter1.remove();
+				
+				if (x == null) { 
+					x = bitSet1;
+					continue;
+				}
+				if (y == null) { 
+					y = bitSet1;
+					continue;
+				}
+				
+				/* Calculate distance between X, Y sand App */
+				jSimX = this.JaccardSim(x, bitSet1);
+				jSimY = this.JaccardSim(y, bitSet1);
+				
+				/*insert code for KD-tree*/
+				kdtree.insertNode(entry1.getKey(), jSimX, jSimY);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * Calculates the Jaccard distance using 2 base apps and outputs to default location.
+	 */
+	public void compareBitSetBank(OpenBitSet x, OpenBitSet y) {
+		this.compareBitSetBank(x, y, null);
+	}
+
+	/*
+	 * Calculates the Jaccard distance using 2 base apps and outputs to custom location.
+	 */
+	public void compareBitSetBank(OpenBitSet x, OpenBitSet y, String outFilePath) {
+		OpenBitSet bitSet1;
+		double jSimX, jSimY;
+
+		try {
+			if (outFilePath == null || outFilePath.isEmpty())
+				outFilePath = outputSimPath;
+			File file = new File(outFilePath);
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write("NAME      X      Y\n");
+			bw.write("==============================\n");
+
+			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
+				bitSet1 = entry1.getValue();
+				iter1.remove();
+				/* Take first two apps as base X and Y */
+				if (x == null) { 
+					x = bitSet1;
+					continue;
+				}
+				if (y == null) {
+					y = bitSet1;
+					continue;
+				}
+				/* Calculate distance between X, Y and each app */
+				jSimX = this.JaccardSim(x, bitSet1);
+				jSimY = this.JaccardSim(y, bitSet1);
+				/* Write to file */
+				bw.write(entry1.getKey() + "\t" + jSimX + "\t" + jSimY + "\n");
+				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX + " , " + jSimY +")");
+			}
+
+			bw.close();
+			fw.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * Calculates the Jaccard distance between each app pairwise.
+	 */
 	public void compareBitSetBank() {
 
 		OpenBitSet bitSet1;
@@ -152,7 +249,9 @@ public class BitSetBank {
 					jSim = this.JaccardSim(bitSet1, bitSet2);
 					bw.write("\t" + entry2.getKey() + " = " + jSim + "\n");
 
-					if (jSim > jaccardThreshold && isDifferentAuthors(entry1.getKey(), entry2.getKey()))
+					if (jSim > jaccardThreshold
+							&& isDifferentAuthors(entry1.getKey(),
+									entry2.getKey()))
 						System.out.println(entry1.getKey() + " vs "
 								+ entry2.getKey() + " = " + jSim);
 
@@ -166,30 +265,30 @@ public class BitSetBank {
 			e.printStackTrace();
 		}
 	}
-	
-	//Compares MD5 hash for each APK. Returns true if both are different 
+
+	// Compares MD5 hash for each APK. Returns true if both are different
 	private boolean isDifferentAuthors(String key1, String key2) {
 		String hash1 = authorsMap.get(key1);
 		String hash2 = authorsMap.get(key2);
-		
-		if (hash1 == null || hash2 == null){
+
+		if (hash1 == null || hash2 == null) {
 			System.out.print("NO MD5:");
 			return true;
 		}
-		
-//		if (!hash1.equals(hash2)){
-//			System.out.println(hash1 + " " + hash2);
-//			return true;
-//		}
-//		return false;
-		
-//		if (hash1.equals(hash2)){
-//		System.out.println(hash1 + " " + hash2);
-//		System.out.println(key1 + " " + key2);
-//		return false;
-//		}
-//		return true;
-		
+
+		// if (!hash1.equals(hash2)){
+		// System.out.println(hash1 + " " + hash2);
+		// return true;
+		// }
+		// return false;
+
+		// if (hash1.equals(hash2)){
+		// System.out.println(hash1 + " " + hash2);
+		// System.out.println(key1 + " " + key2);
+		// return false;
+		// }
+		// return true;
+
 		return (!hash1.equals(hash2));
 	}
 

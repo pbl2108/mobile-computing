@@ -37,6 +37,15 @@ public class DecompileDriver {
 		    System.exit(-1);
 		  }
 	
+	public static void main_readSerialized(String[] args) {
+		SmaliParser sp = new SmaliParser();
+		BitSetBank bsb = new BitSetBank();
+		
+		bsb.readFromSerial();
+		
+		bsb.compareBitSetBank_KDtree(null, null, null);
+	}
+	  
 	public static void main(String[] args) {
 		
 		ApkDisassembler ad = null;

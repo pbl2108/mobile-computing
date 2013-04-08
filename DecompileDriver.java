@@ -37,13 +37,15 @@ public class DecompileDriver {
 		    System.exit(-1);
 		  }
 	
-	public static void main_readSerialized(String[] args) {
-		SmaliParser sp = new SmaliParser();
+	public static void main_read(String[] args) {
+		//SmaliParser sp = new SmaliParser();
 		BitSetBank bsb = new BitSetBank();
 		
-		bsb.readFromSerial();
+		bsb.readFromSerial("/home/peter/github/mobile-computing/results/bitSetMap300.ser");
 		
-		bsb.compareBitSetBank_KDtree(null, null, null);
+		OpenBitSet x = new OpenBitSet();
+		OpenBitSet y = new OpenBitSet();
+		bsb.compareBitSetBank(x, null);
 	}
 	  
 	public static void main(String[] args) {

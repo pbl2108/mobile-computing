@@ -126,12 +126,8 @@ public class BitSetBank {
 		}
 	}
 
-	public void compareBitSetBank(OpenBitSet x, OpenBitSet y) {
-	}
-	
 	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, KdTree kdtree) {
 		OpenBitSet bitSet1;
-		
 		double jSimX, jSimY;
 
 		try {
@@ -155,17 +151,23 @@ public class BitSetBank {
 				
 				/*insert code for KD-tree*/
 				kdtree.insertNode(entry1.getKey(), jSimX, jSimY);
-
-				/*if (jSim > jaccardThreshold && isDifferentAuthors(entry1.getKey(), entry2.getKey()))
-					System.out.println(entry1.getKey() + " vs " + entry2.getKey() + " = " + jSim);*/
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
 
+	/*
+	 * Calculates the Jaccard distance using 2 base apps and outputs to default location.
+	 */
+	public void compareBitSetBank(OpenBitSet x, OpenBitSet y) {
+		this.compareBitSetBank(x, y, null);
+	}
+
+	/*
+	 * Calculates the Jaccard distance using 2 base apps and outputs to custom location.
+	 */
 	public void compareBitSetBank(OpenBitSet x, OpenBitSet y, String outFilePath) {
 		OpenBitSet bitSet1;
 		double jSimX, jSimY;
@@ -179,21 +181,28 @@ public class BitSetBank {
 			}
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write("NAME      X      Y\n");
+			bw.write("==============================\n");
 
 			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
 				bitSet1 = entry1.getValue();
 				iter1.remove();
-				bw.write("Jaccard Similarity for X and Y against:\n");
-				
-				/* Calculate distance between X and App */
+				/* Take first two apps as base X and Y */
+				if (x == null) { 
+					x = bitSet1;
+					continue;
+				}
+				if (y == null) {
+					y = bitSet1;
+					continue;
+				}
+				/* Calculate distance between X, Y and each app */
 				jSimX = this.JaccardSim(x, bitSet1);
 				jSimY = this.JaccardSim(y, bitSet1);
-				
-				bw.write("\t" + entry1.getKey() + " = " + jSimX + "\n");
-
-//				if (jSim > jaccardThreshold && isDifferentAuthors(entry1.getKey(), entry2.getKey()))
-//					System.out.println(entry1.getKey() + " vs " + entry2.getKey() + " = " + jSim);
+				/* Write to file */
+				bw.write(entry1.getKey() + "\t" + jSimX + "\t" + jSimY + "\n");
+				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX + " , " + jSimY +")");
 			}
 
 			bw.close();
@@ -204,6 +213,9 @@ public class BitSetBank {
 		}
 	}
 
+	/*
+	 * Calculates the Jaccard distance between each app pairwise.
+	 */
 	public void compareBitSetBank() {
 
 		OpenBitSet bitSet1;

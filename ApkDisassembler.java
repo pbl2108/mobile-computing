@@ -2,6 +2,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 public class ApkDisassembler {
@@ -48,7 +50,7 @@ public class ApkDisassembler {
 				apkName = getPureName(fileEntry.getName());
 				
 				//System.out.println("Start dissembling...");
-				disassembleApk(fileEntry, apkName);
+				//disassembleApk(fileEntry, apkName);
 				
 			} catch (Exception e) {
 				System.out.println("Error: " + apkName);
@@ -87,24 +89,28 @@ public class ApkDisassembler {
 		public void getFileSection(int divisor, int sectionNumber) {
 			int idx;
 			int fileCount = 0;
+			int arrayLength;
 			
 			File[] files = topDir.listFiles();
 			
-			int arrayLength = files.length/divisor;
-			idx = (files.length*sectionNumber)/divisor;
-			int endIdx = arrayLength + idx;
-			
+			arrayLength = files.length/divisor;
+			idx = arrayLength * (sectionNumber-1);
+						
 			if (divisor == sectionNumber)
-				this.fileArray = new File[files.length - idx];
-			else
-				this.fileArray = new File[arrayLength];
-					
-			while (fileCount < endIdx){
+				arrayLength = files.length - idx;
+		
+			this.fileArray = new File[arrayLength];
+								
+			while (fileCount < arrayLength){
 				fileArray[fileCount] = files[idx];
 								
 				idx++;
 				fileCount++;
 			}
+			
+			System.out.println("Total files in folder:  " + files.length);
+			System.out.println("Processing " + arrayLength + " files [" + (idx - arrayLength) + "," + idx + ")" );
+			
 		}
 		
 		
@@ -142,7 +148,8 @@ public class ApkDisassembler {
 		
 		public void printDisassembleList() {
 			try {
-				File file = new File(fileListPath);
+				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+				File file = new File(fileListPath + timeStamp + ".txt");
 				
 				if (!file.exists()) {
 					file.createNewFile();

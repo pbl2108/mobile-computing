@@ -30,8 +30,8 @@ public class WhiteListGenerator {
 //	public String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries2.txt";
 
 	private static final String folderRoot = "/home/ewg2115/aa";
-	private static final String whiteListClassFile = "/home/ewg2115/mobile-computing/whitelist_classes.txt"";
-	private static final String whitelistLibraries = "/home/ewg2115/mobile-computing/whitelist_libraries.txt";
+	private static final String whiteListClassFile = "/home/ewg2115/mobile-computing/whitelist_classes.txt";
+	private static final String whiteListLibraries = "/home/ewg2115/mobile-computing/whitelist_libraries.txt";
 	
 //	private static final String folderRoot = "/home/Dfosak/Desktop/apks";
 //	private static final String whiteListClassFile = "/home/Dfosak/Desktop/mobile-computing/whitelist_classes.txt";

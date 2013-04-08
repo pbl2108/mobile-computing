@@ -14,10 +14,15 @@ public class SmaliParser {
 	private static final String packageIndicator = "package=\"";
 	private static final String separatorSign = "/";
 
-	private static final String folderRoot = "/home/ewg2115/aa";
-	private static final String featuresMapPath = "/home/ewg2115/mobile-computing/smali-methods.txt";
-	private static final String outputFeaturePath = "/home/ewg2115/mobile-computing/testRun.txt";
-	private static final String whitelistLibraries = "/home/ewg2115/mobile-computing/whitelist_libraries.txt";
+//	private static final String folderRoot = "/home/ewg2115/aa";
+//	private static final String featuresMapPath = "/home/ewg2115/mobile-computing/smali-methods.txt";
+//	private static final String outputFeaturePath = "/home/ewg2115/mobile-computing/testRun.txt";
+//	private static final String whitelistLibraries = "/home/ewg2115/mobile-computing/whitelist_libraries.txt";
+	
+	private static final String folderRoot = "/home/Dfosak/";
+	private static final String featuresMapPath = "/home/Dfosak/Desktop/mobile-computing/smali-methods.txt";
+	private static final String outputFeaturePath = "/home/Dfosak/Desktop/mobile-computing/testRun.txt";
+	private static final String whiteListLibraries = "/home/Dfosak/Desktop/mobile-computing/whitelist_libraries.txt";
 	
 //	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
 //	public String hashMapFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\smali-methods.txt";
@@ -44,7 +49,7 @@ public class SmaliParser {
 	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, Long> recognizedHashMap;
 	public HashMap<String, Long> unRecognizedHashMap;
-	public ArrayList<String> whitelistLibsArray;
+	public HashMap<String, Integer> whiteListHashMap;
 	public int bitSetsCount;
 	public long recCount;
 	public long unRecCount;
@@ -57,6 +62,7 @@ public class SmaliParser {
 	// public long cmpEndTime;
 	public long dirCount;
 	public int featuresCount;
+	public int bitIndex;
 
 	public SmaliParser() {
 		this.folder = new File(folderRoot);
@@ -64,7 +70,7 @@ public class SmaliParser {
 		this.recognizedHashMap = new HashMap<String, Long>();
 		this.unRecognizedHashMap = new HashMap<String, Long>();
 		this.bitSetsHashMap = new HashMap<String, OpenBitSet>();
-		this.whitelistLibsArray = new ArrayList<String>();
+		this.whiteListHashMap = new HashMap<String, Integer>();
 		this.recCount = 0;
 		this.unRecCount = 0;
 		this.totalCount = 0;
@@ -74,6 +80,7 @@ public class SmaliParser {
 		this.loadFeaturesHashMap();
 		this.loadWhitelistLibs();
 		this.featuresCount = featuresHashMap.size();
+		this.bitIndex = 0;							//Bit index for the total number of feature vectors. 
 	}
 
 //	public static void main(String[] args) {
@@ -210,8 +217,7 @@ public class SmaliParser {
 
 			BufferedReader in = new BufferedReader(new FileReader(featuresMapPath));
 			String str;
-			int bitIndex = 0;
-
+			
 			while ((str = in.readLine()) != null) {
 				featuresHashMap.put(str, bitIndex);
 				bitIndex++;
@@ -227,11 +233,14 @@ public class SmaliParser {
 
 	private void loadWhitelistLibs() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(whitelistLibraries));
+
+			BufferedReader in = new BufferedReader(new FileReader(whiteListLibraries));
 			String str;
+			
 			while ((str = in.readLine()) != null) {
 				str.replace("/", separatorSign);
-				whitelistLibsArray.add(str);
+				whiteListHashMap.put(str, bitIndex);
+				bitIndex++;
 			}
 			// Close buffered reader
 			in.close();
@@ -242,10 +251,10 @@ public class SmaliParser {
 		}
 	}
 
-	private Boolean isWhitelisted(File fileEntry) {
-		for (String lib : this.whitelistLibsArray) {
-			if (fileEntry.getPath().contains(lib))
-				return true;
+	private Boolean isWhitelisted(String fileEntryName) {
+		if (whiteListHashMap.containsKey(fileEntryName)) {
+			//bitSet.fastSet(whiteListHashMap.get(fileEntryName));
+			return true;
 		}
 		return false;
 	}
@@ -297,10 +306,10 @@ public class SmaliParser {
 			//if (fileEntry == null)
 			//	fileEntry = folder;
 			
-			File fileEntry = folder;
-		
+			File fileEntry = new File(folder.getAbsoluteFile() + "/smali/");
+			int folderNameLength = fileEntry.getAbsolutePath().length();
 
-			listFilesForFolder(fileEntry, bitSet);
+			listFilesForFolder(fileEntry, bitSet, folderNameLength);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -309,13 +318,37 @@ public class SmaliParser {
 
 	public void listFilesForFolder(File folder, OpenBitSet bitSet) {
 		for (File fileEntry : folder.listFiles()) {
-			if (isWhitelisted(fileEntry)) {
+			if (isWhitelisted(fileEntry.getAbsolutePath())) {
 				//System.out.println("WHITELISTED: " + fileEntry.getPath());
 				continue;
 			}
 
 			if (fileEntry.isDirectory()) {
 				listFilesForFolder(fileEntry, bitSet);
+			} else {
+				if (fileEntry.getName().endsWith(".smali")) {
+					try {
+						this.parseDelimitedFile(fileEntry.getAbsolutePath(),
+								bitSet);
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+	
+	public void listFilesForFolder(File folder, OpenBitSet bitSet, int folderNameLength) {
+		for (File fileEntry : folder.listFiles()) {
+			if (isWhitelisted(fileEntry.getAbsolutePath().substring(folderNameLength))) {
+			//	System.out.println("WHITELISTED: " + fileEntry.getPath());
+				continue;
+			}
+
+			if (fileEntry.isDirectory()) {
+				listFilesForFolder(fileEntry, bitSet, folderNameLength);
 			} else {
 				if (fileEntry.getName().endsWith(".smali")) {
 					try {
@@ -460,7 +493,7 @@ public class SmaliParser {
 		File tmp = new File(folder.getAbsolutePath() + separatorSign + "smali" + separatorSign + activityName.substring(0, activityName.lastIndexOf(".")).replace(".", separatorSign));
 		
 		if (tmp.exists()){
-			System.out.println(tmp.getAbsolutePath());
+			//System.out.println(tmp.getAbsolutePath());
 			return tmp;
 		}else
 			return null;

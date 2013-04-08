@@ -18,6 +18,8 @@ import java.util.Map;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.lucene.util.OpenBitSet;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 public class BitSetBank {
 
@@ -161,7 +163,39 @@ public class BitSetBank {
 //			e.printStackTrace();
 //		}
 //	}
-
+	
+	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x, OpenBitSet y, String title) {
+		
+		XYSeries series = new XYSeries("Android Apps");
+		OpenBitSet bitSet1;
+		double jSimX, jSimY;
+		
+		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
+			bitSet1 = entry1.getValue();
+			iter1.remove();
+			/* Take first two apps as base X and Y */
+			if (x == null) { 
+				x = bitSet1;
+				continue;
+			}
+			if (y == null) {
+				y = bitSet1;
+				continue;
+			}
+			/* Calculate distance between X, Y and each app */
+			jSimX = this.JaccardSim(x, bitSet1);
+			jSimY = this.JaccardSim(y, bitSet1);
+			series.add(jSimX, jSimY);
+			System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX + " , " + jSimY +")");
+		}
+		
+		XYSeriesCollection seriesCollection = new XYSeriesCollection();
+		seriesCollection.addSeries(series);
+		
+		Plot.ScatterPlot(seriesCollection, title);
+		return seriesCollection;
+	}
 	/*
 	 * Calculates the Jaccard distance using 2 base apps and outputs to default location.
 	 */

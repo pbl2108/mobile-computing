@@ -110,12 +110,6 @@ public class SmaliParser {
 //				+ smaliParser.indivdualMethodCount);
 //		System.out.println("Total Methods Parsed: " + smaliParser.totalCount
 //				+ "\n");
-//		
-//		
-//		long bitSetHashSize = smaliParser.bitSetsHashMap.size();
-//		long cmpStartTime = System.currentTimeMillis();
-//		//smaliParser.compareBitVectors();
-//		long cmpEndTime = System.currentTimeMillis();
 //
 //		System.out.println("\nTotal time: " + (cmpEndTime - startTime)
 //				+ " ms for " + bitSetHashSize + " bitSets");

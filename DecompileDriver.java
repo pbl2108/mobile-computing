@@ -27,11 +27,11 @@ public class DecompileDriver {
 		    options.addOption("d", "divisor", true, "number of sections the total apks should be divided into");
 		    options.addOption("s", "section", true, "respective fraction of the apks to be processed");
 		    
-		    
 		    return options;
 	  }
 	  
 	  private static void showHelp(Options options) {
+		  	System.out.println("Current working directory : " + System.getProperty("user.dir"));
 		    HelpFormatter h = new HelpFormatter();
 		    h.printHelp("help", options);
 		    System.exit(-1);
@@ -39,6 +39,7 @@ public class DecompileDriver {
 	
 	public static void main(String[] args) {
 		
+		long startTime = System.currentTimeMillis();
 		ApkDisassembler ad = null;
 		Options options = createOptions();
 		try {
@@ -83,7 +84,7 @@ public class DecompileDriver {
 				int sectionNumber = Integer.parseInt(cmd.getOptionValue( "s" ));
 				ad.getFileSection(divisor, sectionNumber);
 			}else if (cmd.getOptionValue( "d" ) == null && cmd.getOptionValue( "s" ) == null ){
-				//Do nothing
+				//Do nothing default to all apps
 			}else{
 				System.out.println("Please specify both divisor and section number");
 				showHelp(options);
@@ -97,7 +98,7 @@ public class DecompileDriver {
 			showHelp(options);
 		}
 		
-		long startTime = System.currentTimeMillis();
+	
 
 		
 		SmaliParser sp = new SmaliParser();
@@ -107,7 +108,7 @@ public class DecompileDriver {
 		
 		
 		while((currentDir = ad.disassembleNextFile()) != null){
-			//System.out.println(currentDir.getName());
+			System.out.println(currentDir.getName());
 			OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
 			sp.apkDirectoryTraversal(currentDir, bitSet);
 			bsb.add(currentDir.getName(), bitSet);

@@ -15,53 +15,53 @@ public class path {
 	private static String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries2.txt";
 	private static ArrayList<String> whitelistLibsArray;
 	
-	public static void main(String[] args) {
-		//String target = "/Users/xuyiming/Desktop/tmp2";
-		String target = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
-		whitelistLibsArray = new ArrayList<String>();
-		loadWhitelistLibs(whitelistLibraries);
-		File file = new File(target);
-		int count = 0;
-		FileWriter fw = null;
-		BufferedWriter out = null;
-		File tmp;
-		ArrayList<String> fail = new ArrayList<String>();
-		try {
-			//fw = new FileWriter("/Users/xuyiming/Desktop/main_smali2.txt");
-			fw = new FileWriter("C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\mainComponent.txt");
-			out = new BufferedWriter(fw);
-		
-		 for (File fileEntry : file.listFiles()) {
-			 if (fileEntry.isDirectory()) {
-				 tmp = toMainActivityFolder(fileEntry);
-					if (tmp == null) {
-						if (!fileEntry.getAbsolutePath().endsWith("-byte"))
-							continue;
-						else{
-							//fileEntry remains the top level of the smali directory
-						}
-					} else {
-						fileEntry = tmp;
-					}
-				out.write("--------------------\n");
-				out.write(fileEntry.getAbsolutePath() + "\n");
-				listFilesForFolder(fileEntry, out);
-				count ++;
-			 }
-		 }
-		 out.write("\n\nThe total number: " + count + "\n\nThe apps failing to get correct folder:\n");
-		 
-		 for (int i = 0; i < fail.size(); i++)
-			 out.write(fail.get(i) + "\n");
-		 out.close();
-		 
-		} catch (Exception e) {
-			System.out.println("aaaa");
-		}
-		
-		
-		
-	}
+//	public static void main(String[] args) {
+//		//String target = "/Users/xuyiming/Desktop/tmp2";
+//		String target = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
+//		whitelistLibsArray = new ArrayList<String>();
+//		loadWhitelistLibs(whitelistLibraries);
+//		File file = new File(target);
+//		int count = 0;
+//		FileWriter fw = null;
+//		BufferedWriter out = null;
+//		File tmp;
+//		ArrayList<String> fail = new ArrayList<String>();
+//		try {
+//			//fw = new FileWriter("/Users/xuyiming/Desktop/main_smali2.txt");
+//			fw = new FileWriter("C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\mainComponent.txt");
+//			out = new BufferedWriter(fw);
+//		
+//		 for (File fileEntry : file.listFiles()) {
+//			 if (fileEntry.isDirectory()) {
+//				 tmp = toMainActivityFolder(fileEntry);
+//					if (tmp == null) {
+//						if (!fileEntry.getAbsolutePath().endsWith("-byte"))
+//							continue;
+//						else{
+//							//fileEntry remains the top level of the smali directory
+//						}
+//					} else {
+//						fileEntry = tmp;
+//					}
+//				out.write("--------------------\n");
+//				out.write(fileEntry.getAbsolutePath() + "\n");
+//				listFilesForFolder(fileEntry, out);
+//				count ++;
+//			 }
+//		 }
+//		 out.write("\n\nThe total number: " + count + "\n\nThe apps failing to get correct folder:\n");
+//		 
+//		 for (int i = 0; i < fail.size(); i++)
+//			 out.write(fail.get(i) + "\n");
+//		 out.close();
+//		 
+//		} catch (Exception e) {
+//			System.out.println("aaaa");
+//		}
+//		
+//		
+//		
+//	}
 	
 	static private void loadWhitelistLibs(String filePath) {
 		try {

@@ -48,68 +48,68 @@ public class WhiteListGenerator {
 
 	}
 	
-	public static void main(String[] args) {
-		
-		// Get current size of heap in bytes
-		long heapSize = Runtime.getRuntime().totalMemory();
-
-		// Get maximum size of heap in bytes. The heap cannot grow beyond this size.
-		// Any attempt will result in an OutOfMemoryException.
-		long heapMaxSize = Runtime.getRuntime().maxMemory();
-
-		// Get amount of free memory within the heap in bytes. This size will increase
-		// after garbage collection and decrease as new objects are created.
-		long heapFreeSize = Runtime.getRuntime().freeMemory();
-		
-		System.out.println("current heap size = " + heapSize);
-		System.out.println("heap max size = " + heapMaxSize);
-		System.out.println("heap free size = " + heapFreeSize);
-		
-		long startTime = System.currentTimeMillis();
-		
-
-		ApkDisassembler ad = new ApkDisassembler("/home/Dfosak/Desktop/apks", "/home/Dfosak/Desktop/tmp");
-		WhiteListGenerator whiteListGen = new WhiteListGenerator();
-		
-		whiteListGen.loadWhitelistLibs(whiteListLibraries);
-		
-		File currentDir;
-		
-		//ad.getRandomFiles();
-		ad.disassembleAll();
-		
-		while((currentDir = ad.disassembleNextFile()) != null){
-			whiteListGen.listFilesForFolder(currentDir);
-			try {
-				FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		ad.printDisassembleList();
-
-		
-		long endTime = System.currentTimeMillis();
-		
-		
-		System.out.println("Total classes in Hash: "
-				+ whiteListGen.whiteListHashMap.size());
-
-
-		System.out.println("Total time: " + (endTime - startTime)
-				+ " ms for " + whiteListGen.totalCount + " files");
-		System.out.println("Time Per File " + (endTime - startTime)
-				/ (double) whiteListGen.whiteListHashMap.size() + " ms/file");
-		
-		whiteListGen.printHashMap();
-		
-		long endTime2 = System.currentTimeMillis();
-		
-		System.out.println("Time to Print File " + (endTime2 - endTime) + " ms");
-
-	}
+//	public static void main(String[] args) {
+//		
+//		// Get current size of heap in bytes
+//		long heapSize = Runtime.getRuntime().totalMemory();
+//
+//		// Get maximum size of heap in bytes. The heap cannot grow beyond this size.
+//		// Any attempt will result in an OutOfMemoryException.
+//		long heapMaxSize = Runtime.getRuntime().maxMemory();
+//
+//		// Get amount of free memory within the heap in bytes. This size will increase
+//		// after garbage collection and decrease as new objects are created.
+//		long heapFreeSize = Runtime.getRuntime().freeMemory();
+//		
+//		System.out.println("current heap size = " + heapSize);
+//		System.out.println("heap max size = " + heapMaxSize);
+//		System.out.println("heap free size = " + heapFreeSize);
+//		
+//		long startTime = System.currentTimeMillis();
+//		
+//
+//		ApkDisassembler ad = new ApkDisassembler("/home/Dfosak/Desktop/apks", "/home/Dfosak/Desktop/tmp");
+//		WhiteListGenerator whiteListGen = new WhiteListGenerator();
+//		
+//		whiteListGen.loadWhitelistLibs(whiteListLibraries);
+//		
+//		File currentDir;
+//		
+//		//ad.getRandomFiles();
+//		ad.disassembleAll();
+//		
+//		while((currentDir = ad.disassembleNextFile()) != null){
+//			whiteListGen.listFilesForFolder(currentDir);
+//			try {
+//				FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		ad.printDisassembleList();
+//
+//		
+//		long endTime = System.currentTimeMillis();
+//		
+//		
+//		System.out.println("Total classes in Hash: "
+//				+ whiteListGen.whiteListHashMap.size());
+//
+//
+//		System.out.println("Total time: " + (endTime - startTime)
+//				+ " ms for " + whiteListGen.totalCount + " files");
+//		System.out.println("Time Per File " + (endTime - startTime)
+//				/ (double) whiteListGen.whiteListHashMap.size() + " ms/file");
+//		
+//		whiteListGen.printHashMap();
+//		
+//		long endTime2 = System.currentTimeMillis();
+//		
+//		System.out.println("Time to Print File " + (endTime2 - endTime) + " ms");
+//
+//	}
 
 	public void topLevelTraversal(File folder) {
 

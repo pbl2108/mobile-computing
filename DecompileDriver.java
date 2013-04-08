@@ -140,6 +140,6 @@ public class DecompileDriver {
 		
 		
 		System.out.println("\nTotal time: " + (endTime - startTime) + " ms");
-		System.out.println("\nAverage time for 1 out of " + bsb.bitSetsHashMap.size() +  " app: " + (endTime - startTime)/bsb.bitSetsHashMap.size() + " apps/ms");
+		System.out.println("\nAverage time for 1 out of " + bsb.bitSetsHashMap.size() +  " app: " + (endTime - startTime)/bsb.bitSetsHashMap.size() + " ms/app");
 	}
 }

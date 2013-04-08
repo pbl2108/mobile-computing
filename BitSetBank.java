@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,7 +21,7 @@ import org.apache.lucene.util.OpenBitSet;
 
 public class BitSetBank {
 
-	public static final String serialBitSetBankMap = "bitSetMap.ser";
+	public static final String serialBitSetBankMap = "bitSetMap_";
 	public static final String outputSimPath = "similarities.txt";
 	public static final String authorsMapPath = "apkSignatures.csv";
 
@@ -37,7 +39,8 @@ public class BitSetBank {
 	public void writeToSerial() {
 		FileOutputStream fos;
 		try {
-			fos = new FileOutputStream(serialBitSetBankMap);
+			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+			fos = new FileOutputStream(serialBitSetBankMap + timeStamp + ".ser");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(this.bitSetsHashMap);
 			oos.close();
@@ -126,37 +129,37 @@ public class BitSetBank {
 		}
 	}
 
-	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, KdTree kdtree) {
-		OpenBitSet bitSet1;
-		double jSimX, jSimY;
-
-		try {
-			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
-				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-				bitSet1 = entry1.getValue();
-				iter1.remove();
-				
-				if (x == null) { 
-					x = bitSet1;
-					continue;
-				}
-				if (y == null) { 
-					y = bitSet1;
-					continue;
-				}
-				
-				/* Calculate distance between X, Y sand App */
-				jSimX = this.JaccardSim(x, bitSet1);
-				jSimY = this.JaccardSim(y, bitSet1);
-				
-				/*insert code for KD-tree*/
-				kdtree.insertNode(entry1.getKey(), jSimX, jSimY);
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, KdTree kdtree) {
+//		OpenBitSet bitSet1;
+//		double jSimX, jSimY;
+//
+//		try {
+//			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+//				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
+//				bitSet1 = entry1.getValue();
+//				iter1.remove();
+//				
+//				if (x == null) { 
+//					x = bitSet1;
+//					continue;
+//				}
+//				if (y == null) { 
+//					y = bitSet1;
+//					continue;
+//				}
+//				
+//				/* Calculate distance between X, Y sand App */
+//				jSimX = this.JaccardSim(x, bitSet1);
+//				jSimY = this.JaccardSim(y, bitSet1);
+//				
+//				/*insert code for KD-tree*/
+//				kdtree.insertNode(entry1.getKey(), jSimX, jSimY);
+//			}
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 	/*
 	 * Calculates the Jaccard distance using 2 base apps and outputs to default location.

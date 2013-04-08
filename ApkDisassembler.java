@@ -50,7 +50,8 @@ public class ApkDisassembler {
 				apkName = getPureName(fileEntry.getName());
 				
 				//System.out.println("Start dissembling...");
-				//disassembleApk(fileEntry, apkName);
+				disassembleApk(fileEntry, apkName);
+				//Thread.sleep(500);
 				
 			} catch (Exception e) {
 				System.out.println("Error: " + apkName);

@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 
 public class runKdTree {
+
 //	public static void main(String[] args) {
 //		
 //		BitSetBank bsb = new BitSetBank();
@@ -17,4 +18,5 @@ public class runKdTree {
 //			System.out.println(list.get(i).getAppInfo());
 //		}
 //	}
+
 }

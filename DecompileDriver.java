@@ -38,17 +38,17 @@ public class DecompileDriver {
 		    System.exit(-1);
 		  }
 	
-	public static void main_read(String[] args) {
-		//SmaliParser sp = new SmaliParser();
-		BitSetBank bsb = new BitSetBank();
-		
-		bsb.readFromSerial("/home/peter/github/mobile-computing/results/bitSetMap300.ser");
-		
-		OpenBitSet x = new OpenBitSet();
-		OpenBitSet y = new OpenBitSet();
-		bsb.compareBitSetBank(x, null);
+	/*
+	 * Use this function to plot against two apps.
+	 */
+	public static void main_plot(String[] args) {
+			//SmaliParser sp = new SmaliParser();
+			BitSetBank bsb = new BitSetBank();
+			
+			bsb.readFromSerial("/home/peter/github/mobile-computing/results/bitSetMap300.ser");
+			bsb.plotAndCompareBitSetBank(null, null, "Title 300");
 	}
-	  
+
 	public static void main(String[] args) {
 		
 		long startTime = System.currentTimeMillis();

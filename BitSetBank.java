@@ -26,12 +26,12 @@ public class BitSetBank {
 	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, String> authorsMap;
 	public double jaccardThreshold = .70;
-	public MySQLAccess mySQL;
+	//public MySQLAccess mySQL;
 
 	public BitSetBank() {
 		this.bitSetsHashMap = new HashMap<String, OpenBitSet>();
 		this.authorsMap = new HashMap<String, String>();
-		mySQL = new MySQLAccess();
+		//mySQL = new MySQLAccess();
 	}
 
 	public void writeToSerial() {
@@ -54,12 +54,12 @@ public class BitSetBank {
 		if (!bitSet.isEmpty()) {
 			bitSetsHashMap.put(fileName, bitSet);
 
-			try {
+			/*try {
 				mySQL.insert(fileName, bitSet, "md5", 1.0, 1.0, 1.0);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 		} else
 			System.out.println("No bits set for: " + fileName
 					+ ", Excluding package...");
@@ -129,7 +129,7 @@ public class BitSetBank {
 	public void compareBitSetBank(OpenBitSet x, OpenBitSet y) {
 	}
 	
-	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, Object kdTree) {
+	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, KdTree kdtree) {
 		OpenBitSet bitSet1;
 		
 		double jSimX, jSimY;
@@ -154,6 +154,7 @@ public class BitSetBank {
 				jSimY = this.JaccardSim(y, bitSet1);
 				
 				/*insert code for KD-tree*/
+				kdtree.insertNode(entry1.getKey(), jSimX, jSimY);
 
 				/*if (jSim > jaccardThreshold && isDifferentAuthors(entry1.getKey(), entry2.getKey()))
 					System.out.println(entry1.getKey() + " vs " + entry2.getKey() + " = " + jSim);*/

@@ -27,11 +27,12 @@ public class BitSetBank {
 	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, String> authorsMap;
 	public double jaccardThreshold = .70;
+	public MySQLAccess mySQL;
 	
 	public BitSetBank() {
 		this.bitSetsHashMap = new HashMap<String, OpenBitSet>();
 		this.authorsMap = new HashMap<String, String>();
-
+		mySQL = new MySQLAccess(); 
 	}
 	
 	public void writeToSerial() {
@@ -51,8 +52,16 @@ public class BitSetBank {
 	}
 	
 	public void add(String fileName, OpenBitSet bitSet) {
-		if (!bitSet.isEmpty()) 
+		if (!bitSet.isEmpty()) {
 			bitSetsHashMap.put(fileName, bitSet);
+
+			try {
+				mySQL.insert(fileName, bitSet, "md5", 1.0, 1.0, 1.0);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		else
 			System.out.println("No bits set for: " + fileName + ", Excluding package..." );
 	}
@@ -93,7 +102,6 @@ public class BitSetBank {
 	
 	public void loadAuthorsMap() {
 		try {
-
 			BufferedReader in = new BufferedReader(new FileReader(authorsMapPath));
 			String delimiter = "\\s+";
 			String currentLine;
@@ -200,6 +208,4 @@ public class BitSetBank {
 
 		return jaccardSim;
 	}
-	
-	
 }

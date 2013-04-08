@@ -18,6 +18,31 @@ public class SmaliParser {
 	private static final String outputFeaturePath = "testRun.txt";
 	private static final String whiteListLibraries = "whitelist_libraries.txt";
 	
+//	private static final String folderRoot = "/home/Dfosak/";
+//	private static final String featuresMapPath = "/home/Dfosak/Desktop/mobile-computing/smali-methods.txt";
+//	private static final String outputFeaturePath = "/home/Dfosak/Desktop/mobile-computing/testRun.txt";
+//	private static final String whiteListLibraries = "/home/Dfosak/Desktop/mobile-computing/whitelist_libraries.txt";
+	
+//	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
+//	public String hashMapFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\smali-methods.txt";
+//	public String outputFeatureFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\testRun.txt";
+//	public String outputBitVectorFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\bitSets.csv";
+//	public String outputSimFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\similarities.txt";
+//	public String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries.txt";
+
+	//PETER
+	// public String folderRoot = "/home/peter/columbia/mob/sample-decompile";
+	// public String hashMapFile =
+	// "/home/peter/columbia/mob/helper_txts/smali-methods.txt";
+	// public String whitelistLibraries =
+	// "/home/peter/columbia/mob/helper_txts/whitelist_libraries.txt";
+	// public String outputFeatureFile =
+	// "/home/peter/columbia/mob/helper_txts/output/testRun.txt";
+	// public String outputBitVectorFile =
+	// "/home/peter/columbia/mob/helper_txts/output/bitSets.csv";
+	// public String outputSimFile =
+	// "/home/peter/columbia/mob/helper_txts/output/similarities.txt";
+
 	public File folder;
 	public HashMap<String, Integer> featuresHashMap;
 	public HashMap<String, OpenBitSet> bitSetsHashMap;

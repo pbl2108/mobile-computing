@@ -39,8 +39,12 @@ public class BitSetBank {
 	public void writeToSerial() {
 		FileOutputStream fos;
 		try {
+	        //Creates outputLogs Directory if it Does not Exist
+	        File directory = new File("outputLogs/");
+			directory.mkdirs();
+			
 			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-			fos = new FileOutputStream(serialBitSetBankMap + timeStamp + ".ser");
+			fos = new FileOutputStream("outputLogs/" + serialBitSetBankMap + timeStamp + ".ser");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(this.bitSetsHashMap);
 			oos.close();

@@ -26,6 +26,7 @@ public class DecompileDriver {
 		    options.addOption("a", "all", false, "decompile all apks");
 		    options.addOption("d", "divisor", true, "number of sections the total apks should be divided into");
 		    options.addOption("s", "section", true, "respective fraction of the apks to be processed");
+		    options.addOption("w", "whitelist", false, "generate whitelist for files; output class file is whitelist-classes.txt");
 		    
 		    return options;
 	  }
@@ -60,6 +61,7 @@ public class DecompileDriver {
 			String inputPath = cmd.getOptionValue("i"); 
 			
 			
+			//Get the input and output paths. Default to output /tmp if no path present 
 			if (inputPath != null)
 				inputFolder = new File(inputPath);
 			else{
@@ -82,23 +84,30 @@ public class DecompileDriver {
 			}
 			
 			ad = new ApkDisassembler(inputFolder.getAbsolutePath(), outputFolder.getAbsolutePath());
-			ad.disassembleAll();
 			
 			
+			//Check which apks to decompile
 			if( cmd.getOptionValue( "r" ) != null ) {
 				int randSize = Integer.parseInt(cmd.getOptionValue( "r" ));
 				ad.getRandomFiles(randSize);
-			}
-			
-			if( cmd.getOptionValue( "d" ) != null && cmd.getOptionValue( "s" ) != null ) {
+			}else if( cmd.getOptionValue( "d" ) != null && cmd.getOptionValue( "s" ) != null ) {
 				int divisor = Integer.parseInt(cmd.getOptionValue( "d" ));
 				int sectionNumber = Integer.parseInt(cmd.getOptionValue( "s" ));
 				ad.getFileSection(divisor, sectionNumber);
-			}else if (cmd.getOptionValue( "d" ) == null && cmd.getOptionValue( "s" ) == null ){
-				//Do nothing default to all apps
-			}else{
+			}else if ((cmd.getOptionValue( "d" ) != null && cmd.getOptionValue( "s" ) == null ) 
+					  	|| (cmd.getOptionValue( "d" ) == null && cmd.getOptionValue( "s" ) != null )){
 				System.out.println("Please specify both divisor and section number");
 				showHelp(options);
+			}else{
+				ad.disassembleAll();
+			}
+			
+			//Check if user wants to generate whitelist file
+			if( cmd.hasOption( "w" ) ) {
+				System.out.println("Generating Whitelist");
+				WhiteListGenerator wl = new WhiteListGenerator();
+				wl.generateWhiteList(ad);
+				System.exit(0);
 			}
 			
 			

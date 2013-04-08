@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +14,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.lucene.util.OpenBitSet;
 
 
 
@@ -22,125 +25,98 @@ public class WhiteListGenerator {
 	public long totalCount;
 	public HashMap<String, Integer> whiteListHashMap;
 	public File folder;
-	public File folder2;
-	private static final String separatorSign = "/";
-//	public String folderRoot = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile";
-//	public String folderRoot2 = "C:\\Users\\Dfosak\\workspace\\MobileComputing\\apks-decompile2";
-//	public String whiteListClassFile = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_classes.txt";
-//	public String whitelistLibraries = "C:\\Users\\Dfosak\\Documents\\GitHub\\mobile-computing\\whitelist_libraries2.txt";
 
-	private static final String folderRoot = "/home/ewg2115/aa";
-	private static final String whiteListClassFile = "/home/ewg2115/mobile-computing/whitelist_classes.txt";
-	private static final String whiteListLibraries = "/home/ewg2115/mobile-computing/whitelist_libraries.txt";
-	
-//	private static final String folderRoot = "/home/Dfosak/Desktop/apks";
-//	private static final String whiteListClassFile = "/home/Dfosak/Desktop/mobile-computing/whitelist_classes.txt";
-//	private static final String whiteListLibraries = "/home/Dfosak/Desktop/mobile-computing/whitelist_libraries2.txt";
-	
-	public ArrayList<String> whitelistLibsArray;
+	private static final String separatorSign = "/";
+	private static final String whiteListClassFile = "whitelist_classes_";
+	private static final String whiteListLibraries = "whitelist_libraries.txt";
+
+
+	public HashMap<String, Integer> whiteListLibsHashMap;
+	public int featuresCount;
 	
 	
 	public WhiteListGenerator() {
-		this.folder = new File(folderRoot);
+
 		this.whiteListHashMap = new HashMap<String, Integer>();
-		this.whitelistLibsArray = new ArrayList<String>();
-		dirCount = 0;
+		this.whiteListLibsHashMap = new HashMap<String, Integer>();
+		this.loadWhitelistLibs();
+		this.totalCount = 0;
+		this.dirCount = 0;
 
 	}
 	
-//	public static void main(String[] args) {
-//		
-//		// Get current size of heap in bytes
-//		long heapSize = Runtime.getRuntime().totalMemory();
-//
-//		// Get maximum size of heap in bytes. The heap cannot grow beyond this size.
-//		// Any attempt will result in an OutOfMemoryException.
-//		long heapMaxSize = Runtime.getRuntime().maxMemory();
-//
-//		// Get amount of free memory within the heap in bytes. This size will increase
-//		// after garbage collection and decrease as new objects are created.
-//		long heapFreeSize = Runtime.getRuntime().freeMemory();
-//		
-//		System.out.println("current heap size = " + heapSize);
-//		System.out.println("heap max size = " + heapMaxSize);
-//		System.out.println("heap free size = " + heapFreeSize);
-//		
-//		long startTime = System.currentTimeMillis();
-//		
-//
-//		ApkDisassembler ad = new ApkDisassembler("/home/Dfosak/Desktop/apks", "/home/Dfosak/Desktop/tmp");
-//		WhiteListGenerator whiteListGen = new WhiteListGenerator();
-//		
-//		whiteListGen.loadWhitelistLibs(whiteListLibraries);
-//		
-//		File currentDir;
-//		
-//		//ad.getRandomFiles();
-//		ad.disassembleAll();
-//		
-//		while((currentDir = ad.disassembleNextFile()) != null){
-//			whiteListGen.listFilesForFolder(currentDir);
-//			try {
-//				FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		ad.printDisassembleList();
-//
-//		
-//		long endTime = System.currentTimeMillis();
-//		
-//		
-//		System.out.println("Total classes in Hash: "
-//				+ whiteListGen.whiteListHashMap.size());
-//
-//
-//		System.out.println("Total time: " + (endTime - startTime)
-//				+ " ms for " + whiteListGen.totalCount + " files");
-//		System.out.println("Time Per File " + (endTime - startTime)
-//				/ (double) whiteListGen.whiteListHashMap.size() + " ms/file");
-//		
-//		whiteListGen.printHashMap();
-//		
-//		long endTime2 = System.currentTimeMillis();
-//		
-//		System.out.println("Time to Print File " + (endTime2 - endTime) + " ms");
-//
-//	}
-
-	public void topLevelTraversal(File folder) {
-
-			for (File fileEntry : folder.listFiles()) {
-				dirCount++;
-
-				if (fileEntry.isDirectory()) {
-					listFilesForFolder(fileEntry);
-				}else {
-					// Do nothing
-				}
-			}
+	public void generateWhiteList(ApkDisassembler ad) {
 		
+		long startTime = System.currentTimeMillis();
+				
+		File currentDir;
+		
+		while((currentDir = ad.disassembleNextFile()) != null){
+			System.out.println(currentDir.getName());
+			this.apkDirectoryTraversal(currentDir);
+			try {
+				FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		
+		long endTime = System.currentTimeMillis();
+		
+		
+		System.out.println("Total classes in Hash: "
+				+ this.whiteListHashMap.size());
+
+
+		System.out.println("Total time: " + (endTime - startTime)
+				+ " ms for " + this.totalCount + " files");
+		System.out.println("Time Per Apk " + (endTime - startTime)
+				/ (double) this.dirCount + " ms/file");
+		
+		this.printHashMap();
+		
+		long endTime2 = System.currentTimeMillis();
+		
+		System.out.println("Time to Print File " + (endTime2 - endTime) + " ms");
 
 	}
 	
-	public void listFilesForFolder(File folder) {
+	public void listFilesForFolder(File folder, int folderNameLength) {
 		for (File fileEntry : folder.listFiles()) {
-			if (fileEntry.isDirectory()) {
-				listFilesForFolder(fileEntry);
-			} else {
-				if (fileEntry.getName().endsWith(".smali")) {
-					try {
-						this.parseDelimitedFile(fileEntry.getAbsolutePath());
+			if (isWhitelisted(fileEntry.getAbsolutePath().substring(folderNameLength))) {
+				//System.out.println("WHITELISTED: " + fileEntry.getPath());
+				continue;
+			}
 
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+			if (fileEntry.isDirectory()) {
+				listFilesForFolder(fileEntry,  folderNameLength);
+			} else {
+				try {
+					this.parseDelimitedFile(fileEntry.getAbsolutePath());
+
+				} catch (Exception e) {
+					System.out.println(folder.getName() +" Failed Decompilation");
+					e.printStackTrace();
 				}
 			}
+		}
+	}
+	
+	//Traverses the decompiled folder that was produced from an APK
+	public void apkDirectoryTraversal(File folder) {
+		try {
+			
+			File fileEntry = new File(folder.getAbsoluteFile() + "/smali/");
+			int folderNameLength = fileEntry.getAbsolutePath().length();
+			this.dirCount++;
+			
+			listFilesForFolder(fileEntry, folderNameLength);
+
+		} catch (Exception e) {
+			System.out.println(folder.getName() +" Failed Decompilation");
+			e.printStackTrace();
 		}
 	}
 	
@@ -159,10 +135,6 @@ public class WhiteListGenerator {
 				token = tokens[tokens.length - 1];
 				this.totalCount++;
 				
-				if (this.isWhitelisted(token)) {
-					//System.out.println("WHITELISTED: " + token);
-					break;
-				}
 				
 				Integer count = whiteListHashMap.get(token);
 				if (count == null) {
@@ -188,12 +160,20 @@ public class WhiteListGenerator {
 	        TreeMap<String,Integer> sorted_map = new TreeMap<String,Integer>(bvc);
 	        sorted_map.putAll(whiteListHashMap);
 			
-			File file = new File(whiteListClassFile);
-
+	        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+	        
+	        //Creates outputLogs Directory if it Does not Exist
+	        File directory = new File("outputLogs/");
+			directory.mkdirs();
+			
+	        File file = new File("outputLogs/" + whiteListClassFile + timeStamp + ".txt");
+			
 			// if file doesnt exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
+//			if (!file.exists()) {
+//				file.createNewFile();
+//			}
+			
+			
 
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -212,28 +192,28 @@ public class WhiteListGenerator {
 		}
 	}
 
-	private Boolean isWhitelisted(String className) {
-		for (String lib : this.whitelistLibsArray) {
-			if (className.contains(lib))
-				return true;
+	private Boolean isWhitelisted(String fileEntryName) {
+		if (whiteListLibsHashMap.containsKey(fileEntryName)) {
+			return true;
 		}
 		return false;
 	}
 	
-	private void loadWhitelistLibs(String filePath) {
+	private void loadWhitelistLibs() {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(filePath));
+
+			BufferedReader in = new BufferedReader(new FileReader(whiteListLibraries));
 			String str;
+			
 			while ((str = in.readLine()) != null) {
 				str.replace("/", separatorSign);
-				whitelistLibsArray.add(str);
+				whiteListLibsHashMap.put(str, featuresCount);
+				featuresCount++;
 			}
 			// Close buffered reader
 			in.close();
 
 		} catch (Exception e) {
-			// If something unexpected happened
-			// print exception information and quit
 			e.printStackTrace();
 			System.exit(1);
 		}

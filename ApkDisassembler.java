@@ -33,6 +33,9 @@ public class ApkDisassembler {
 		/* disassemble all apks under the path indicated */
 		public void disassembleAll() {
 			this.fileArray = topDir.listFiles();
+			System.out.println("Total files in folder:  " + fileArray.length);
+			System.out.println("Processing ALL files");
+			System.out.println("============================================");
 		}
 		
 		/* disassemble the next apks in FileArray and returns a file pointer to the newly created directory */
@@ -85,6 +88,10 @@ public class ApkDisassembler {
 				
 				fileCount++;
 			}
+			
+			System.out.println("Total files in folder:  " + files.length);
+			System.out.println("Processing " + fileLimit + " Random files");
+			System.out.println("============================================");
 		}
 		
 		public void getFileSection(int divisor, int sectionNumber) {
@@ -111,7 +118,7 @@ public class ApkDisassembler {
 			
 			System.out.println("Total files in folder:  " + files.length);
 			System.out.println("Processing " + arrayLength + " files [" + (idx - arrayLength) + "," + idx + ")" );
-			
+			System.out.println("============================================");
 		}
 		
 		
@@ -149,8 +156,12 @@ public class ApkDisassembler {
 		
 		public void printDisassembleList() {
 			try {
+		        //Creates outputLogs Directory if it Does not Exist
+		        File directory = new File("outputLogs/");
+				directory.mkdirs();
+				
 				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-				File file = new File(fileListPath + timeStamp + ".txt");
+				File file = new File("outputLogs/" + fileListPath + timeStamp + ".txt");
 				
 				if (!file.exists()) {
 					file.createNewFile();

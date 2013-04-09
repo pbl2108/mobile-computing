@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
+import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.lucene.util.OpenBitSet;
 import org.jfree.data.xy.XYSeries;
@@ -192,10 +193,10 @@ public class BitSetBank {
 	 * Finds the two base apps that produce the least correlation among the apps.
 	 */
 	public String[] findVectorsLeastCorrelation(int size) {
-		PearsonsCorrelation pCorr = new PearsonsCorrelation();
+		SpearmansCorrelation pCorr = new SpearmansCorrelation();
 		String[] result = new String[2];
 		OpenBitSet x, y;
-		double min = 1.1, absCorrelation;
+		double min = 1.0, absCorrelation;
 		double[] xArr = new double[size], yArr = new double[size];
 		
 		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
@@ -209,7 +210,7 @@ public class BitSetBank {
 					continue;
 
 				y = yEntry.getValue();
-				xArr = this.getJaccardArray(y, size);
+				yArr = this.getJaccardArray(y, size);
 				
 				absCorrelation = Math.abs(pCorr.correlation(xArr, yArr));
 				
@@ -218,9 +219,13 @@ public class BitSetBank {
 					result[0] = xEntry.getKey();
 					result[1] = yEntry.getKey();
 				}
-				System.out.println(xEntry.getKey () + "   " + yEntry.getKey() + "   Absolute Correlation:  " + absCorrelation);
+				if(absCorrelation < 0.01) {
+					plotAndCompareBitSetBank(xEntry.getValue(), yEntry.getValue(), xEntry.getKey() + " and " + yEntry.getKey());
+					System.out.println(xEntry.getKey () + "   " + yEntry.getKey() + "   Absolute Correlation:  " + absCorrelation);
+				}
 			}
 		}
+		System.out.println("MIN correlation " + min);
 		return result;
 	}
 	/*
@@ -235,7 +240,7 @@ public class BitSetBank {
 			bitSet1 = entry1.getValue();
 			
 			arr[i] = this.JaccardSim(x, bitSet1);
-			System.out.println(arr[i] + "  " + i);
+			//System.out.println(arr[i] + "  " + i);
 			i++;
 		}
 		return arr;

@@ -12,6 +12,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
+import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import org.apache.lucene.util.OpenBitSet;
 
 
@@ -45,30 +47,50 @@ public class DecompileDriver {
 		    System.exit(-1);
 		  }
 	
-//	public static void main_read(String[] args) {
+//	public static void main(String[] args) {
 //		//SmaliParser sp = new SmaliParser();
 //		OpenBitSet x, y;
 //		
 //		BitSetBank bsb = new BitSetBank();
 //		bsb.readFromSerial("/home/peter/github/mobile-computing/results/bitSetMap1000.ser");
 //		
-////			/* Max variance */
-////			String xKey = bsb.findVectorWithMaxVariance();
-////			System.out.println("X:" + xKey);
-////			x = bsb.bitSetsHashMap.get(xKey);
-////			
-////			String yKey = bsb.findMostDistant(x);
-////			System.out.println("Y:" + yKey);
-////			y = bsb.bitSetsHashMap.get(yKey);
-////			
-////			//Object[] featureVectors = bsb.bitSetsHashMap.values().toArray();
-////			bsb.plotAndCompareBitSetBank(x, y, "20  and 100 -- 1000");
+//		/* Random vectors */
+//		Object[] arr = bsb.bitSetsHashMap.values().toArray();
+//		x = (OpenBitSet)arr[100];
+//		y = (OpenBitSet)arr[230];
+//		bsb.plotAndCompareBitSetBank(x, y, "   100 and 230   ");
+//
+//		int size = 1000;
+//		double[] xArr = new double[size], yArr = new double[size];
+//		xArr = bsb.getJaccardArray(x, size);
+//		yArr = bsb.getJaccardArray(y, size);
+//		SpearmansCorrelation pCorr = new SpearmansCorrelation();
+//		double correlation = pCorr.correlation(xArr, yArr);
+//		System.out.println("CORRELATION: " + correlation);
+////		for(int i=0; i < size; i++) {
+////			System.out.println("(x,y)=(" + xArr[i] + "," + yArr[i] + ")");
+////		}
 //		
-//		/* Minimum correlation */
-//		String[] xy = bsb.findVectorsLeastCorrelation(1000);
-//		x = bsb.bitSetsHashMap.get(xy[0]);
-//		y = bsb.bitSetsHashMap.get(xy[1]);
-//		bsb.plotAndCompareBitSetBank(x, y, xy[0] + "   and   " + xy[1]);
+////		/* Max variance and second max */
+////		String xKey = bsb.findVectorWithMaxVariance(null);
+////		System.out.println("X:" + xKey);
+////		x = bsb.bitSetsHashMap.get(xKey);
+////		
+////		String yKey = bsb.findVectorWithMaxVariance(xKey);
+////		System.out.println("Y:" + yKey);
+////		y = bsb.bitSetsHashMap.get(xKey);
+//		
+////		/* Max variance and min */
+////		String yKey = bsb.findMostDistant(x);
+////		System.out.println("Y:" + yKey);
+////		y = bsb.bitSetsHashMap.get(yKey);
+////		bsb.plotAndCompareBitSetBank(x, y, xKey + " and " + yKey);
+//		
+////		/* Minimum correlation */
+////		String[] xy = bsb.findVectorsLeastCorrelation(300);
+////		x = bsb.bitSetsHashMap.get(xy[0]);
+////		y = bsb.bitSetsHashMap.get(xy[1]);
+////		bsb.plotAndCompareBitSetBank(x, y, xy[0] + "   and   " + xy[1]);
 //	}
 
 	public static void main(String[] args) {

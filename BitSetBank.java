@@ -20,10 +20,12 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.lucene.util.OpenBitSet;
+import org.jfree.data.xy.XYSeries;
 //import org.jfree.data.xy.XYSeries;
 //import org.jfree.data.xy.XYSeries;
 //import org.jfree.data.xy.XYSeriesCollection;
 //import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.data.xy.XYSeriesCollection;
 
 public class BitSetBank {
 
@@ -199,7 +201,7 @@ public class BitSetBank {
 		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 			Map.Entry<String, OpenBitSet> xEntry = iter1.next();
 			x = xEntry.getValue();
-			xArr = this.getJaccardArray(x, xArr);
+			xArr = this.getJaccardArray(x, size);
 		
 			for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
 				Map.Entry<String, OpenBitSet> yEntry = iter2.next();
@@ -207,7 +209,7 @@ public class BitSetBank {
 					continue;
 
 				y = yEntry.getValue();
-				xArr = this.getJaccardArray(y, yArr);
+				xArr = this.getJaccardArray(y, size);
 				
 				absCorrelation = Math.abs(pCorr.correlation(xArr, yArr));
 				
@@ -224,7 +226,8 @@ public class BitSetBank {
 	/*
 	 * Gets array containing all the Jaccard distances from base app X.
 	 */
-	public double[] getJaccardArray(OpenBitSet x, double[] arr) {
+	public double[] getJaccardArray(OpenBitSet x, int size) {
+		double[] arr = new double[size];
 		OpenBitSet bitSet1;
 		int i = 0;
 		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
@@ -232,13 +235,15 @@ public class BitSetBank {
 			bitSet1 = entry1.getValue();
 			
 			arr[i] = this.JaccardSim(x, bitSet1);
+			System.out.println(arr[i] + "  " + i);
+			i++;
 		}
 		return arr;
 	}
 	/*
 	 * Finds the app that produces the greatest variance; 
 	 */
-	public String findVectorWithMaxVariance() {
+	public String findVectorWithMaxVariance(String skippedApp) {
 		DescriptiveStatistics stats = new DescriptiveStatistics();
 		double jSimX, max = 0.0;
 		String maxApp = "";
@@ -246,6 +251,9 @@ public class BitSetBank {
 
 		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 			Map.Entry<String, OpenBitSet> maxEntry = iter1.next();
+			if( maxEntry.getKey() == skippedApp)
+				continue;
+			
 			x = maxEntry.getValue();
 		
 			for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
@@ -299,7 +307,7 @@ public class BitSetBank {
 	/*
 	 * Create a scatter plot of the data comparing it to X and Y.
 	 */
-	/*public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
+	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
 			OpenBitSet y, String title) {
 
 		XYSeries series = new XYSeries("Android Apps");
@@ -333,7 +341,7 @@ public class BitSetBank {
 
 		Plot.ScatterPlot(seriesCollection, title);
 		return seriesCollection;
-	}*/
+	}
 	/*
 	 * Calculates the Jaccard distance using 2 base apps and outputs to default location.
 	 */
@@ -363,7 +371,6 @@ public class BitSetBank {
 			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
 				bitSet1 = entry1.getValue();
-				iter1.remove();
 				/* Take first two apps as base X and Y */
 				if (x == null) { 
 					x = bitSet1;

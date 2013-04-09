@@ -21,7 +21,7 @@ public class DecompileDriver {
 	public static File outputFolder;
 	public static int divisor = 0;
 	public static int sectionNumber = 0;
-	public static int apkBufferLength = 500;
+	public static int apkBufferLength = 4;
 	
 	  private static Options createOptions() {
 		    Options options = new Options();

@@ -45,25 +45,30 @@ public class DecompileDriver {
 		    System.exit(-1);
 		  }
 	
-//	/*
-//	 * Use this function to plot against two apps.
-//	 */
-//	public static void main(String[] args) {
+//	public static void main_read(String[] args) {
 //		//SmaliParser sp = new SmaliParser();
 //		OpenBitSet x, y;
 //		
 //		BitSetBank bsb = new BitSetBank();
 //		bsb.readFromSerial("/home/peter/github/mobile-computing/results/bitSetMap1000.ser");
-//		String xKey = bsb.findVectorWithMaxVariance();
-//		System.out.println("X:" + xKey);
-//		x = bsb.bitSetsHashMap.get(xKey);
 //		
-//		String yKey = bsb.findMostDistant(x);
-//		System.out.println("Y:" + yKey);
-//		y = bsb.bitSetsHashMap.get(yKey);
+////			/* Max variance */
+////			String xKey = bsb.findVectorWithMaxVariance();
+////			System.out.println("X:" + xKey);
+////			x = bsb.bitSetsHashMap.get(xKey);
+////			
+////			String yKey = bsb.findMostDistant(x);
+////			System.out.println("Y:" + yKey);
+////			y = bsb.bitSetsHashMap.get(yKey);
+////			
+////			//Object[] featureVectors = bsb.bitSetsHashMap.values().toArray();
+////			bsb.plotAndCompareBitSetBank(x, y, "20  and 100 -- 1000");
 //		
-//		//Object[] featureVectors = bsb.bitSetsHashMap.values().toArray();
-//		bsb.plotAndCompareBitSetBank(x, y, "20  and 100 -- 1000");
+//		/* Minimum correlation */
+//		String[] xy = bsb.findVectorsLeastCorrelation(1000);
+//		x = bsb.bitSetsHashMap.get(xy[0]);
+//		y = bsb.bitSetsHashMap.get(xy[1]);
+//		bsb.plotAndCompareBitSetBank(x, y, xy[0] + "   and   " + xy[1]);
 //	}
 
 	public static void main(String[] args) {

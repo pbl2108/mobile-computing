@@ -17,10 +17,13 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.lucene.util.OpenBitSet;
+import org.jfree.data.xy.XYSeries;
 //import org.jfree.data.xy.XYSeries;
 //import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.data.xy.XYSeriesCollection;
 
 public class BitSetBank {
 
@@ -114,8 +117,7 @@ public class BitSetBank {
 			e.printStackTrace();
 		}
 	}
-
-
+	
 //	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, KdTree kdtree) {
 //		OpenBitSet bitSet1;
 //		double jSimX, jSimY;
@@ -148,6 +150,55 @@ public class BitSetBank {
 //		}
 //	}
 	
+	/*
+	 * Finds the two base apps that produce the least correlation among the apps.
+	 */
+	public String[] findVectorsLeastCorrelation(int size) {
+		PearsonsCorrelation pCorr = new PearsonsCorrelation();
+		String[] result = new String[2];
+		OpenBitSet x, y;
+		double min = 1.1, absCorrelation;
+		double[] xArr = new double[size], yArr = new double[size];
+		
+		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+			Map.Entry<String, OpenBitSet> xEntry = iter1.next();
+			x = xEntry.getValue();
+			xArr = this.getJaccardArray(x, xArr);
+		
+			for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
+				Map.Entry<String, OpenBitSet> yEntry = iter2.next();
+				if (xEntry == yEntry)
+					continue;
+
+				y = yEntry.getValue();
+				xArr = this.getJaccardArray(y, yArr);
+				
+				absCorrelation = Math.abs(pCorr.correlation(xArr, yArr));
+				
+				if(min > absCorrelation) {
+					min = absCorrelation;
+					result[0] = xEntry.getKey();
+					result[1] = yEntry.getKey();
+				}
+				System.out.println(xEntry.getKey () + "   " + yEntry.getKey() + "   Absolute Correlation:  " + absCorrelation);
+			}
+		}
+		return result;
+	}
+	/*
+	 * Gets array containing all the Jaccard distances from base app X.
+	 */
+	public double[] getJaccardArray(OpenBitSet x, double[] arr) {
+		OpenBitSet bitSet1;
+		int i = 0;
+		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
+			bitSet1 = entry1.getValue();
+			
+			arr[i] = this.JaccardSim(x, bitSet1);
+		}
+		return arr;
+	}
 	/*
 	 * Finds the app that produces the greatest variance; 
 	 */
@@ -209,44 +260,44 @@ public class BitSetBank {
 		return minKey;
 	}
 	
-//	/*
-//	 * Create a scatter plot of the data comparing it to X and Y.
-//	 */
-//	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
-//			OpenBitSet y, String title) {
-//
-//		XYSeries series = new XYSeries("Android Apps");
-//		OpenBitSet bitSet1;
-//		double jSimX, jSimY;
-//
-//		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap
-//				.entrySet().iterator(); iter1.hasNext();) {
-//			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-//			bitSet1 = entry1.getValue();
-//			/* Take first two apps as base X and Y */
-//			if (x == null) {
-//				x = bitSet1;
-//				continue;
-//			}
-//			if (y == null) {
-//				y = bitSet1;
-//				continue;
-//			}
-//			/* Calculate distance between X, Y and each app */
-//			jSimX = this.JaccardSim(x, bitSet1);
-//			jSimY = this.JaccardSim(y, bitSet1);
-//			series.add(jSimX, jSimY);
-////			if (jSimX > 0.0)
-////				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX
-////					+ " , " + jSimY + ")");
-//		}
-//
-//		XYSeriesCollection seriesCollection = new XYSeriesCollection();
-//		seriesCollection.addSeries(series);
-//
-//		Plot.ScatterPlot(seriesCollection, title);
-//		return seriesCollection;
-//	}
+	/*
+	 * Create a scatter plot of the data comparing it to X and Y.
+	 */
+	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
+			OpenBitSet y, String title) {
+
+		XYSeries series = new XYSeries("Android Apps");
+		OpenBitSet bitSet1;
+		double jSimX, jSimY;
+
+		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap
+				.entrySet().iterator(); iter1.hasNext();) {
+			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
+			bitSet1 = entry1.getValue();
+			/* Take first two apps as base X and Y */
+			if (x == null) {
+				x = bitSet1;
+				continue;
+			}
+			if (y == null) {
+				y = bitSet1;
+				continue;
+			}
+			/* Calculate distance between X, Y and each app */
+			jSimX = this.JaccardSim(x, bitSet1);
+			jSimY = this.JaccardSim(y, bitSet1);
+			series.add(jSimX, jSimY);
+//			if (jSimX > 0.0)
+//				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX
+//					+ " , " + jSimY + ")");
+		}
+
+		XYSeriesCollection seriesCollection = new XYSeriesCollection();
+		seriesCollection.addSeries(series);
+
+		Plot.ScatterPlot(seriesCollection, title);
+		return seriesCollection;
+	}
 	/*
 	 * Calculates the Jaccard distance using 2 base apps and outputs to default location.
 	 */

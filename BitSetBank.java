@@ -23,7 +23,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class BitSetBank {
 
-	public static final String serialBitSetBankMap = "bitSetMap_";
+	public static final String serialBitSetBankMap = "bitSetMap";
 	public static final String outputSimPath = "similarities.txt";
 	public static final String authorsMapPath = "apkSignatures.csv";
 
@@ -46,7 +46,7 @@ public class BitSetBank {
 			directory.mkdirs();
 			
 			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-			fos = new FileOutputStream("outputLogs/" + serialBitSetBankMap + timeStamp + ".ser");
+			fos = new FileOutputStream("outputLogs/" + serialBitSetBankMap + "_" + timeStamp + ".ser");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(this.bitSetsHashMap);
 			oos.close();
@@ -356,5 +356,32 @@ public class BitSetBank {
 	
 	public OpenBitSet getBitSetByName(String name) {
 		return this.bitSetsHashMap.get(name);
+	}
+
+	public void createSerialWriteStream(int d, int s) {
+		FileOutputStream fos;
+		try {
+	        //Creates outputLogs Directory if it Does not Exist
+	        File directory = new File("outputLogs/");
+			directory.mkdirs();
+			
+			if (d != 0)
+				fos = new FileOutputStream("outputLogs/" + serialBitSetBankMap +  "_d_" + d + "_s_" + ".ser");
+			else{
+				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+				fos = new FileOutputStream("outputLogs/" + serialBitSetBankMap + "_" + timeStamp + ".ser");
+			}
+			
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(this.bitSetsHashMap);
+			oos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

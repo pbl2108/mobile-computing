@@ -1,5 +1,8 @@
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -16,6 +19,8 @@ public class DecompileDriver {
 	
 	public static File inputFolder;
 	public static File outputFolder;
+	public static int divisor = 0;
+	public static int sectionNumber = 0;
 	
 	  private static Options createOptions() {
 		    Options options = new Options();
@@ -91,8 +96,8 @@ public class DecompileDriver {
 				int randSize = Integer.parseInt(cmd.getOptionValue( "r" ));
 				ad.getRandomFiles(randSize);
 			}else if( cmd.getOptionValue( "d" ) != null && cmd.getOptionValue( "s" ) != null ) {
-				int divisor = Integer.parseInt(cmd.getOptionValue( "d" ));
-				int sectionNumber = Integer.parseInt(cmd.getOptionValue( "s" ));
+				divisor = Integer.parseInt(cmd.getOptionValue( "d" ));
+				sectionNumber = Integer.parseInt(cmd.getOptionValue( "s" ));
 				ad.getFileSection(divisor, sectionNumber);
 			}else if ((cmd.getOptionValue( "d" ) != null && cmd.getOptionValue( "s" ) == null ) 
 					  	|| (cmd.getOptionValue( "d" ) == null && cmd.getOptionValue( "s" ) != null )){
@@ -126,21 +131,24 @@ public class DecompileDriver {
 		
 		File currentDir;
 		
+		ad.createApkListLog(divisor, sectionNumber);
+		//bsb.createSerialWriteStream(divisor, sectionNumber);
 		
-		while((currentDir = ad.disassembleNextFile()) != null){
-			System.out.println(currentDir.getName());
+		while((currentDir = ad.disassembleNextFile()) != null){				
 			OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
 			sp.apkDirectoryTraversal(currentDir, bitSet);
 			bsb.add(currentDir.getName(), bitSet);
 			try {
 				FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));
+				ad.bw.write(currentDir.getAbsolutePath() + "\n");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
 		}
 		
 		bsb.writeToSerial();
-		ad.printDisassembleList();
+		ad.closeApkListLog();
 		
 //		bsb.loadAuthorsMap();
 //		bsb.compareBitSetBank();
@@ -150,5 +158,6 @@ public class DecompileDriver {
 		
 		System.out.println("\nTotal time: " + (endTime - startTime) + " ms");
 		System.out.println("\nAverage time for 1 out of " + bsb.bitSetsHashMap.size() +  " app: " + (endTime - startTime)/bsb.bitSetsHashMap.size() + " ms/app");
+		System.out.println("Failed APK's: " + sp.failedApk);
 	}
 }

@@ -1,5 +1,6 @@
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -12,7 +13,10 @@ public class ApkDisassembler {
 		private static final String separator = "/";
 		
 		private static final String apktoolPath = "apktool1.5.2/apktool";
-		private static final String fileListPath = "apkList_";
+		private static final String fileListName = "apkList";
+		
+		public FileWriter fw;
+		public BufferedWriter bw;
 
 		public String apkPath;
 		public String destPath;
@@ -161,20 +165,20 @@ public class ApkDisassembler {
 				directory.mkdirs();
 				
 				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-				File file = new File("outputLogs/" + fileListPath + timeStamp + ".txt");
+				File file = new File("outputLogs/" + fileListName + "_" + timeStamp + ".txt");
 				
 				if (!file.exists()) {
 					file.createNewFile();
 				}
 
-				FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-				BufferedWriter bw = new BufferedWriter(fw);
+				fw = new FileWriter(file.getAbsoluteFile(), true);
+				bw = new BufferedWriter(fw);
 				
 				for (File fileEntry : fileArray) 
 					bw.write(fileEntry.getAbsolutePath() + "\n");
 				
-				bw.close();
-				fw.close();
+				this.bw.close();
+				this.fw.close();
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -183,9 +187,45 @@ public class ApkDisassembler {
 			
 		}
 		
-		
-		
-		
+		public void createApkListLog(int d, int s) {
+			try {
+		        //Creates outputLogs Directory if it Does not Exist
+		        File directory = new File("outputLogs/");
+				directory.mkdirs();
+				File file;
+				
+				if (d != 0)
+					file = new File("outputLogs/" + fileListName + "_d_" + d + "_s_" + ".txt");
+				else{
+					String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+					file = new File("outputLogs/" + fileListName + "_" + timeStamp + ".txt");
+				}
+				
+				
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+
+				fw = new FileWriter(file.getAbsoluteFile(), true);
+				bw = new BufferedWriter(fw);
+				
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+
+		public void closeApkListLog() {
+			try {
+				this.bw.close();
+				this.fw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} 
 
 
 }

@@ -33,6 +33,7 @@ public class SmaliParser {
 	public double jaccardThreshold = .70;
 	public long dirCount;
 	public int featuresCount;
+	public int failedApk;
 
 
 	public SmaliParser() {
@@ -47,6 +48,7 @@ public class SmaliParser {
 		this.indivdualMethodCount = 0;
 		this.bitSetsCount = 0;
 		this.dirCount = 0;
+		this.failedApk = 0;
 		this.featuresCount  = 0;	//keeps track of the total number of feature vectors. 
 		this.loadFeaturesHashMap();
 		this.loadWhitelistLibs();
@@ -263,6 +265,7 @@ public class SmaliParser {
 			listFilesForFolder(fileEntry, bitSet, folderNameLength);
 
 		} catch (Exception e) {
+			failedApk++;
 			e.printStackTrace();
 		}
 	}

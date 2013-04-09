@@ -21,6 +21,7 @@ public class DecompileDriver {
 	public static File outputFolder;
 	public static int divisor = 0;
 	public static int sectionNumber = 0;
+	public static int apkBufferLength = 500;
 	
 	  private static Options createOptions() {
 		    Options options = new Options();
@@ -43,28 +44,28 @@ public class DecompileDriver {
 		    System.exit(-1);
 		  }
 	
-	/*
-	 * Use this function to plot against two apps.
-	 */
-	public static void main(String[] args) {
-		//SmaliParser sp = new SmaliParser();
-		OpenBitSet x, y;
-		
-		BitSetBank bsb = new BitSetBank();
-		bsb.readFromSerial("/home/peter/github/mobile-computing/results/bitSetMap1000.ser");
-		String xKey = bsb.findVectorWithMaxVariance();
-		System.out.println("X:" + xKey);
-		x = bsb.bitSetsHashMap.get(xKey);
-		
-		String yKey = bsb.findMostDistant(x);
-		System.out.println("Y:" + yKey);
-		y = bsb.bitSetsHashMap.get(yKey);
-		
-		//Object[] featureVectors = bsb.bitSetsHashMap.values().toArray();
-		bsb.plotAndCompareBitSetBank(x, y, "20  and 100 -- 1000");
-	}
+//	/*
+//	 * Use this function to plot against two apps.
+//	 */
+//	public static void main(String[] args) {
+//		//SmaliParser sp = new SmaliParser();
+//		OpenBitSet x, y;
+//		
+//		BitSetBank bsb = new BitSetBank();
+//		bsb.readFromSerial("/home/peter/github/mobile-computing/results/bitSetMap1000.ser");
+//		String xKey = bsb.findVectorWithMaxVariance();
+//		System.out.println("X:" + xKey);
+//		x = bsb.bitSetsHashMap.get(xKey);
+//		
+//		String yKey = bsb.findMostDistant(x);
+//		System.out.println("Y:" + yKey);
+//		y = bsb.bitSetsHashMap.get(yKey);
+//		
+//		//Object[] featureVectors = bsb.bitSetsHashMap.values().toArray();
+//		bsb.plotAndCompareBitSetBank(x, y, "20  and 100 -- 1000");
+//	}
 
-	public static void main_(String[] args) {
+	public static void main(String[] args) {
 		
 		long startTime = System.currentTimeMillis();
 		ApkDisassembler ad = null;
@@ -124,17 +125,11 @@ public class DecompileDriver {
 				wl.generateWhiteList(ad);
 				System.exit(0);
 			}
-			
-			
-			
 				 
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 			showHelp(options);
 		}
-		
-	
-
 		
 		SmaliParser sp = new SmaliParser();
 		BitSetBank bsb = new BitSetBank();
@@ -142,7 +137,12 @@ public class DecompileDriver {
 		File currentDir;
 		
 		ad.createApkListLog(divisor, sectionNumber);
-		//bsb.createSerialWriteStream(divisor, sectionNumber);
+		int apkBufferIdx = 0;
+		int apkBufferIteration = 0;
+		
+		String[] apkNameBuffer = new String[apkBufferLength];
+		
+		
 		
 		while((currentDir = ad.disassembleNextFile()) != null){				
 			OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
@@ -150,15 +150,24 @@ public class DecompileDriver {
 			bsb.add(currentDir.getName(), bitSet);
 			try {
 				FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));
-				ad.bw.write(currentDir.getAbsolutePath() + "\n");
+				apkNameBuffer[apkBufferIdx++] =  currentDir.getName();
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
+			if(apkBufferIdx == apkBufferLength){
+				ad.writeApkListLog(divisor, sectionNumber, apkNameBuffer, apkBufferIdx);
+				bsb.writeToSerial(divisor, sectionNumber, apkBufferIteration);
+				apkBufferIteration++;
+				apkBufferIdx = 0;
+			}
+			
 		}
 		
-		bsb.writeToSerial();
-		ad.closeApkListLog();
+		ad.writeApkListLog(divisor, sectionNumber, apkNameBuffer, apkBufferIdx);
+		bsb.writeToSerial(divisor, sectionNumber, apkBufferIteration);
+		
 		
 //		bsb.loadAuthorsMap();
 //		bsb.compareBitSetBank();
@@ -167,7 +176,8 @@ public class DecompileDriver {
 		
 		
 		System.out.println("\nTotal time: " + (endTime - startTime) + " ms");
-		System.out.println("\nAverage time for 1 out of " + bsb.bitSetsHashMap.size() +  " app: " + (endTime - startTime)/bsb.bitSetsHashMap.size() + " ms/app");
+		System.out.println("\nAverage time for 1 out of " + (apkBufferLength*apkBufferIteration+apkBufferIdx) 
+							+ " app: " + (endTime - startTime)/(apkBufferLength*apkBufferIteration+apkBufferIdx) + " ms/app");
 		System.out.println("Failed APK's: " + sp.failedApk);
 	}
 }

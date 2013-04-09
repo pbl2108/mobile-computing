@@ -19,8 +19,8 @@ import java.util.Map;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.lucene.util.OpenBitSet;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
+//import org.jfree.data.xy.XYSeries;
+//import org.jfree.data.xy.XYSeriesCollection;
 
 public class BitSetBank {
 
@@ -37,27 +37,6 @@ public class BitSetBank {
 		this.bitSetsHashMap = new HashMap<String, OpenBitSet>();
 		this.authorsMap = new HashMap<String, String>();
 		//mySQL = new MySQLAccess();
-	}
-
-	public void writeToSerial() {
-		FileOutputStream fos;
-		try {
-	        //Creates outputLogs Directory if it Does not Exist
-	        File directory = new File("outputLogs/");
-			directory.mkdirs();
-			
-			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-			fos = new FileOutputStream("outputLogs/" + serialBitSetBankMap + "_" + timeStamp + ".ser");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(this.bitSetsHashMap);
-			oos.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void add(String fileName, OpenBitSet bitSet) {
@@ -200,7 +179,7 @@ public class BitSetBank {
 			if (variance > 0.015) {
 				String yKey = findMostDistant(x);
 				y = bitSetsHashMap.get(yKey);
-				plotAndCompareBitSetBank(x, y, "X:" + maxEntry.getKey() + "   Y:" + yKey + "   V:" + variance);
+			//	plotAndCompareBitSetBank(x, y, "X:" + maxEntry.getKey() + "   Y:" + yKey + "   V:" + variance);
 			}
 			
 			stats.clear();
@@ -230,44 +209,44 @@ public class BitSetBank {
 		return minKey;
 	}
 	
-	/*
-	 * Create a scatter plot of the data comparing it to X and Y.
-	 */
-	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
-			OpenBitSet y, String title) {
-
-		XYSeries series = new XYSeries("Android Apps");
-		OpenBitSet bitSet1;
-		double jSimX, jSimY;
-
-		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap
-				.entrySet().iterator(); iter1.hasNext();) {
-			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-			bitSet1 = entry1.getValue();
-			/* Take first two apps as base X and Y */
-			if (x == null) {
-				x = bitSet1;
-				continue;
-			}
-			if (y == null) {
-				y = bitSet1;
-				continue;
-			}
-			/* Calculate distance between X, Y and each app */
-			jSimX = this.JaccardSim(x, bitSet1);
-			jSimY = this.JaccardSim(y, bitSet1);
-			series.add(jSimX, jSimY);
-//			if (jSimX > 0.0)
-//				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX
-//					+ " , " + jSimY + ")");
-		}
-
-		XYSeriesCollection seriesCollection = new XYSeriesCollection();
-		seriesCollection.addSeries(series);
-
-		Plot.ScatterPlot(seriesCollection, title);
-		return seriesCollection;
-	}
+//	/*
+//	 * Create a scatter plot of the data comparing it to X and Y.
+//	 */
+//	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
+//			OpenBitSet y, String title) {
+//
+//		XYSeries series = new XYSeries("Android Apps");
+//		OpenBitSet bitSet1;
+//		double jSimX, jSimY;
+//
+//		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap
+//				.entrySet().iterator(); iter1.hasNext();) {
+//			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
+//			bitSet1 = entry1.getValue();
+//			/* Take first two apps as base X and Y */
+//			if (x == null) {
+//				x = bitSet1;
+//				continue;
+//			}
+//			if (y == null) {
+//				y = bitSet1;
+//				continue;
+//			}
+//			/* Calculate distance between X, Y and each app */
+//			jSimX = this.JaccardSim(x, bitSet1);
+//			jSimY = this.JaccardSim(y, bitSet1);
+//			series.add(jSimX, jSimY);
+////			if (jSimX > 0.0)
+////				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX
+////					+ " , " + jSimY + ")");
+//		}
+//
+//		XYSeriesCollection seriesCollection = new XYSeriesCollection();
+//		seriesCollection.addSeries(series);
+//
+//		Plot.ScatterPlot(seriesCollection, title);
+//		return seriesCollection;
+//	}
 	/*
 	 * Calculates the Jaccard distance using 2 base apps and outputs to default location.
 	 */
@@ -426,20 +405,47 @@ public class BitSetBank {
 		return this.bitSetsHashMap.get(name);
 	}
 
-	public void createSerialWriteStream(int d, int s) {
+	public void writeToSerial(int d, int s, int partNumber) {
+		FileOutputStream fos;
+		try {
+			if (d != 0){
+				File directory = new File("outputLogs/" + serialBitSetBankMap +  "_d_" + d + "_s_" + s + "/");
+				directory.mkdirs();
+				fos = new FileOutputStream("outputLogs/" + serialBitSetBankMap +  "_d_" + d + "_s_" + s + "/" + "part_" + partNumber + ".ser");
+			}else{
+				//Creates outputLogs Directory if it Does not Exist
+				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+		        File directory = new File("outputLogs/" + serialBitSetBankMap + "_" + timeStamp + "/");
+				directory.mkdirs();				
+				fos = new FileOutputStream("outputLogs/" + serialBitSetBankMap + "_" + timeStamp + "/" + "part_" + partNumber + ".ser");
+			}
+			
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(this.bitSetsHashMap);
+			oos.close();
+			
+			//Creates new hashmap to write bitSet data of next iteration in main loop 
+			this.bitSetsHashMap = new HashMap<String, OpenBitSet>();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void writeToSerial() {
 		FileOutputStream fos;
 		try {
 	        //Creates outputLogs Directory if it Does not Exist
 	        File directory = new File("outputLogs/");
 			directory.mkdirs();
 			
-			if (d != 0)
-				fos = new FileOutputStream("outputLogs/" + serialBitSetBankMap +  "_d_" + d + "_s_" + ".ser");
-			else{
-				String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-				fos = new FileOutputStream("outputLogs/" + serialBitSetBankMap + "_" + timeStamp + ".ser");
-			}
-			
+			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+			fos = new FileOutputStream("outputLogs/" + serialBitSetBankMap + "_" + timeStamp + ".ser");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(this.bitSetsHashMap);
 			oos.close();
@@ -450,6 +456,5 @@ public class BitSetBank {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 }

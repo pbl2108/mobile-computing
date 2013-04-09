@@ -217,8 +217,39 @@ public class ApkDisassembler {
 			
 		}
 
-		public void closeApkListLog() {
+		public void closeApkListLog(int apkBufferIteration,	String[] apkNameBuffer) {
 			try {
+				this.bw.close();
+				this.fw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		public void writeApkListLog(int d, int s, String[] apkNameBuffer, int apkBufferIdx) {
+			try {
+				//Creates outputLogs Directory if it Does not Exist
+		        File directory = new File("outputLogs/");
+				directory.mkdirs();
+				File file;
+				
+				
+				if (d != 0)
+					file = new File("outputLogs/" + fileListName + "_d_" + d + "_s_" + s + ".txt");
+				else{
+					String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+					file = new File("outputLogs/" + fileListName + "_" + timeStamp + ".txt");
+				}
+				
+				file.createNewFile();
+	
+				fw = new FileWriter(file.getAbsoluteFile(), true);
+				bw = new BufferedWriter(fw);
+				
+				for (int i = 0 ; i< apkBufferIdx; i++) 
+					bw.write(apkNameBuffer[i] + "\n");
+				
 				this.bw.close();
 				this.fw.close();
 			} catch (IOException e) {

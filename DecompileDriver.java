@@ -21,7 +21,7 @@ public class DecompileDriver {
 	public static File outputFolder;
 	public static int divisor = 0;
 	public static int sectionNumber = 0;
-	public static int apkBufferLength = 4;
+	public static int apkBufferLength = 500;
 	
 	  private static Options createOptions() {
 		    Options options = new Options();
@@ -29,6 +29,7 @@ public class DecompileDriver {
 		    options.addOption("i", "input", true, "input folder containing all apks");
 		    options.addOption("o", "output", true, "temporary folder to hold apks while processing");
 		    options.addOption("r", "rand", true, "decompile a random assortment of apks");
+		    options.addOption("b", "buffer", true, "change the apk buffer size for writes");
 		    options.addOption("a", "all", false, "decompile all apks");
 		    options.addOption("d", "divisor", true, "number of sections the total apks should be divided into");
 		    options.addOption("s", "section", true, "respective fraction of the apks to be processed");
@@ -125,6 +126,10 @@ public class DecompileDriver {
 				wl.generateWhiteList(ad);
 				System.exit(0);
 			}
+			
+			if( cmd.getOptionValue( "b" ) != null ) 
+				apkBufferLength = Integer.parseInt(cmd.getOptionValue( "b" ));
+			
 				 
 		} catch (ParseException e1) {
 			e1.printStackTrace();
@@ -161,6 +166,7 @@ public class DecompileDriver {
 				bsb.writeToSerial(divisor, sectionNumber, apkBufferIteration);
 				apkBufferIteration++;
 				apkBufferIdx = 0;
+				System.out.println(apkBufferIteration * apkBufferLength + " Apps processed");
 			}
 			
 		}

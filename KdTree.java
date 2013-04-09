@@ -57,6 +57,9 @@ public class KdTree {
 					right.nodesInRange(cr, current.nextCoordinate(), result);
 			}
 			
+			if (obj.isChecked())
+				return;
+			
 			/* if the coordinate of this dimension is between upper bound and lower bound
 			 * go and check the other dimension to see whether this node is inside this range */
 			if (greaterThanLowerBound && lowerThanUpperBound) {
@@ -64,7 +67,8 @@ public class KdTree {
 						&& obj.getCoordinate().smaller(cr.getUpperBound(), current.nextCoordinate())) {
 					
 					// in the range, add this app into the list
-					result.add(obj);
+					//if (!cr.isCenterApp(obj.getName()))
+						result.add(obj);
 					//System.out.println("added " + obj.getAppInfo() + " to the list");
 				}
 			}
@@ -86,6 +90,8 @@ public class KdTree {
 			
 			centerApp = center.getName();
 			
+			center.markAsChecked();			// do not compare this node any more
+			
 			//System.out.println("the center: " + x + " " + y);
 		}
 		
@@ -97,9 +103,9 @@ public class KdTree {
 			return lowerBound;
 		}
 		
-		public boolean isCenterApp(String name) {
+		/* public boolean isCenterApp(String name) {
 			return centerApp.equals(name);
-		}
+		} */
 	}
 	
 	

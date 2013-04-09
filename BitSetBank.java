@@ -20,10 +20,10 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.lucene.util.OpenBitSet;
-import org.jfree.data.xy.XYSeries;
+//import org.jfree.data.xy.XYSeries;
 //import org.jfree.data.xy.XYSeries;
 //import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.data.xy.XYSeriesCollection;
+//import org.jfree.data.xy.XYSeriesCollection;
 
 public class BitSetBank {
 
@@ -81,6 +81,41 @@ public class BitSetBank {
 			e.printStackTrace();
 		}
 	}
+	
+	public void readAllFromSerial(String filePath) {
+		try {
+			if (filePath == null || filePath.isEmpty())
+				return;
+			
+			File dir = new File(filePath);
+			if (dir.isFile())
+				readFromSerial(filePath);
+			
+			/* read all serial files in the folder */
+			for (File entry : dir.listFiles()) {
+				//System.out.println(entry.getName());
+				if (!entry.getName().endsWith(".ser"))
+					continue;
+				
+				FileInputStream fis = new FileInputStream(entry.getAbsoluteFile());
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				HashMap<String, OpenBitSet> buff = (HashMap<String, OpenBitSet>) ois.readObject();
+				ois.close();
+				//System.out.println(buff.size());
+				bitSetsHashMap.putAll(buff);
+				//System.out.println(bitSetsHashMap.size());
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public String bitSetToString(OpenBitSet bitSet) {
 		try {
@@ -118,37 +153,38 @@ public class BitSetBank {
 		}
 	}
 	
-//	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, KdTree kdtree) {
-//		OpenBitSet bitSet1;
-//		double jSimX, jSimY;
-//
-//		try {
-//			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
-//				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-//				bitSet1 = entry1.getValue();
-//				iter1.remove();
-//				
-//				if (x == null) { 
-//					x = bitSet1;
-//					continue;
-//				}
-//				if (y == null) { 
-//					y = bitSet1;
-//					continue;
-//				}
-//				
-//				/* Calculate distance between X, Y sand App */
-//				jSimX = this.JaccardSim(x, bitSet1);
-//				jSimY = this.JaccardSim(y, bitSet1);
-//				
-//				/*insert code for KD-tree*/
-//				kdtree.insertNode(entry1.getKey(), jSimX, jSimY);
-//			}
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, kdtreeCompare kdtree) {
+		OpenBitSet bitSet1;
+		double jSimX, jSimY;
+		HashMap<String, OpenBitSet> buff = (HashMap<String, OpenBitSet>) bitSetsHashMap.clone();
+
+		try {
+			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = buff.entrySet().iterator(); iter1.hasNext();) {
+				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
+				bitSet1 = entry1.getValue();
+				iter1.remove();
+				
+				if (x == null) { 
+					x = bitSet1;
+					continue;
+				}
+				if (y == null) { 
+					y = bitSet1;
+					continue;
+				}
+				
+				/* Calculate distance between X, Y sand App */
+				jSimX = this.JaccardSim(x, bitSet1);
+				jSimY = this.JaccardSim(y, bitSet1);
+				
+				/*insert code for KD-tree*/
+				kdtree.insertKdtree(entry1.getKey(), jSimX, jSimY);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	/*
 	 * Finds the two base apps that produce the least correlation among the apps.
@@ -263,7 +299,7 @@ public class BitSetBank {
 	/*
 	 * Create a scatter plot of the data comparing it to X and Y.
 	 */
-	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
+	/*public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
 			OpenBitSet y, String title) {
 
 		XYSeries series = new XYSeries("Android Apps");
@@ -274,7 +310,7 @@ public class BitSetBank {
 				.entrySet().iterator(); iter1.hasNext();) {
 			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
 			bitSet1 = entry1.getValue();
-			/* Take first two apps as base X and Y */
+			// Take first two apps as base X and Y
 			if (x == null) {
 				x = bitSet1;
 				continue;
@@ -283,7 +319,7 @@ public class BitSetBank {
 				y = bitSet1;
 				continue;
 			}
-			/* Calculate distance between X, Y and each app */
+			// Calculate distance between X, Y and each app
 			jSimX = this.JaccardSim(x, bitSet1);
 			jSimY = this.JaccardSim(y, bitSet1);
 			series.add(jSimX, jSimY);
@@ -297,7 +333,7 @@ public class BitSetBank {
 
 		Plot.ScatterPlot(seriesCollection, title);
 		return seriesCollection;
-	}
+	}*/
 	/*
 	 * Calculates the Jaccard distance using 2 base apps and outputs to default location.
 	 */

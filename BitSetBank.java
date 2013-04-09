@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.lucene.util.OpenBitSet;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -168,18 +169,83 @@ public class BitSetBank {
 //		}
 //	}
 	
-	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x, OpenBitSet y, String title) {
+	/*
+	 * Finds the app that produces the greatest variance; 
+	 */
+	public String findVectorWithMaxVariance() {
+		DescriptiveStatistics stats = new DescriptiveStatistics();
+		double jSimX, max = 0.0;
+		String maxApp = "";
+		OpenBitSet x, y, bitSet1;
+
+		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+			Map.Entry<String, OpenBitSet> maxEntry = iter1.next();
+			x = maxEntry.getValue();
 		
-		XYSeries series = new XYSeries("Android Apps");
+			for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
+				Map.Entry<String, OpenBitSet> entry1 = iter2.next();
+				bitSet1 = entry1.getValue();
+				
+				jSimX = this.JaccardSim(x, bitSet1);
+				
+				stats.addValue(jSimX);
+			}
+			double variance = stats.getVariance();
+			if (max < variance) {
+				max = variance;
+				maxApp = maxEntry.getKey();
+			}
+			
+			System.out.println("VARIANCE: " + variance);
+			if (variance > 0.015) {
+				String yKey = findMostDistant(x);
+				y = bitSetsHashMap.get(yKey);
+				plotAndCompareBitSetBank(x, y, "X:" + maxEntry.getKey() + "   Y:" + yKey + "   V:" + variance);
+			}
+			
+			stats.clear();
+		}
+		System.out.println("MAX__VARIANCE: " + max);
+		return maxApp;
+	}
+	
+	/*
+	 * Finds the most distant (dissimilar) app to the bit vector passed.
+	 */
+	public String findMostDistant(OpenBitSet x) {
 		OpenBitSet bitSet1;
-		double jSimX, jSimY;
+		double jSimX, min = 1.0;
+		String minKey = "";
 		
 		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
 			bitSet1 = entry1.getValue();
-			iter1.remove();
+			
+			jSimX = this.JaccardSim(x, bitSet1);
+			if (min > jSimX) {
+				min = jSimX;
+				minKey = entry1.getKey();
+			}
+		}
+		return minKey;
+	}
+	
+	/*
+	 * Create a scatter plot of the data comparing it to X and Y.
+	 */
+	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
+			OpenBitSet y, String title) {
+
+		XYSeries series = new XYSeries("Android Apps");
+		OpenBitSet bitSet1;
+		double jSimX, jSimY;
+
+		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap
+				.entrySet().iterator(); iter1.hasNext();) {
+			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
+			bitSet1 = entry1.getValue();
 			/* Take first two apps as base X and Y */
-			if (x == null) { 
+			if (x == null) {
 				x = bitSet1;
 				continue;
 			}
@@ -191,12 +257,14 @@ public class BitSetBank {
 			jSimX = this.JaccardSim(x, bitSet1);
 			jSimY = this.JaccardSim(y, bitSet1);
 			series.add(jSimX, jSimY);
-			System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX + " , " + jSimY +")");
+//			if (jSimX > 0.0)
+//				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX
+//					+ " , " + jSimY + ")");
 		}
-		
+
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
 		seriesCollection.addSeries(series);
-		
+
 		Plot.ScatterPlot(seriesCollection, title);
 		return seriesCollection;
 	}

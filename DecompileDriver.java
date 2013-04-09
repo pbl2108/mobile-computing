@@ -46,15 +46,25 @@ public class DecompileDriver {
 	/*
 	 * Use this function to plot against two apps.
 	 */
-	public static void main_plot(String[] args) {
-			//SmaliParser sp = new SmaliParser();
-			BitSetBank bsb = new BitSetBank();
-			
-			bsb.readFromSerial("/home/peter/github/mobile-computing/results/bitSetMap300.ser");
-			bsb.plotAndCompareBitSetBank(null, null, "Title 300");
+	public static void main(String[] args) {
+		//SmaliParser sp = new SmaliParser();
+		OpenBitSet x, y;
+		
+		BitSetBank bsb = new BitSetBank();
+		bsb.readFromSerial("/home/peter/github/mobile-computing/results/bitSetMap1000.ser");
+		String xKey = bsb.findVectorWithMaxVariance();
+		System.out.println("X:" + xKey);
+		x = bsb.bitSetsHashMap.get(xKey);
+		
+		String yKey = bsb.findMostDistant(x);
+		System.out.println("Y:" + yKey);
+		y = bsb.bitSetsHashMap.get(yKey);
+		
+		//Object[] featureVectors = bsb.bitSetsHashMap.values().toArray();
+		bsb.plotAndCompareBitSetBank(x, y, "20  and 100 -- 1000");
 	}
 
-	public static void main(String[] args) {
+	public static void main_(String[] args) {
 		
 		long startTime = System.currentTimeMillis();
 		ApkDisassembler ad = null;

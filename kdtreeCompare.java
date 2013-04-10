@@ -33,16 +33,14 @@ public class kdtreeCompare {
 	public void runKdtreeCompare(double radius, BitSetBank bsb) {
 		
 		ArrayList<AppData> nearApps;
+		//ArrayList<String> highSimApps = new ArrayList<String>();
 		int ret = 0;
 		int totalSim = 0;
 		int comp = 0;
 		
-		// should do in a loop for each app in the future
+		//bsb.loadAuthorsMap();
 		
-		//System.out.println(bsb.bitSetsHashMap.size());
 		for (int i = 0; i < appList.size(); i++) {
-			//System.out.println("-----------------------");
-			//System.out.println("comapring " + appList.get(i).getName());
 			nearApps = kdtree.searchRange(appList.get(i), radius);
 			ret = doPairwiseComparisonWithNeighbors(appList.get(i), nearApps, bsb);
 			//ret = doPairwiseComparison(appList.get(i), appList, bsb);
@@ -52,6 +50,9 @@ public class kdtreeCompare {
 				System.out.println("total number: " + ret);
 				System.out.println("-----------------------");
 				totalSim += ret;
+				
+				/* if (ret >= 100)
+					highSimApps.add(appList.get(i).getName() + ".apk");*/
 			}
 		}
 		
@@ -59,6 +60,9 @@ public class kdtreeCompare {
 		System.out.println("total similar apps detected: " + totalSim);
 		//System.out.println("-----------------------");
 		System.out.println("average comparison per app: " + (double)comp/bsb.bitSetsHashMap.size());
+		
+		/*for (int i = 0; i < highSimApps.size(); i++)
+			System.out.println(highSimApps.get(i));*/
 	}
 	
 	private int doPairwiseComparisonWithNeighbors(AppData base, ArrayList<AppData> list, BitSetBank bsb) {
@@ -67,11 +71,9 @@ public class kdtreeCompare {
 		
 		for (int i = 0; i < list.size(); i++) {
 			similarity = bsb.JaccardSim(base.getName(), list.get(i).getName());
-			//System.out.println(similarity);
-			if (similarity > 0.7) {
+			if (similarity > 0.7 ) {//&& bsb.isDifferentAuthors(base.getName(), list.get(i).getName())) {
 				System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity " + similarity);
 				count++;
-			
 			}
 		}
 		

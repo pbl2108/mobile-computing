@@ -18,21 +18,18 @@ import java.util.Map;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
-import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.lucene.util.OpenBitSet;
-import org.jfree.data.xy.XYSeries;
 //import org.jfree.data.xy.XYSeries;
 //import org.jfree.data.xy.XYSeries;
 //import org.jfree.data.xy.XYSeriesCollection;
 //import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.data.xy.XYSeriesCollection;
 
 public class BitSetBank {
 
 	public static final String serialBitSetBankMap = "bitSetMap";
 	public static final String outputSimPath = "similarities.txt";
-	public static final String authorsMapPath = "apkSignatures.csv";
+	public static final String authorsMapPath = "/Users/xuyiming/Desktop/apkSignatures3500.txt";
 
 	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, String> authorsMap;
@@ -90,9 +87,12 @@ public class BitSetBank {
 			if (filePath == null || filePath.isEmpty())
 				return;
 			
+			if (filePath.endsWith(".ser"))
+				readFromSerial(filePath);
+			
 			File dir = new File(filePath);
 			if (dir.isFile())
-				readFromSerial(filePath);
+				return;
 			
 			/* read all serial files in the folder */
 			for (File entry : dir.listFiles()) {
@@ -150,6 +150,7 @@ public class BitSetBank {
 			}
 			// Close buffered reader
 			in.close();
+			System.out.println(authorsMap.size());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -193,16 +194,16 @@ public class BitSetBank {
 	 * Finds the two base apps that produce the least correlation among the apps.
 	 */
 	public String[] findVectorsLeastCorrelation(int size) {
-		SpearmansCorrelation pCorr = new SpearmansCorrelation();
+		PearsonsCorrelation pCorr = new PearsonsCorrelation();
 		String[] result = new String[2];
 		OpenBitSet x, y;
-		double min = 1.0, absCorrelation;
+		double min = 1.1, absCorrelation;
 		double[] xArr = new double[size], yArr = new double[size];
 		
 		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 			Map.Entry<String, OpenBitSet> xEntry = iter1.next();
 			x = xEntry.getValue();
-			xArr = this.getJaccardArray(x, size);
+			xArr = this.getJaccardArray(x, xArr);
 		
 			for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
 				Map.Entry<String, OpenBitSet> yEntry = iter2.next();
@@ -210,7 +211,7 @@ public class BitSetBank {
 					continue;
 
 				y = yEntry.getValue();
-				yArr = this.getJaccardArray(y, size);
+				xArr = this.getJaccardArray(y, yArr);
 				
 				absCorrelation = Math.abs(pCorr.correlation(xArr, yArr));
 				
@@ -219,20 +220,15 @@ public class BitSetBank {
 					result[0] = xEntry.getKey();
 					result[1] = yEntry.getKey();
 				}
-				if(absCorrelation < 0.01) {
-					plotAndCompareBitSetBank(xEntry.getValue(), yEntry.getValue(), xEntry.getKey() + " and " + yEntry.getKey());
-					System.out.println(xEntry.getKey () + "   " + yEntry.getKey() + "   Absolute Correlation:  " + absCorrelation);
-				}
+				System.out.println(xEntry.getKey () + "   " + yEntry.getKey() + "   Absolute Correlation:  " + absCorrelation);
 			}
 		}
-		System.out.println("MIN correlation " + min);
 		return result;
 	}
 	/*
 	 * Gets array containing all the Jaccard distances from base app X.
 	 */
-	public double[] getJaccardArray(OpenBitSet x, int size) {
-		double[] arr = new double[size];
+	public double[] getJaccardArray(OpenBitSet x, double[] arr) {
 		OpenBitSet bitSet1;
 		int i = 0;
 		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
@@ -240,15 +236,13 @@ public class BitSetBank {
 			bitSet1 = entry1.getValue();
 			
 			arr[i] = this.JaccardSim(x, bitSet1);
-			//System.out.println(arr[i] + "  " + i);
-			i++;
 		}
 		return arr;
 	}
 	/*
 	 * Finds the app that produces the greatest variance; 
 	 */
-	public String findVectorWithMaxVariance(String skippedApp) {
+	public String findVectorWithMaxVariance() {
 		DescriptiveStatistics stats = new DescriptiveStatistics();
 		double jSimX, max = 0.0;
 		String maxApp = "";
@@ -256,9 +250,6 @@ public class BitSetBank {
 
 		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 			Map.Entry<String, OpenBitSet> maxEntry = iter1.next();
-			if( maxEntry.getKey() == skippedApp)
-				continue;
-			
 			x = maxEntry.getValue();
 		
 			for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
@@ -312,7 +303,7 @@ public class BitSetBank {
 	/*
 	 * Create a scatter plot of the data comparing it to X and Y.
 	 */
-	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
+	/*public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
 			OpenBitSet y, String title) {
 
 		XYSeries series = new XYSeries("Android Apps");
@@ -346,7 +337,7 @@ public class BitSetBank {
 
 		Plot.ScatterPlot(seriesCollection, title);
 		return seriesCollection;
-	}
+	}*/
 	/*
 	 * Calculates the Jaccard distance using 2 base apps and outputs to default location.
 	 */
@@ -376,6 +367,7 @@ public class BitSetBank {
 			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
 				bitSet1 = entry1.getValue();
+				iter1.remove();
 				/* Take first two apps as base X and Y */
 				if (x == null) { 
 					x = bitSet1;
@@ -455,9 +447,9 @@ public class BitSetBank {
 	}
 
 	// Compares MD5 hash for each APK. Returns true if both are different
-	private boolean isDifferentAuthors(String key1, String key2) {
-		String hash1 = authorsMap.get(key1);
-		String hash2 = authorsMap.get(key2);
+	public boolean isDifferentAuthors(String key1, String key2) {
+		String hash1 = authorsMap.get("/proj/ds/encos/apk/" + key1 + ".apk");
+		String hash2 = authorsMap.get("/proj/ds/encos/apk/" + key2 + ".apk");
 
 		if (hash1 == null || hash2 == null) {
 			System.out.print("NO MD5:");

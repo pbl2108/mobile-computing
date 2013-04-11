@@ -1,0 +1,804 @@
+NO MD5:com.zoftek.the.best.police.light2.free-3, com.youtube.app.pc-2 : similarity 0.7586206896551724
+total number: 18
+-----------------------
+net.akb48d-1, com.freddieandbrucie.myalevelmathstutor.widget.integrator.definite.tool-1 : similarity 0.75
+total number: 1
+-----------------------
+factory.widgets.DistortionClock-2, com.moonie85.TLLClock-4 : similarity 1.0
+factory.widgets.DistortionClock-2, com.rnoel-1 : similarity 1.0
+factory.widgets.DistortionClock-2, lightEngine.Software.Widgets.RivenClockWidget-1 : similarity 1.0
+factory.widgets.DistortionClock-2, com.gdev.sebonyclockp-1 : similarity 0.8333333333333334
+total number: 4
+-----------------------
+air.br.com.savoir.pinteosete-1000001, air.bartricks-1001000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.mgg1myperfectweddingbouquetdressup-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.magyarradio.mr2mostszol-1000002 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.mocninja17-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.dualstudios.co.uk.drawballlite-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.Paseando-2000002 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.jp.moai.mawasy33-1000002 : similarity 0.8823529411764706
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.PivotCalc-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.BostonRealEstateMLSMag-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.abc.des.animaux.lite-1002002 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.mgg1summerstreetfashiondressup-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.com.gocco.free.android.PuzzleBirds-1001000 : similarity 0.8823529411764706
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.agricultura.juegamenia-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.PipePuzzle-9008 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.RiversideRealEstateMLSMag-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.mgg1flowerpowerdressup-1000000 : similarity 0.8823529411764706
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.cnnexpansion-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.com.cepall.europeanleagues-1000001 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.CrazyPaintLite-1000000 : similarity 0.8823529411764706
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.FortMyersRealEstateMLSMag-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.com.loning.rpmobile-1002002 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.pl.randori.supairball-2000000 : similarity 0.8823529411764706
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.HCB-1000005 : similarity 0.8823529411764706
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.gksoft.whereismyfamily-1000003 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.A511ny-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.woogiworld.digiwoogdisaster-1000000 : similarity 0.8823529411764706
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.oh58-3000001 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.BolhasApp-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.com.moldsky-5000003 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.ch.feuerfangen.android1-1002000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.durgamaa-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.tv.hd.bluesquid-2002000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.com.eprize.mobile.gap.castingcall-1001000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.com.A42goals.A42goals-1000005 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.fr.eseo.mobile-1001000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.merlingore.slammerescape-1001002 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.ImgSource-1.0.1-1000001 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.mgg1fancypunkdressup-1000000 : similarity 0.8823529411764706
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.EndlessMazeDemo-1000000 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.timetable-1000006 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.MortgageV117-1000000 : similarity 0.8823529411764706
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.lotterysim-1000001 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.SelfInjection-1000001 : similarity 0.8823529411764706
+air.br.com.savoir.pinteosete-1000001, air.FlashCampBrasil-1000000 : similarity 0.8970588235294118
+air.br.com.savoir.pinteosete-1000001, air.com.michelin.motorsport-1 : similarity 0.9852941176470589
+air.br.com.savoir.pinteosete-1000001, air.de.infomax.mczMigraineCompassEN-1000001 : similarity 0.9852941176470589
+air.br.com.savoir.pinteosete-1000001, air.ro.gifthunt-1 : similarity 0.9852941176470589
+air.br.com.savoir.pinteosete-1000001, air.uk.co.barkingGames.barkingGamesSolitaireApplication-2001010 : similarity 0.9852941176470589
+air.br.com.savoir.pinteosete-1000001, air.it.prima_posizione.cruscottoanalytics-1000002 : similarity 0.9852941176470589
+air.br.com.savoir.pinteosete-1000001, air.com.curiousm.ciodigest-1000000 : similarity 0.9852941176470589
+air.br.com.savoir.pinteosete-1000001, air.com.EasyApp.BreakthroughDirectMarketing-2000014 : similarity 0.9852941176470589
+air.br.com.savoir.pinteosete-1000001, air.biz.statum.ApiaTasksPanel-1000002 : similarity 0.9852941176470589
+air.br.com.savoir.pinteosete-1000001, air.cz.t_mobile.koledy-1000000 : similarity 0.9852941176470589
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPeanutCrispies-1762000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.scharp.vantagehighett-1001000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPigeonPeasRice-1733000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPeanutButterIceCream-1660000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPlumSoupThreePlum-1368000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.SmartSolutions.iAttend-1000003 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPintoPartyPate-1060000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPenneGrilledSalmon-1161000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPeanutButterCutouts-1639000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatAsianTofuSalad-1240000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPolynesianChickenRice-1569000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPernilAsadoEstilo-1283000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPeanutButterChocolateIce-1595000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatBeefEnchiladas-1362000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPfeffernusseCookies-1451000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.TheCanon-1002000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPlainOldfashionedRice-1284000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.SmartCamerafree-1000000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPlumTomatoesOliveOil-1372000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPerfectRice-1262000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.SpaceJump-1000000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPeanutCrumbApplePie-1764000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPickledBeetsSyltede-1566000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPenneWEggplantRicotta-1140000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatAwesomeBreakfastCasserole-1254000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.danne.Stadskampen-1001000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPeppermintThumbprints-1188000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.de.booc.MobileBooc-1002000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPecanCarmelMuffins-1985000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.AdditionIsFun-1000002 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatBakedVegetablesGratin-1299000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPorkChopRhubarbCasserole-1798000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPeanutButterFudgeCookies-1655000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPeanutButterTreasures-1733000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.flashpillar.multiTouch-1000000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPearRelish-1888000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.net.maaskant-1000002 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.japp-1000006 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.net.klotho.curry.clock.android-9001 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.GaneshChaturthi.Balabharathi.com-1001000 : similarity 0.9852941176470589
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPecanchocolateChipPie-1081000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.potterdavidm.insulter2000-1000000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.MineOTG-1005006 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.IPK-3001001 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.okumayazmaseti-1000000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000 : similarity 1.0
+air.br.com.savoir.pinteosete-1000001, air.com.what2tatt2.what2tatt2-1000 : similarity 0.9701492537313433
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.TCMSpookyFaces-1000001 : similarity 0.9701492537313433
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPenneSpicyCreamyTomato-1142000 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPeanutButterCupCake-1637000 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.mobisoft.TwitterTrucks-1001115 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPolloAlAjoEstiloPeruano-1538000 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPoppySeedChiffonTorte-1689000 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.kosmproductions.tab-2000001 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.dimensionsdream.taylorsweet-1000001 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatBeefJerky-1366000 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPisniHolubtsMeatless-1103000 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatBlueribbonCranberry-1416000 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.brightmove.mobile.BrightMoveMobile-1000000 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPorkChopsFriedRice-1811000 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPearPecanNapoleon-1883000 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.WeerasBooks-2000008 : similarity 0.9850746268656716
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.GoldCupGames.KitchenCatPecanTurtleBars-1075000 : similarity 0.9850746268656716
+air.br.com.savoir.pinteosete-1000001, air.de.prosatz.borussia-1000072 : similarity 0.9305555555555556
+air.br.com.savoir.pinteosete-1000001, air.Gc-1000005 : similarity 0.881578947368421
+air.br.com.savoir.pinteosete-1000001, air.com.moneypenny.remotereception-1006000 : similarity 0.881578947368421
+air.br.com.savoir.pinteosete-1000001, air.com.expugnatio-3007011 : similarity 0.881578947368421
+air.br.com.savoir.pinteosete-1000001, air.cz.obria.smartchytej-1002001 : similarity 0.881578947368421
+air.br.com.savoir.pinteosete-1000001, air.com.mjgamesonline.hexarfree-1000000 : similarity 0.881578947368421
+air.br.com.savoir.pinteosete-1000001, air.LoveBible-1000001 : similarity 0.881578947368421
+air.br.com.savoir.pinteosete-1000001, air.com.animation2000.payroll2MobileIPhone-6002002 : similarity 0.881578947368421
+air.br.com.savoir.pinteosete-1000001, air.com.toshibasmartcommunity.ninja.home-1000002 : similarity 0.881578947368421
+air.br.com.savoir.pinteosete-1000001, air.com.up4adrink.mobile-9007 : similarity 0.881578947368421
+air.br.com.savoir.pinteosete-1000001, air.com.wowzers.clientapp-1000002 : similarity 0.881578947368421
+air.br.com.savoir.pinteosete-1000001, air.com.bolognainteractive.abcWowGooglePlayLite-1000000 : similarity 0.881578947368421
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.PrimeNumberCatcher-1000000 : similarity 0.8571428571428571
+NO MD5:air.br.com.savoir.pinteosete-1000001, air.com.mtcenter.movil-1000001 : similarity 0.8571428571428571
+total number: 131
+-----------------------
+com.duoapps.android.braindamagedfr-2, com.duoapps.android.duoapps_hiram-11 : similarity 1.0
+total number: 1
+-----------------------
+NO MD5:com.sergeyrudenko.ricochetassassinexp-3, com.rebelcrew.balliland-8 : similarity 0.9487179487179487
+NO MD5:com.sergeyrudenko.ricochetassassinexp-3, com.fanesfan.ar.PangeaDemo-2 : similarity 0.7088607594936709
+total number: 2
+-----------------------
+NO MD5:trolleyeethx.god0119045zi-6, rainballthx.greatgod1113paperf-6 : similarity 0.9942528735632183
+NO MD5:trolleyeethx.god0119045zi-6, katongxihx.god1717cogwei020380dai-6 : similarity 0.9942528735632183
+total number: 2
+-----------------------
+NO MD5:mb.cmm.laprovencale-1, mb.cmm.yvesrobillard-1 : similarity 0.9764309764309764
+NO MD5:mb.cmm.laprovencale-1, mb.cmm.latelierdelimmobilier-1 : similarity 0.9931740614334471
+NO MD5:mb.cmm.laprovencale-1, com.logicimmo.actuelimmobilier-2 : similarity 0.9931740614334471
+total number: 3
+-----------------------
+msc.redshockorb.lw-1, apps.nexus7invert.livewallpaper-9 : similarity 1.0
+total number: 1
+-----------------------
+NO MD5:com.quipack.a.b4f3822dccabc44000100e84a-1, com.quipack.a.b4f7985051d0f77000100e99b-1 : similarity 0.9726027397260274
+total number: 1
+-----------------------
+com.dtanquary.blackglassadwtheme-8, com.david1171.minimalistpink-6 : similarity 0.8695652173913043
+total number: 1
+-----------------------
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.bartricks-1001000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.mgg1myperfectweddingbouquetdressup-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.magyarradio.mr2mostszol-1000002 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.mocninja17-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.dualstudios.co.uk.drawballlite-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.Paseando-2000002 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.jp.moai.mawasy33-1000002 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.PivotCalc-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.BostonRealEstateMLSMag-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.abc.des.animaux.lite-1002002 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.mgg1summerstreetfashiondressup-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.gocco.free.android.PuzzleBirds-1001000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.agricultura.juegamenia-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.PipePuzzle-9008 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.RiversideRealEstateMLSMag-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.mgg1flowerpowerdressup-1000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.cnnexpansion-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.cepall.europeanleagues-1000001 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.CrazyPaintLite-1000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.FortMyersRealEstateMLSMag-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.loning.rpmobile-1002002 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.pl.randori.supairball-2000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.HCB-1000005 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.gksoft.whereismyfamily-1000003 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.A511ny-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.woogiworld.digiwoogdisaster-1000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.oh58-3000001 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.BolhasApp-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.moldsky-5000003 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.ch.feuerfangen.android1-1002000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.durgamaa-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.tv.hd.bluesquid-2002000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.eprize.mobile.gap.castingcall-1001000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.A42goals.A42goals-1000005 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.fr.eseo.mobile-1001000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.merlingore.slammerescape-1001002 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.ImgSource-1.0.1-1000001 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.mgg1fancypunkdressup-1000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.EndlessMazeDemo-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.timetable-1000006 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.MortgageV117-1000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.lotterysim-1000001 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.SelfInjection-1000001 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.FlashCampBrasil-1000000 : similarity 0.8970588235294118
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.michelin.motorsport-1 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.de.infomax.mczMigraineCompassEN-1000001 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.ro.gifthunt-1 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.uk.co.barkingGames.barkingGamesSolitaireApplication-2001010 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.it.prima_posizione.cruscottoanalytics-1000002 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.curiousm.ciodigest-1000000 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.EasyApp.BreakthroughDirectMarketing-2000014 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.biz.statum.ApiaTasksPanel-1000002 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.cz.t_mobile.koledy-1000000 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.scharp.vantagehighett-1001000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.SmartSolutions.iAttend-1000003 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.TheCanon-1002000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.SmartCamerafree-1000000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.SpaceJump-1000000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.danne.Stadskampen-1001000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.de.booc.MobileBooc-1002000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.AdditionIsFun-1000002 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.flashpillar.multiTouch-1000000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.net.maaskant-1000002 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.japp-1000006 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.net.klotho.curry.clock.android-9001 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.GaneshChaturthi.Balabharathi.com-1001000 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.potterdavidm.insulter2000-1000000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.MineOTG-1005006 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.IPK-3001001 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.okumayazmaseti-1000000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.what2tatt2.what2tatt2-1000 : similarity 0.9701492537313433
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.TCMSpookyFaces-1000001 : similarity 0.9701492537313433
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.GoldCupGames.KitchenCatPenneSpicyCreamyTomato-1142000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.GoldCupGames.KitchenCatPeanutButterCupCake-1637000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.mobisoft.TwitterTrucks-1001115 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.GoldCupGames.KitchenCatPolloAlAjoEstiloPeruano-1538000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.GoldCupGames.KitchenCatPoppySeedChiffonTorte-1689000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.kosmproductions.tab-2000001 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.dimensionsdream.taylorsweet-1000001 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.GoldCupGames.KitchenCatBeefJerky-1366000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.GoldCupGames.KitchenCatPisniHolubtsMeatless-1103000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.GoldCupGames.KitchenCatBlueribbonCranberry-1416000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.brightmove.mobile.BrightMoveMobile-1000000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.GoldCupGames.KitchenCatPorkChopsFriedRice-1811000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.GoldCupGames.KitchenCatPearPecanNapoleon-1883000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.WeerasBooks-2000008 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.GoldCupGames.KitchenCatPecanTurtleBars-1075000 : similarity 0.9850746268656716
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.de.prosatz.borussia-1000072 : similarity 0.9305555555555556
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.Gc-1000005 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.moneypenny.remotereception-1006000 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.expugnatio-3007011 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.cz.obria.smartchytej-1002001 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.mjgamesonline.hexarfree-1000000 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.LoveBible-1000001 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.animation2000.payroll2MobileIPhone-6002002 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.toshibasmartcommunity.ninja.home-1000002 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.up4adrink.mobile-9007 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.wowzers.clientapp-1000002 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.bolognainteractive.abcWowGooglePlayLite-1000000 : similarity 0.881578947368421
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.PrimeNumberCatcher-1000000 : similarity 0.8571428571428571
+NO MD5:air.com.GoldCupGames.KitchenCatPineappleSherbert-1961000, air.com.mtcenter.movil-1000001 : similarity 0.8571428571428571
+total number: 101
+-----------------------
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_benclem4.Georgetown_Eagles-3 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_tharun_mohan.KareenaKapoor-2 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_stefangranholm.PCFix-6 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_ulrich1000.Trash_Wars_1_2-2 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_metaphonic.mycatsecrets-5 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_shanroy99.notext-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_cretzu94cool.wolverine-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_benvoeck.MuskyLog-2 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_frank984_one.Cinquino_web-4 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_andrea_mo.KMath123b-204 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_songhyun1019.SongheeAndSonghyun-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_xcitizen_team.Bronceador-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_Antonio9211.zteskateinfo-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_juanantonio_lopez2.EEUU_Flag-2 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_burcinerek.ksilofon_muzik_enstrumani-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_service.UFOsightings-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_tonypenman11.Herbalife-4 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_davidneilpayne.Fearless_Demo-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_aaroncavanaugh2.Personalized_Employee_Recognition-3 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_marco_trapani88.PolliceVerde_Gratis-8 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_j_rawand.PetroEng-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_mireie.TalkFusion-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_partalacarte.partitionsdechansons-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_devgpit.GP_Lokal_Vejrudsigt-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_hectorgf1r.TrivialSeries-11 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_rmckeown234.NoTextWhileDriving-1 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_matteo_rigamonti_88.SalvaunavitaRCP_LITE-6 : similarity 1.0
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_hnoliver92.I_am_rich-1 : similarity 0.995575221238938
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_francisco2k6.Jarron_azul-1 : similarity 0.995575221238938
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_jpagudin.RedPiso-1 : similarity 0.995575221238938
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_Illuminatiapps.TheGreatOutdoorsSoundboard-2 : similarity 0.995575221238938
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_follwin.Wedding_Planning_On_A_Budget-1 : similarity 0.995575221238938
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_colson72098.Read_To_Me-1 : similarity 0.9783549783549783
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_langborghansen.Porto2013-2 : similarity 0.9656652360515021
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_chichogol.Turismo_Madrid-1 : similarity 0.974025974025974
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_kpuangkham.Chloresterol_3-1 : similarity 0.974025974025974
+appinventor.ai_2cmspencer.HappyDance-1, appinventor.ai_tomaradio.trnetwork_1-1 : similarity 0.9783549783549783
+total number: 37
+-----------------------
+com.greatstate.urbantankbattle-6, com.dqsoft.ChampHearts-4 : similarity 0.7957142857142857
+com.greatstate.urbantankbattle-6, com.daqri.ats3d-1 : similarity 0.8417462482946794
+total number: 2
+-----------------------
+com.gcspublishing.cherokeetalk-65, com.socialknowledge.techforums-20121206 : similarity 0.9948096885813149
+com.gcspublishing.cherokeetalk-65, com.v7n-65 : similarity 1.0
+com.gcspublishing.cherokeetalk-65, com.disboards-65 : similarity 1.0
+total number: 3
+-----------------------
+NO MD5:vt.watchindianmovies-2, com.android4teen.idbrgbmfuizaajf-20110210 : similarity 0.9573170731707317
+NO MD5:vt.watchindianmovies-2, com.android4teen.yuytkuwtnbefmkp-20110210 : similarity 0.9573170731707317
+NO MD5:vt.watchindianmovies-2, com.android4teen.ylszanwlhrhzxee-20110210 : similarity 0.9573170731707317
+NO MD5:vt.watchindianmovies-2, com.quickear.zkdjxeesljatwvg-20110203 : similarity 0.7504105090311987
+NO MD5:vt.watchindianmovies-2, com.quickear.lhfxxtccbuyldxv-20110203 : similarity 0.7504105090311987
+NO MD5:vt.watchindianmovies-2, com.quickear.xzbvsbjcfltvigb-20110203 : similarity 0.7504105090311987
+NO MD5:vt.watchindianmovies-2, com.mogcha.ezkkgqlbqqbrbsc-20110203 : similarity 0.7504105090311987
+NO MD5:vt.watchindianmovies-2, com.mogcha.llqzqyuhnnmluxs-20110203 : similarity 0.7504105090311987
+NO MD5:vt.watchindianmovies-2, com.mogcha.hehnvkwbaqnemfh-20110203 : similarity 0.7504105090311987
+total number: 9
+-----------------------
+com.jb.gosms.webtheme.purple.pink.cute.girly.simple-1, com.jbapps.contact.theme.spring-15 : similarity 0.8333333333333334
+com.jb.gosms.webtheme.purple.pink.cute.girly.simple-1, com.jbapps.contact.p_new_greenapple-15 : similarity 0.8333333333333334
+com.jb.gosms.webtheme.purple.pink.cute.girly.simple-1, com.jbapps.contact.p_new_blueleaves-15 : similarity 0.8333333333333334
+com.jb.gosms.webtheme.purple.pink.cute.girly.simple-1, com.jb.gosms.it-6 : similarity 0.8333333333333334
+com.jb.gosms.webtheme.purple.pink.cute.girly.simple-1, com.seeker.contact.pbluechrismas-15 : similarity 0.8333333333333334
+NO MD5:com.jb.gosms.webtheme.purple.pink.cute.girly.simple-1, com.jb.gosms.pctheme.halloweenssssssssfg-1 : similarity 1.0
+NO MD5:com.jb.gosms.webtheme.purple.pink.cute.girly.simple-1, com.jb.gosms.theme.pristinetheme-2 : similarity 1.0
+total number: 7
+-----------------------
+NO MD5:com.luckyapps.celebrities_live-1, pro.sportapps.hsv.hamburg.clock.widget-2 : similarity 0.8861788617886179
+NO MD5:com.luckyapps.celebrities_live-1, pro.sportapps.poland.clock.widget-2 : similarity 0.8861788617886179
+NO MD5:com.luckyapps.celebrities_live-1, com.go2guy.lwp.fps.v3.morgan.fantasy.helldemon-2 : similarity 0.8764478764478765
+NO MD5:com.luckyapps.celebrities_live-1, com.RiSaSolutions.bbn-2 : similarity 0.9087136929460581
+NO MD5:com.luckyapps.celebrities_live-1, net.mercurysoftware.frasesdeamizade-2 : similarity 0.8021978021978022
+NO MD5:com.luckyapps.celebrities_live-1, com.outthinking.beer-9 : similarity 0.861003861003861
+NO MD5:com.luckyapps.celebrities_live-1, com.easyguide.camping-5 : similarity 0.9121338912133892
+NO MD5:com.luckyapps.celebrities_live-1, com.rus.widget.virgo-2 : similarity 0.919831223628692
+NO MD5:com.luckyapps.celebrities_live-1, com.bos.widget.snake2013-1 : similarity 0.919831223628692
+NO MD5:com.luckyapps.celebrities_live-1, com.stripsoft.wallpapers18-1 : similarity 0.9008264462809917
+NO MD5:com.luckyapps.celebrities_live-1, mobi.kitabi.home.InTheBedroom-7 : similarity 0.9008264462809917
+NO MD5:com.luckyapps.celebrities_live-1, com.blogspot.brionicdev.gocontactstheme.ultimateicspinkgocontactsexfree-7 : similarity 0.9045643153526971
+NO MD5:com.luckyapps.celebrities_live-1, com.jb.gosms.theme.purpleleopardfree-2 : similarity 0.9083333333333333
+NO MD5:com.luckyapps.celebrities_live-1, es.alexanderbonilla.marseille_lignes_urbaines-1 : similarity 0.9121338912133892
+NO MD5:com.luckyapps.celebrities_live-1, com.blogspot.brionicdev.gocontactstheme.ultimateicsredgocontactsexfree-4 : similarity 0.9121338912133892
+NO MD5:com.luckyapps.celebrities_live-1, an.ClinpharmEbook-3 : similarity 0.8790322580645161
+NO MD5:com.luckyapps.celebrities_live-1, com.yuvalluzon.multisearch-3 : similarity 0.897119341563786
+NO MD5:com.luckyapps.celebrities_live-1, com.easyguide.bee-5 : similarity 0.9276595744680851
+NO MD5:com.luckyapps.celebrities_live-1, com.mbpl.ambematain3d-1 : similarity 0.7344262295081967
+NO MD5:com.luckyapps.celebrities_live-1, com.mbpl.totheforestin3d-1 : similarity 0.7344262295081967
+NO MD5:com.luckyapps.celebrities_live-1, com.droid.nokia.lumai.fake-2 : similarity 0.7927272727272727
+NO MD5:com.luckyapps.celebrities_live-1, com.mbpl.agniparikshain3d-1 : similarity 0.7344262295081967
+NO MD5:com.luckyapps.celebrities_live-1, com.racingtruck.miniwheelsparking-1 : similarity 0.8549019607843137
+NO MD5:com.luckyapps.celebrities_live-1, com.droiddevz.dirtiestjokes1-27 : similarity 0.9049586776859504
+NO MD5:com.luckyapps.celebrities_live-1, com.racingtruck.amaricantruck-1 : similarity 0.8549019607843137
+NO MD5:com.luckyapps.celebrities_live-1, smilies.animation-2 : similarity 0.9201680672268907
+NO MD5:com.luckyapps.celebrities_live-1, an.PhysicsBook-3 : similarity 0.8582677165354331
+NO MD5:com.luckyapps.celebrities_live-1, com.book.mbpl.marriagequotes1-3 : similarity 0.897119341563786
+NO MD5:com.luckyapps.celebrities_live-1, com.MarioFerreira.BrightDreamsLWP-6 : similarity 0.88671875
+NO MD5:com.luckyapps.celebrities_live-1, com.MarioFerreira.DrivingLWP-5 : similarity 0.88671875
+NO MD5:com.luckyapps.celebrities_live-1, com.hdinc.usahd-1 : similarity 0.889795918367347
+NO MD5:com.luckyapps.celebrities_live-1, com.monysoft.poker-5 : similarity 0.8549019607843137
+NO MD5:com.luckyapps.celebrities_live-1, an.GeoCal-3 : similarity 0.8488372093023255
+NO MD5:com.luckyapps.celebrities_live-1, com.mbpl.app.allinonesmscollection-3 : similarity 0.889795918367347
+NO MD5:com.luckyapps.celebrities_live-1, com.outthinking.elephant-4 : similarity 0.7985347985347986
+NO MD5:com.luckyapps.celebrities_live-1, com.lwp.stone.fantasy12-1 : similarity 0.8104089219330854
+NO MD5:com.luckyapps.celebrities_live-1, com.luckyapps.ketrina_live-1 : similarity 0.9791666666666666
+NO MD5:com.luckyapps.celebrities_live-1, com.activewallpaper.chipswallpaper-1 : similarity 0.8438661710037175
+NO MD5:com.luckyapps.celebrities_live-1, an.FracDec-16 : similarity 0.8866396761133604
+NO MD5:com.luckyapps.celebrities_live-1, com.funtasticapps.android.imairena-9 : similarity 0.8866396761133604
+NO MD5:com.luckyapps.celebrities_live-1, com.luckyapps.strawberryandcherry_live-1 : similarity 0.9791666666666666
+NO MD5:com.luckyapps.celebrities_live-1, src.wallpaperempire.selenawalk-1 : similarity 0.87109375
+NO MD5:com.luckyapps.celebrities_live-1, com.madelephantstudios.volleyballlwp-1 : similarity 0.8549019607843137
+NO MD5:com.luckyapps.celebrities_live-1, com.ento.ganeshchaturthi-1 : similarity 0.9045643153526971
+NO MD5:com.luckyapps.celebrities_live-1, app.km.ptpv-82 : similarity 0.872
+NO MD5:com.luckyapps.celebrities_live-1, com.funkyanubis.sultana.huyam.wallpapers-1 : similarity 0.8866396761133604
+NO MD5:com.luckyapps.celebrities_live-1, com.blogspot.androidresearch.wordattack-25 : similarity 0.8384615384615385
+NO MD5:com.luckyapps.celebrities_live-1, com.creativeone.birdslivewallpaper-5 : similarity 0.8664122137404581
+NO MD5:com.luckyapps.celebrities_live-1, midbeachvlwp.em.com-2 : similarity 0.7619047619047619
+NO MD5:com.luckyapps.celebrities_live-1, blackdiamondvlwp.em.com-1 : similarity 0.7619047619047619
+NO MD5:com.luckyapps.celebrities_live-1, com.mbpl.app.livewallpaper.ganesha-2 : similarity 0.9180327868852459
+NO MD5:com.luckyapps.celebrities_live-1, com.facewolf.buenosaires-1 : similarity 0.8
+NO MD5:com.luckyapps.celebrities_live-1, trendboards.fontsms.pro-14 : similarity 0.8588235294117647
+NO MD5:com.luckyapps.celebrities_live-1, com.yukka.livewallpaper.butterfly-7 : similarity 0.8941176470588236
+NO MD5:com.luckyapps.celebrities_live-1, com.mbpl.lordshanidevlivewallpaper-1 : similarity 0.9142857142857143
+NO MD5:com.luckyapps.celebrities_live-1, com.dordev.flamelion-1 : similarity 0.9057377049180327
+NO MD5:com.luckyapps.celebrities_live-1, com.cherryberryapps.diwali5-11 : similarity 0.8470149253731343
+NO MD5:com.luckyapps.celebrities_live-1, com.skysoftapps.digitalbluerain-5 : similarity 0.850187265917603
+NO MD5:com.luckyapps.celebrities_live-1, com.zeellistech.dragonbreathe-5 : similarity 0.850187265917603
+NO MD5:com.luckyapps.celebrities_live-1, com.charmingapps.rebelflag-12 : similarity 0.850187265917603
+NO MD5:com.luckyapps.celebrities_live-1, com.gnomelabs.pinksnow-7 : similarity 0.8470149253731343
+NO MD5:com.luckyapps.celebrities_live-1, com.blossomapps.butterflyrose-13 : similarity 0.850187265917603
+NO MD5:com.luckyapps.celebrities_live-1, com.rose.praisejesusfree-100 : similarity 0.850187265917603
+NO MD5:com.luckyapps.celebrities_live-1, fairytalevlwp.em.com-1 : similarity 0.764505119453925
+NO MD5:com.luckyapps.celebrities_live-1, com.charmingapps.multifireworks-9 : similarity 0.850187265917603
+NO MD5:com.luckyapps.celebrities_live-1, com.spittaapps.seeed-1 : similarity 0.8598484848484849
+NO MD5:com.luckyapps.celebrities_live-1, com.spittaapps.oktoberfest-1 : similarity 0.8598484848484849
+NO MD5:com.luckyapps.celebrities_live-1, com.wallfess.sailfishseahdlivewallpaper-713102 : similarity 0.8888888888888888
+NO MD5:com.luckyapps.celebrities_live-1, com.tojwo.driftnewautolivewallpaper-713102 : similarity 0.8888888888888888
+NO MD5:com.luckyapps.celebrities_live-1, com.tojwo.toyotagameslivewallpaper-713102 : similarity 0.8888888888888888
+NO MD5:com.luckyapps.celebrities_live-1, com.tojwo.mercedescoollivewallpaper-713102 : similarity 0.8888888888888888
+NO MD5:com.luckyapps.celebrities_live-1, com.wallfess.halloweengameliveWallpaper-713102 : similarity 0.8888888888888888
+NO MD5:com.luckyapps.celebrities_live-1, com.toiwo.autumneffectlivewallpaper-713102 : similarity 0.8888888888888888
+NO MD5:com.luckyapps.celebrities_live-1, com.wallfess.halloweenjokelivewallpaper-713102 : similarity 0.8888888888888888
+NO MD5:com.luckyapps.celebrities_live-1, com.chakko.formula1photoslivelwallpaper-713102 : similarity 0.8888888888888888
+NO MD5:com.luckyapps.celebrities_live-1, com.boa.werewolfbutton-5 : similarity 0.8352490421455939
+NO MD5:com.luckyapps.celebrities_live-1, com.boa.crowbutton-5 : similarity 0.8390804597701149
+NO MD5:com.luckyapps.celebrities_live-1, com.boa.bikehornbuttonfree-5 : similarity 0.8390804597701149
+NO MD5:com.luckyapps.celebrities_live-1, com.boa.megafarttone-5 : similarity 0.8390804597701149
+NO MD5:com.luckyapps.celebrities_live-1, com.im.melanieiglesias-1 : similarity 0.849624060150376
+NO MD5:com.luckyapps.celebrities_live-1, far.androidtutorial-1 : similarity 0.8870967741935484
+NO MD5:com.luckyapps.celebrities_live-1, com.custom.lwp.Farm_Heart_Doves-3 : similarity 0.8888888888888888
+NO MD5:com.luckyapps.celebrities_live-1, com.custom.lwp.AHDTropicalIsland-17 : similarity 0.8888888888888888
+NO MD5:com.luckyapps.celebrities_live-1, com.custom.lwp.DeersInSnowyMountain-13 : similarity 0.8924302788844621
+NO MD5:com.luckyapps.celebrities_live-1, com.custom.lwp.PICSEiffelTower-4 : similarity 0.8888888888888888
+NO MD5:com.luckyapps.celebrities_live-1, com.boa.radartone-5 : similarity 0.8390804597701149
+NO MD5:com.luckyapps.celebrities_live-1, com.MarioFerreira.DiscoFloorLWP-6 : similarity 0.8470149253731343
+total number: 87
+-----------------------
+org.newmacau.reform-1, com.netbiz.imstuck-3 : similarity 0.8076923076923077
+org.newmacau.reform-1, com.amscollaborator.documents-8 : similarity 0.8076923076923077
+org.newmacau.reform-1, com.omak.newsfirst-10 : similarity 0.9347826086956522
+org.newmacau.reform-1, pl.skiraport.release-11 : similarity 0.9347826086956522
+org.newmacau.reform-1, com.hotspots.hotspotsmag-1 : similarity 0.9347826086956522
+org.newmacau.reform-1, com.dejongtechnologies.wtm-3 : similarity 0.9052631578947369
+org.newmacau.reform-1, info.olasagasti.euskalterm-2 : similarity 1.0
+NO MD5:org.newmacau.reform-1, com.groupeseb.autocuiseur-1 : similarity 0.9782608695652174
+org.newmacau.reform-1, com.downtowncincinnatiinc-1 : similarity 0.76
+org.newmacau.reform-1, com.islanders.mobile-6 : similarity 0.7676767676767676
+org.newmacau.reform-1, com.biz.gomenkyo-13 : similarity 0.7676767676767676
+org.newmacau.reform-1, com.saintflannan.praydaily-9 : similarity 0.7676767676767676
+org.newmacau.reform-1, com.openhotel.fountainbeach-6 : similarity 0.7676767676767676
+org.newmacau.reform-1, titanium.mwportal.mwdesign.rad-2 : similarity 0.7676767676767676
+org.newmacau.reform-1, se.hotellportalensverige.Jrkott-3 : similarity 0.989010989010989
+org.newmacau.reform-1, com.luckywabbit.lwapp-3 : similarity 0.989010989010989
+org.newmacau.reform-1, com.juniperresearch.mobile-1 : similarity 0.7676767676767676
+org.newmacau.reform-1, com.enlightenmentoftathagata-3 : similarity 0.7676767676767676
+org.newmacau.reform-1, com.packers.everywhere-1 : similarity 0.76
+org.newmacau.reform-1, com.fwave.sagacnh-3 : similarity 0.967032967032967
+org.newmacau.reform-1, com.gregeverett.getre.pawleysisland-2 : similarity 0.9782608695652174
+org.newmacau.reform-1, nl.softweb.exitpoll-1 : similarity 0.8476190476190476
+org.newmacau.reform-1, com.appmatrixinc.plymouthpass-1 : similarity 0.8476190476190476
+org.newmacau.reform-1, com.appycity.crushboy31-22 : similarity 0.9782608695652174
+org.newmacau.reform-1, ua.pp.rrs.taxi.lider-17 : similarity 0.8653846153846154
+org.newmacau.reform-1, com.docu.app-3 : similarity 0.967741935483871
+org.newmacau.reform-1, com.nwintl.healingwave-2 : similarity 0.967032967032967
+org.newmacau.reform-1, com.movecreative.nestatefair4h-1 : similarity 0.8476190476190476
+org.newmacau.reform-1, ua.pp.rrs.taxi.five-17 : similarity 0.8653846153846154
+org.newmacau.reform-1, com.covenanthealth.stopsmoking-1 : similarity 0.8557692307692307
+org.newmacau.reform-1, com.titanka.altarimini-1 : similarity 0.8557692307692307
+org.newmacau.reform-1, com.iprotecnologia.tatuape-1 : similarity 0.8557692307692307
+org.newmacau.reform-1, com.ramustong.visitthecity2-4 : similarity 0.8476190476190476
+org.newmacau.reform-1, com.digitalized.n2uk-12 : similarity 0.8557692307692307
+org.newmacau.reform-1, com.Ardmore.bvcbconferenceapp-2 : similarity 0.8557692307692307
+org.newmacau.reform-1, com.luxe.magazine-1 : similarity 0.8365384615384616
+org.newmacau.reform-1, com.appriss.mopulaskiso-5 : similarity 0.8910891089108911
+total number: 37
+-----------------------
+NO MD5:com.irregulargames.peoplebucket-20, com.irregulargames.soldierdiary-20 : similarity 1.0
+NO MD5:com.irregulargames.peoplebucket-20, com.irregulargames.DMissileDefense-20 : similarity 0.9906103286384976
+NO MD5:com.irregulargames.peoplebucket-20, com.irregulargames.DestroyRomCastle-20 : similarity 0.9906103286384976
+NO MD5:com.irregulargames.peoplebucket-20, com.fungamesstudio.zombiecutter-20 : similarity 0.9906103286384976
+NO MD5:com.irregulargames.peoplebucket-20, com.coolgames.dealornodealuk-21 : similarity 0.9976303317535545
+NO MD5:com.irregulargames.peoplebucket-20, com.irregulargames.monkeyblastbloons-20 : similarity 0.9906103286384976
+total number: 6
+-----------------------
+com.cloudtenapps.nas-1, com.rose.flashingstpatrickfree-23 : similarity 0.9302325581395349
+com.cloudtenapps.nas-1, com.rose.bluemusicfree-30 : similarity 0.9302325581395349
+com.cloudtenapps.nas-1, com.rose.deathmoongrimreaperfree-30 : similarity 0.9302325581395349
+com.cloudtenapps.nas-1, com.bsa.abstractfreemasonlwp-23 : similarity 0.9069767441860465
+com.cloudtenapps.nas-1, com.scarlette.neonheartsplashfree-23 : similarity 0.9302325581395349
+com.cloudtenapps.nas-1, com.aniwidgets.flasingredcamaro-23 : similarity 0.9534883720930233
+NO MD5:com.cloudtenapps.nas-1, com.rose.floatingheartfree-23 : similarity 0.9285714285714286
+NO MD5:com.cloudtenapps.nas-1, com.inkdev.car-1 : similarity 0.9285714285714286
+NO MD5:com.cloudtenapps.nas-1, com.prosama.lonedaisylwp-25 : similarity 0.9285714285714286
+NO MD5:com.cloudtenapps.nas-1, com.tenthpowerapps.jesus-2 : similarity 0.9285714285714286
+NO MD5:com.cloudtenapps.nas-1, com.aniwidgets.autumnwaterfalllwp-23 : similarity 0.9285714285714286
+com.cloudtenapps.nas-1, com.dessoft.kobe-4 : similarity 0.9090909090909091
+com.cloudtenapps.nas-1, com.aniwidgets.magicalsunflowers-26 : similarity 0.9111111111111111
+com.cloudtenapps.nas-1, com.blossomapps.roselight-3 : similarity 0.9111111111111111
+com.cloudtenapps.nas-1, com.blossomapps.nicebikini-4 : similarity 0.9111111111111111
+com.cloudtenapps.nas-1, com.amantechapps.whirlingwaterfal-3 : similarity 0.8888888888888888
+com.cloudtenapps.nas-1, com.amantechapps.gardenkitten-3 : similarity 0.8888888888888888
+com.cloudtenapps.nas-1, com.amantechapps.penquinsnow-3 : similarity 0.8888888888888888
+NO MD5:com.cloudtenapps.nas-1, com.disaapps.westernwinter-3 : similarity 0.8888888888888888
+com.cloudtenapps.nas-1, com.gnomelabs.flowerabs-4 : similarity 0.9111111111111111
+com.cloudtenapps.nas-1, com.aniwidgets.armymilitarybabe-26 : similarity 0.8367346938775511
+com.cloudtenapps.nas-1, com.aniwidgets.lordreaperlwp-26 : similarity 0.8367346938775511
+com.cloudtenapps.nas-1, com.gnomelabs.nativedream-3 : similarity 0.8163265306122449
+com.cloudtenapps.nas-1, com.appcircle.damaskglitter-4 : similarity 0.8163265306122449
+total number: 24
+-----------------------
+air.SelfInjection-1000001, air.profilingx-1000004 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.com.wizzmo.WizzmoLite-1000000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.AdsTestAdWhirl-1000002 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.exclamation-1000000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.WillFerrellSoundboard-1000000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.CameraClassTest-49 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.com.m7kenji.bliptokyo-1000001 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.hotaru-1000001 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.SimpleFish-1008000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.BeijingEmergencyPhone-1001000 : similarity 0.9672131147540983
+NO MD5:air.SelfInjection-1000001, air.com.A5qchannel.and002a1-1000002 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.hoppe-1001000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.com.learningtoday.octopusAndroid2-1005000 : similarity 0.9672131147540983
+NO MD5:air.SelfInjection-1000001, air.com.mobbase.android.A5471-7000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.TrafficLightsFM-1000000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.amazeing-1000002 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.FunFace-2003004 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.CamShootEm-1000000 : similarity 0.9672131147540983
+NO MD5:air.SelfInjection-1000001, air.hamutzimandroidappv1-1000000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.com.avantajconsulting.testphp-1000000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.nNews-1000657 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.Frenchmeup-1002000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.com.theindianace.iChantHanumanChalisa-2000000 : similarity 0.9672131147540983
+NO MD5:air.SelfInjection-1000001, air.com.mmashups.EntertainmentTonight-1000000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.StyleFinder-1002000 : similarity 0.9672131147540983
+NO MD5:air.SelfInjection-1000001, air.digitaldirector-1000000 : similarity 0.9672131147540983
+air.SelfInjection-1000001, air.bartricks-1001000 : similarity 1.0
+air.SelfInjection-1000001, air.mgg1myperfectweddingbouquetdressup-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.magyarradio.mr2mostszol-1000002 : similarity 1.0
+air.SelfInjection-1000001, air.mocninja17-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.dualstudios.co.uk.drawballlite-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.Paseando-2000002 : similarity 1.0
+air.SelfInjection-1000001, air.jp.moai.mawasy33-1000002 : similarity 1.0
+NO MD5:air.SelfInjection-1000001, air.PivotCalc-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.BostonRealEstateMLSMag-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.abc.des.animaux.lite-1002002 : similarity 1.0
+air.SelfInjection-1000001, air.mgg1summerstreetfashiondressup-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.com.gocco.free.android.PuzzleBirds-1001000 : similarity 1.0
+NO MD5:air.SelfInjection-1000001, air.agricultura.juegamenia-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.PipePuzzle-9008 : similarity 1.0
+air.SelfInjection-1000001, air.RiversideRealEstateMLSMag-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.mgg1flowerpowerdressup-1000000 : similarity 1.0
+NO MD5:air.SelfInjection-1000001, air.com.cnnexpansion-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.com.cepall.europeanleagues-1000001 : similarity 1.0
+air.SelfInjection-1000001, air.CrazyPaintLite-1000000 : similarity 1.0
+NO MD5:air.SelfInjection-1000001, air.FortMyersRealEstateMLSMag-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.com.loning.rpmobile-1002002 : similarity 1.0
+air.SelfInjection-1000001, air.pl.randori.supairball-2000000 : similarity 1.0
+NO MD5:air.SelfInjection-1000001, air.HCB-1000005 : similarity 1.0
+NO MD5:air.SelfInjection-1000001, air.com.gksoft.whereismyfamily-1000003 : similarity 1.0
+air.SelfInjection-1000001, air.A511ny-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.woogiworld.digiwoogdisaster-1000000 : similarity 1.0
+NO MD5:air.SelfInjection-1000001, air.oh58-3000001 : similarity 1.0
+air.SelfInjection-1000001, air.BolhasApp-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.com.moldsky-5000003 : similarity 1.0
+air.SelfInjection-1000001, air.ch.feuerfangen.android1-1002000 : similarity 1.0
+air.SelfInjection-1000001, air.durgamaa-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.tv.hd.bluesquid-2002000 : similarity 1.0
+air.SelfInjection-1000001, air.com.eprize.mobile.gap.castingcall-1001000 : similarity 1.0
+air.SelfInjection-1000001, air.com.A42goals.A42goals-1000005 : similarity 1.0
+air.SelfInjection-1000001, air.fr.eseo.mobile-1001000 : similarity 1.0
+air.SelfInjection-1000001, air.merlingore.slammerescape-1001002 : similarity 1.0
+air.SelfInjection-1000001, air.ImgSource-1.0.1-1000001 : similarity 1.0
+air.SelfInjection-1000001, air.mgg1fancypunkdressup-1000000 : similarity 1.0
+NO MD5:air.SelfInjection-1000001, air.EndlessMazeDemo-1000000 : similarity 1.0
+air.SelfInjection-1000001, air.timetable-1000006 : similarity 1.0
+air.SelfInjection-1000001, air.MortgageV117-1000000 : similarity 1.0
+NO MD5:air.SelfInjection-1000001, air.com.lotterysim-1000001 : similarity 1.0
+air.SelfInjection-1000001, air.FlashCampBrasil-1000000 : similarity 0.921875
+air.SelfInjection-1000001, air.com.michelin.motorsport-1 : similarity 0.8695652173913043
+air.SelfInjection-1000001, air.de.infomax.mczMigraineCompassEN-1000001 : similarity 0.8695652173913043
+air.SelfInjection-1000001, air.ro.gifthunt-1 : similarity 0.8695652173913043
+air.SelfInjection-1000001, air.uk.co.barkingGames.barkingGamesSolitaireApplication-2001010 : similarity 0.8695652173913043
+air.SelfInjection-1000001, air.it.prima_posizione.cruscottoanalytics-1000002 : similarity 0.8695652173913043
+air.SelfInjection-1000001, air.com.curiousm.ciodigest-1000000 : similarity 0.8695652173913043
+air.SelfInjection-1000001, air.com.EasyApp.BreakthroughDirectMarketing-2000014 : similarity 0.8695652173913043
+air.SelfInjection-1000001, air.biz.statum.ApiaTasksPanel-1000002 : similarity 0.8695652173913043
+air.SelfInjection-1000001, air.cz.t_mobile.koledy-1000000 : similarity 0.8695652173913043
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPeanutCrispies-1762000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.scharp.vantagehighett-1001000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPigeonPeasRice-1733000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPeanutButterIceCream-1660000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPlumSoupThreePlum-1368000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.SmartSolutions.iAttend-1000003 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPintoPartyPate-1060000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPenneGrilledSalmon-1161000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPeanutButterCutouts-1639000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatAsianTofuSalad-1240000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPolynesianChickenRice-1569000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPernilAsadoEstilo-1283000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPeanutButterChocolateIce-1595000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatBeefEnchiladas-1362000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPfeffernusseCookies-1451000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.TheCanon-1002000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPlainOldfashionedRice-1284000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.SmartCamerafree-1000000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPlumTomatoesOliveOil-1372000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPerfectRice-1262000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.SpaceJump-1000000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPeanutCrumbApplePie-1764000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPickledBeetsSyltede-1566000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPenneWEggplantRicotta-1140000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatAwesomeBreakfastCasserole-1254000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.danne.Stadskampen-1001000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPeppermintThumbprints-1188000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.de.booc.MobileBooc-1002000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPecanCarmelMuffins-1985000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.AdditionIsFun-1000002 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatBakedVegetablesGratin-1299000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPorkChopRhubarbCasserole-1798000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPeanutButterFudgeCookies-1655000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPeanutButterTreasures-1733000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.flashpillar.multiTouch-1000000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPearRelish-1888000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.net.maaskant-1000002 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.japp-1000006 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.net.klotho.curry.clock.android-9001 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.GaneshChaturthi.Balabharathi.com-1001000 : similarity 0.8695652173913043
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPecanchocolateChipPie-1081000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.potterdavidm.insulter2000-1000000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.MineOTG-1005006 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.IPK-3001001 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.okumayazmaseti-1000000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000 : similarity 0.8823529411764706
+air.SelfInjection-1000001, air.com.what2tatt2.what2tatt2-1000 : similarity 0.9090909090909091
+NO MD5:air.SelfInjection-1000001, air.TCMSpookyFaces-1000001 : similarity 0.9090909090909091
+NO MD5:air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPenneSpicyCreamyTomato-1142000 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPeanutButterCupCake-1637000 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.mobisoft.TwitterTrucks-1001115 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPolloAlAjoEstiloPeruano-1538000 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPoppySeedChiffonTorte-1689000 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.kosmproductions.tab-2000001 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.dimensionsdream.taylorsweet-1000001 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatBeefJerky-1366000 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPisniHolubtsMeatless-1103000 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatBlueribbonCranberry-1416000 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.brightmove.mobile.BrightMoveMobile-1000000 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPorkChopsFriedRice-1811000 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPearPecanNapoleon-1883000 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.WeerasBooks-2000008 : similarity 0.8955223880597015
+NO MD5:air.SelfInjection-1000001, air.com.GoldCupGames.KitchenCatPecanTurtleBars-1075000 : similarity 0.8955223880597015
+air.SelfInjection-1000001, air.de.prosatz.borussia-1000072 : similarity 0.821917808219178
+total number: 142
+-----------------------
+com.appbuilder.u95677p205001-2, com.appbuilder.u97231p192407-2 : similarity 0.9803680981595092
+NO MD5:com.appbuilder.u95677p205001-2, com.appbuilder.u124416p336636-2 : similarity 0.7330917874396136
+com.appbuilder.u95677p205001-2, com.appbuilder.u106130p200553-21 : similarity 1.0
+com.appbuilder.u95677p205001-2, com.appbuilder.u76754p221161-4 : similarity 0.9803680981595092
+com.appbuilder.u95677p205001-2, com.appbuilder.u169315p310295-9 : similarity 0.7053140096618358
+com.appbuilder.u95677p205001-2, com.appbuilder.u90630p272907-2 : similarity 0.97796817625459
+com.appbuilder.u95677p205001-2, com.appbuilder.u34828p223765-2 : similarity 0.9901112484548825
+com.appbuilder.u95677p205001-2, com.appbuilder.u97230p187708-3 : similarity 0.97796817625459
+com.appbuilder.u95677p205001-2, com.appbuilder.u44349p188865-3 : similarity 0.8027465667915106
+com.appbuilder.u95677p205001-2, com.appbuilder.u75229p189229-5 : similarity 0.8027465667915106
+com.appbuilder.u95677p205001-2, com.appbuilder.u86696p164887-12 : similarity 0.8027465667915106
+com.appbuilder.u95677p205001-2, com.appbuilder.u79556p151005-3 : similarity 0.7952559300873908
+com.appbuilder.u95677p205001-2, com.appbuilder.u84931p166754-4 : similarity 0.7952559300873908
+com.appbuilder.u95677p205001-2, com.appbuilder.u78690p149645-4 : similarity 0.7952559300873908
+com.appbuilder.u95677p205001-2, com.appbuilder.u19147p162486-2 : similarity 0.7952559300873908
+com.appbuilder.u95677p205001-2, com.appbuilder.u87408p166220-20 : similarity 0.8027465667915106
+com.appbuilder.u95677p205001-2, com.appbuilder.u42786p149107-18 : similarity 0.7965043695380774
+com.appbuilder.u95677p205001-2, com.appbuilder.u23081p38008-11 : similarity 0.786783042394015
+NO MD5:com.appbuilder.u95677p205001-2, com.appbuilder.u58976p110280-4 : similarity 0.7915106117353309
+NO MD5:com.appbuilder.u95677p205001-2, com.appbuilder.u80559p152986-3 : similarity 0.797752808988764
+NO MD5:com.appbuilder.u95677p205001-2, com.appbuilder.u178412p323052-5 : similarity 0.7915234822451317
+com.appbuilder.u95677p205001-2, com.appbuilder.u78636p149104-2 : similarity 0.786783042394015
+total number: 22
+-----------------------
+NO MD5:com.droidxitin.rrjhuptszxhyuyx-20110418, com.compasszoo.uaeilpgglvsvmyn-20110418 : similarity 0.9925650557620818
+NO MD5:com.droidxitin.rrjhuptszxhyuyx-20110418, com.compasszoo.nwqendsbdlptsde-20110418 : similarity 0.9925650557620818
+NO MD5:com.droidxitin.rrjhuptszxhyuyx-20110418, com.droidxitin.baaxnajutuikeik-20110418 : similarity 0.9925650557620818
+NO MD5:com.droidxitin.rrjhuptszxhyuyx-20110418, net.thegioidroid.vsubdbyyebcdnnn-20110418 : similarity 0.9925650557620818
+NO MD5:com.droidxitin.rrjhuptszxhyuyx-20110418, com.compasszoo.cbjnhfrrxbxexxq-20110418 : similarity 0.9925650557620818
+NO MD5:com.droidxitin.rrjhuptszxhyuyx-20110418, com.droidxitin.nqqxhtysglsxsdt-20110418 : similarity 0.9925650557620818
+NO MD5:com.droidxitin.rrjhuptszxhyuyx-20110418, com.compasszoo.tksiqbsrbumkgnc-20110418 : similarity 0.9925650557620818
+total number: 7
+-----------------------
+com.fun2learnapps.match2learnhindi-1, net.vevici.geocompass-3 : similarity 1.0
+com.fun2learnapps.match2learnhindi-1, com.radical.sheyingjiqiao-1 : similarity 0.9988789237668162
+total number: 2
+-----------------------
+com.androp.cube.dolphin-5, com.androp.cube.fish-5 : similarity 1.0
+NO MD5:com.androp.cube.dolphin-5, com.bobisoft.wallpaper.cutecat-5 : similarity 0.7650130548302873
+com.androp.cube.dolphin-5, com.cubedroid.Leopard-21 : similarity 0.9781420765027322
+com.androp.cube.dolphin-5, com.bobisoft.wallpaper.waterfall-6 : similarity 0.7694300518134715
+com.androp.cube.dolphin-5, com.andrudis.wallpaper.dancingturkey-1 : similarity 0.7628865979381443
+com.androp.cube.dolphin-5, com.orland.wallpaper.boatonthesea-2 : similarity 0.7668393782383419
+NO MD5:com.androp.cube.dolphin-5, com.bobisoft.wallpaper.colorfulsky-4 : similarity 0.7610389610389611
+NO MD5:com.androp.cube.dolphin-5, com.livewallpapers.oceanstar3d-21 : similarity 0.9698630136986301
+total number: 8
+-----------------------
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.bartricks-1001000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.mgg1myperfectweddingbouquetdressup-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.magyarradio.mr2mostszol-1000002 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.mocninja17-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.dualstudios.co.uk.drawballlite-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.Paseando-2000002 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.jp.moai.mawasy33-1000002 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.PivotCalc-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.BostonRealEstateMLSMag-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.abc.des.animaux.lite-1002002 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.mgg1summerstreetfashiondressup-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.gocco.free.android.PuzzleBirds-1001000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.agricultura.juegamenia-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.PipePuzzle-9008 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.RiversideRealEstateMLSMag-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.mgg1flowerpowerdressup-1000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.cnnexpansion-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.cepall.europeanleagues-1000001 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.CrazyPaintLite-1000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.FortMyersRealEstateMLSMag-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.loning.rpmobile-1002002 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.pl.randori.supairball-2000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.HCB-1000005 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.gksoft.whereismyfamily-1000003 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.A511ny-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.woogiworld.digiwoogdisaster-1000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.oh58-3000001 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.BolhasApp-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.moldsky-5000003 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.ch.feuerfangen.android1-1002000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.durgamaa-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.tv.hd.bluesquid-2002000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.eprize.mobile.gap.castingcall-1001000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.A42goals.A42goals-1000005 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.fr.eseo.mobile-1001000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.merlingore.slammerescape-1001002 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.ImgSource-1.0.1-1000001 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.mgg1fancypunkdressup-1000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.EndlessMazeDemo-1000000 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.timetable-1000006 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.MortgageV117-1000000 : similarity 0.8823529411764706
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.lotterysim-1000001 : similarity 0.8823529411764706
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.FlashCampBrasil-1000000 : similarity 0.8970588235294118
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.michelin.motorsport-1 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.de.infomax.mczMigraineCompassEN-1000001 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.ro.gifthunt-1 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.uk.co.barkingGames.barkingGamesSolitaireApplication-2001010 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.it.prima_posizione.cruscottoanalytics-1000002 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.curiousm.ciodigest-1000000 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.EasyApp.BreakthroughDirectMarketing-2000014 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.biz.statum.ApiaTasksPanel-1000002 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.cz.t_mobile.koledy-1000000 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.scharp.vantagehighett-1001000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.SmartSolutions.iAttend-1000003 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.TheCanon-1002000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.SmartCamerafree-1000000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.SpaceJump-1000000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.danne.Stadskampen-1001000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.de.booc.MobileBooc-1002000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.AdditionIsFun-1000002 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.flashpillar.multiTouch-1000000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.net.maaskant-1000002 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.japp-1000006 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.net.klotho.curry.clock.android-9001 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.GaneshChaturthi.Balabharathi.com-1001000 : similarity 0.9852941176470589
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.potterdavidm.insulter2000-1000000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.MineOTG-1005006 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.IPK-3001001 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.okumayazmaseti-1000000 : similarity 1.0
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.what2tatt2.what2tatt2-1000 : similarity 0.9701492537313433
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.TCMSpookyFaces-1000001 : similarity 0.9701492537313433
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.GoldCupGames.KitchenCatPenneSpicyCreamyTomato-1142000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.GoldCupGames.KitchenCatPeanutButterCupCake-1637000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.mobisoft.TwitterTrucks-1001115 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.GoldCupGames.KitchenCatPolloAlAjoEstiloPeruano-1538000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.GoldCupGames.KitchenCatPoppySeedChiffonTorte-1689000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.kosmproductions.tab-2000001 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.dimensionsdream.taylorsweet-1000001 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.GoldCupGames.KitchenCatBeefJerky-1366000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.GoldCupGames.KitchenCatPisniHolubtsMeatless-1103000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.GoldCupGames.KitchenCatBlueribbonCranberry-1416000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.brightmove.mobile.BrightMoveMobile-1000000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.GoldCupGames.KitchenCatPorkChopsFriedRice-1811000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.GoldCupGames.KitchenCatPearPecanNapoleon-1883000 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.WeerasBooks-2000008 : similarity 0.9850746268656716
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.GoldCupGames.KitchenCatPecanTurtleBars-1075000 : similarity 0.9850746268656716
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.de.prosatz.borussia-1000072 : similarity 0.9305555555555556
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.Gc-1000005 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.moneypenny.remotereception-1006000 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.expugnatio-3007011 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.cz.obria.smartchytej-1002001 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.mjgamesonline.hexarfree-1000000 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.LoveBible-1000001 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.animation2000.payroll2MobileIPhone-6002002 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.toshibasmartcommunity.ninja.home-1000002 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.up4adrink.mobile-9007 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.wowzers.clientapp-1000002 : similarity 0.881578947368421
+air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.bolognainteractive.abcWowGooglePlayLite-1000000 : similarity 0.881578947368421
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.PrimeNumberCatcher-1000000 : similarity 0.8571428571428571
+NO MD5:air.com.GoldCupGames.KitchenCatPenneVodkaSpicy-1175000, air.com.mtcenter.movil-1000001 : similarity 0.8571428571428571
+total number: 100
+-----------------------
+com.musicgapp-6, com.ptalfasoft.topmts8-2 : similarity 0.9375
+total number: 1
+-----------------------
+com.tenacioustechies.cdinesh-2, com.mosync.app_BambooGroupApp-1 : similarity 0.9087837837837838
+com.tenacioustechies.cdinesh-2, com.abdulrahmansalam.app_ReadArabicLevel3-1 : similarity 0.9087837837837838
+total number: 2
+-----------------------
+

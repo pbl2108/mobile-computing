@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.apache.lucene.util.OpenBitSet;
 
 public class SmaliParser {
@@ -19,7 +19,7 @@ public class SmaliParser {
 	private static final String whiteListLibraries = "whitelist_libraries.txt";
 	
 
-	public File folder;
+
 	public HashMap<String, Integer> featuresHashMap;
 	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, Long> recognizedHashMap;
@@ -253,12 +253,10 @@ public class SmaliParser {
 //			e.printStackTrace();
 //		}
 //	}
-
 	
 	//Traverses the decompiled folder that was produced from an APK
 	public void apkDirectoryTraversal(File folder, OpenBitSet bitSet) {
 		try {
-			
 			File fileEntry = new File(folder.getAbsoluteFile() + "/smali/");
 			int folderNameLength = fileEntry.getAbsolutePath().length();
 
@@ -269,31 +267,21 @@ public class SmaliParser {
 			e.printStackTrace();
 		}
 	}
-
-//	public void listFilesForFolder(File folder, OpenBitSet bitSet) {
-//		for (File fileEntry : folder.listFiles()) {
-//			if (isWhitelisted(fileEntry.getAbsolutePath())) {
-//				//System.out.println("WHITELISTED: " + fileEntry.getPath());
-//				continue;
-//			}
-//
-//			if (fileEntry.isDirectory()) {
-//				listFilesForFolder(fileEntry, bitSet);
-//			} else {
-//				if (fileEntry.getName().endsWith(".smali")) {
-//					try {
-//						this.parseDelimitedFile(fileEntry.getAbsolutePath(),
-//								bitSet);
-//
-//					} catch (Exception e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-//			}
-//		}
-//	}
 	
+	//Traverses the decompiled folder that was produced from an APK
+	public void apkDirectoryTraversal(File folder, OpenBitSet bitSet, boolean whiteListEnable) {
+		try {
+			File fileEntry = new File(folder.getAbsoluteFile() + "/smali/");
+			int folderNameLength = fileEntry.getAbsolutePath().length();
+
+			listFilesForFolder(fileEntry, bitSet, folderNameLength, whiteListEnable);
+
+		} catch (Exception e) {
+			failedApk++;
+			e.printStackTrace();
+		}
+	}
+
 	public void listFilesForFolder(File folder, OpenBitSet bitSet, int folderNameLength) {
 		for (File fileEntry : folder.listFiles()) {
 			if (isWhitelisted(fileEntry.getAbsolutePath().substring(folderNameLength))) {
@@ -316,13 +304,37 @@ public class SmaliParser {
 			}
 		}
 	}
+	
+	public void listFilesForFolder(File folder, OpenBitSet bitSet, int folderNameLength, boolean whiteListEnable) {
+		for (File fileEntry : folder.listFiles()) {
+			if (whiteListEnable && isWhitelisted(fileEntry.getAbsolutePath().substring(folderNameLength))) {
+				bitSet.fastSet(whiteListHashMap.get(fileEntry.getAbsolutePath().substring(folderNameLength)));
+				System.out.println("WHITELISTED: " + fileEntry.getAbsolutePath());
+				continue;
+			}
+
+			if (fileEntry.isDirectory()) {
+				System.out.println("\t" + fileEntry.getAbsolutePath());
+				listFilesForFolder(fileEntry, bitSet, folderNameLength, whiteListEnable);
+			} else {
+				try {
+					System.out.println("\t\t" + fileEntry.getAbsolutePath());
+					this.parseDelimitedFile(fileEntry.getAbsolutePath(), bitSet);
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 
 	/*
 	 * check Manifest.xml, if has get package name else return NULL means it is
 	 * not a smali folder
 	 */
-	private String getMainPackageName(File folder) {
+	public String getMainPackageName(File folder) {
 
 		String buff;
 		BufferedReader in = null;
@@ -373,8 +385,8 @@ public class SmaliParser {
 	 * go to the main component folder as the name indicated return the
 	 * destination folder object
 	 */
-	private File toMainFolder(String packageName) {
-		File tmp = new File(folder.getAbsolutePath() + separatorSign + "smali"
+	public File toMainFolder(String packageName) {
+		File tmp = new File(packageName + separatorSign + "smali"
 				+ separatorSign + packageName.replace(".", separatorSign));
 
 		if (tmp.exists())
@@ -428,7 +440,7 @@ public class SmaliParser {
 	
 	/* return the file object of the folder containing main activity 
 	 * return null means no such folder or same with main component folder */
-	private File toMainActivityFolder(File folder) {
+	public File toMainActivityFolder(File folder) {
 		
 		String activityName = null;
 		

@@ -1,19 +1,13 @@
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
-import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import org.apache.lucene.util.OpenBitSet;
 
 
@@ -53,7 +47,7 @@ public class DecompileDriver {
 		int size = 1000;
 		
 		BitSetBank bsb = new BitSetBank();
-		bsb.readFromSerial("/home/peter/github/mobile-computing/results/apks_bitSetMap100.ser");
+		bsb.readFromSerial("/home/ewg2115/mobile-computing/results/bitSetMap1000.ser");
 		size = bsb.bitSetsHashMap.values().size();
 		
 //		/* Random vectors */

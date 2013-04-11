@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import org.apache.lucene.util.OpenBitSet;
-
 
 public class kdtreeCompare {
 

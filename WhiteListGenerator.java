@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.lucene.util.OpenBitSet;
 
 
 
@@ -229,7 +227,8 @@ class ValueComparator implements Comparator<String> {
     }
 
     // Note: this comparator imposes orderings that are inconsistent with equals.    
-    public int compare(String a, String b) {
+    @Override
+	public int compare(String a, String b) {
         if (base.get(a) >= base.get(b)) {
             return -1;
         } else {

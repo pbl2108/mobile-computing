@@ -1,6 +1,5 @@
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -65,6 +64,26 @@ public class ApkDisassembler {
 			} 
 			
 			currentFile++;
+			return new File(destPath + separator + apkName);
+				
+		}
+		
+		public File disassembleIndividualFile(File fileEntry) {
+			
+			String apkName = null;	
+			
+			/* extract key and disassemble apk to get smali and manifest */
+			try {
+				apkName = getPureName(fileEntry.getName());
+				
+				//System.out.println("Start dissembling...");
+				disassembleApk(fileEntry, apkName);
+				//Thread.sleep(500);
+				
+			} catch (Exception e) {
+				System.out.println("Error: " + apkName);
+			} 
+			
 			return new File(destPath + separator + apkName);
 				
 		}

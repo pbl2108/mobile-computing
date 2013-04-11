@@ -36,7 +36,7 @@ public class kdtreeCompare {
 		int totalSim = 0;
 		int comp = 0;
 		
-		//bsb.loadAuthorsMap();
+		bsb.loadAuthorsMap();
 		
 		for (int i = 0; i < appList.size(); i++) {
 			nearApps = kdtree.searchRange(appList.get(i), radius);
@@ -69,7 +69,7 @@ public class kdtreeCompare {
 		
 		for (int i = 0; i < list.size(); i++) {
 			similarity = bsb.JaccardSim(base.getName(), list.get(i).getName());
-			if (similarity > 0.7 ) {//&& bsb.isDifferentAuthors(base.getName(), list.get(i).getName())) {
+			if (similarity > 0.7 && bsb.isDifferentAuthors(base.getName(), list.get(i).getName())) {
 				System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity " + similarity);
 				count++;
 			}

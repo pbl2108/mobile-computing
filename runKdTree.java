@@ -44,7 +44,7 @@ public class runKdTree {
 	}
 	
 	private static final double defaultRadius = 0.1;
-	private static final String defaultSerialPath = "/Users/xuyiming/Desktop/mobile-computing/results";
+	private static final String defaultSerialPath = "results";
 	
 	private static final String radiusOption = "r";
 	private static final String helpOption = "h";

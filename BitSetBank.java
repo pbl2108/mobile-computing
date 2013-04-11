@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.lucene.util.OpenBitSet;
@@ -27,7 +28,7 @@ public class BitSetBank {
 
 	public static final String serialBitSetBankMap = "bitSetMap";
 	public static final String outputSimPath = "similarities.txt";
-	public static final String authorsMapPath = "apkSignatures3500.txt";
+	public static final String authorsMapPath = "results/apkSignatures3500.txt";
 
 	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, String> authorsMap;
@@ -305,7 +306,7 @@ public class BitSetBank {
 	/*
 	 * Create a scatter plot of the data comparing it to X and Y.
 	 */
-	/*public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
+	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
 			OpenBitSet y, String title) {
 
 		XYSeries series = new XYSeries("Android Apps");
@@ -339,7 +340,7 @@ public class BitSetBank {
 
 		Plot.ScatterPlot(seriesCollection, title);
 		return seriesCollection;
-	}*/
+	}
 	/*
 	 * Calculates the Jaccard distance using 2 base apps and outputs to default location.
 	 */

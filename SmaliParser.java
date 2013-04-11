@@ -136,15 +136,15 @@ public class SmaliParser {
 		String tokens[];
 		String token;
 
-		File file = new File(outputFeaturePath);
+		//File file = new File(outputFeaturePath);
 
 		// if file doesnt exists, then create it
-		if (!file.exists()) {
-			file.createNewFile();
-		}
+		//if (!file.exists()) {
+		//	file.createNewFile();
+		//}
 
-		FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-		BufferedWriter bw = new BufferedWriter(fw);
+		//FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+		//BufferedWriter bw = new BufferedWriter(fw);
 
 		while ((currentRecord = br.readLine()) != null) {
 			if (currentRecord.contains("invoke")) {
@@ -156,14 +156,14 @@ public class SmaliParser {
 				if (featuresHashMap.containsKey(token)) {
 					bitSet.fastSet(featuresHashMap.get(token));
 					if (!recognizedHashMap.containsKey(token)) {
-						bw.write("R: " + token + "\n");
+						//bw.write("R: " + token + "\n");
 						indivdualMethodCount++;
-						recognizedHashMap.put(token, indivdualMethodCount);
+						recognizedHashMap.put(token, (long)featuresHashMap.get(token));
 					}
 
 				} else {
 					if (!unRecognizedHashMap.containsKey(token)) {
-						bw.write("U: " + token + "\n");
+						//bw.write("U: " + token + "\n");
 						indivdualMethodCount++;
 						unRecognizedHashMap.put(token, indivdualMethodCount);
 					}
@@ -173,9 +173,9 @@ public class SmaliParser {
 			}
 		}
 
-		bw.close();
+		//bw.close();
 		br.close();
-		fw.close();
+		//fw.close();
 		fr.close();
 	}
 
@@ -319,7 +319,7 @@ public class SmaliParser {
 			} else {
 				try {
 					System.out.println("\t\t" + fileEntry.getAbsolutePath());
-					this.parseDelimitedFile(fileEntry.getAbsolutePath(), bitSet);
+					this.parseDelimitedFile(fileEntry.getAbsolutePath(), bitSet, true);
 
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -385,8 +385,8 @@ public class SmaliParser {
 	 * go to the main component folder as the name indicated return the
 	 * destination folder object
 	 */
-	public File toMainFolder(String packageName) {
-		File tmp = new File(packageName + separatorSign + "smali"
+	public File toMainFolder(String rootPath, String packageName) {
+		File tmp = new File(rootPath + separatorSign + "smali"
 				+ separatorSign + packageName.replace(".", separatorSign));
 
 		if (tmp.exists())

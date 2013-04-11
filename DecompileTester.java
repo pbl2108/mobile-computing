@@ -112,7 +112,8 @@ public class DecompileTester {
 					System.out.println("Main Component From Package Folder");
 					System.out.println("=========================");
 					OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
-					sp.apkDirectoryTraversal(mcDir, bitSet, wlEnable);
+					int folderNameLength = currentDir.getAbsolutePath().length();
+					sp.listFilesForFolder(mcDir, bitSet, folderNameLength, wlEnable);
 					System.out.println("Number of Bits set: " + bitSet.cardinality());
 				}else
 					System.out.println("Main Component From Package not Found");
@@ -128,19 +129,23 @@ public class DecompileTester {
 				System.out.println("Main Activity Folder");
 				System.out.println("=========================");
 				OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
-				sp.apkDirectoryTraversal(maDir, bitSet, wlEnable);
+				int folderNameLength = currentDir.getAbsolutePath().length();
+				sp.listFilesForFolder(maDir, bitSet, folderNameLength, wlEnable);
 				System.out.println("Number of Bits set: " + bitSet.cardinality());
 			}else
 				System.out.println("Main Activity not Found");
 		}
 		
 		if (wlEnable){
-			System.out.println("WhiteListed Results");
-			System.out.println("=========================");
-			OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
-			sp.apkDirectoryTraversal(currentDir, bitSet, wlEnable);
-			System.out.println("Number of Bits set: " + bitSet.cardinality());
+			System.out.print("WhiteListed ");
 		}
+		
+		System.out.println("Results");
+		System.out.println("=========================");
+		OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
+		sp.apkDirectoryTraversal(currentDir, bitSet, wlEnable);
+		System.out.println("Number of Bits set: " + bitSet.cardinality());
+
 	
 		
 		//bsb.add(currentDir.getName(), bitSet);

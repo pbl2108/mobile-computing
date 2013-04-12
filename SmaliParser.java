@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.lucene.util.OpenBitSet;
 
 public class SmaliParser {
@@ -14,16 +16,18 @@ public class SmaliParser {
 	private static final String packageIndicator = "package=\"";
 	private static final String separatorSign = "/";
 
-	private static final String featuresMapPath = "smali-methods.txt";
+	private static final String contentMapPath = "content_extensions.txt";
+	private static final String logicMapPath = "smali-methods.txt";
 	private static final String outputFeaturePath = "testRun.txt";
 	private static final String whiteListLibraries = "whitelist_libraries.txt";
 	
-
+	public static final int contentBitSize = 32;
 
 	public HashMap<String, Integer> featuresHashMap;
 	public HashMap<String, Long> recognizedHashMap;
 	public HashMap<String, Long> unRecognizedHashMap;
 	public HashMap<String, Integer> whiteListHashMap;
+	public HashMap<String, Integer> contentHashMap;
 	public int bitSetsCount;
 	public long recCount;
 	public long unRecCount;
@@ -31,11 +35,14 @@ public class SmaliParser {
 	public long indivdualMethodCount;
 	public double jaccardThreshold = .70;
 	public long dirCount;
-	public int featuresCount;
+	public int logicFeaturesCount;
+	public int contentFeaturesCount;
 	public int failedApk;
+	
 
 
 	public SmaliParser() {
+		this.contentHashMap = new HashMap<String, Integer>();
 		this.featuresHashMap = new HashMap<String, Integer>();
 		this.recognizedHashMap = new HashMap<String, Long>();
 		this.unRecognizedHashMap = new HashMap<String, Long>();
@@ -47,8 +54,10 @@ public class SmaliParser {
 		this.bitSetsCount = 0;
 		this.dirCount = 0;
 		this.failedApk = 0;
-		this.featuresCount  = 0;	//keeps track of the total number of feature vectors. 
-		this.loadFeaturesHashMap();
+		this.logicFeaturesCount = 0; //keeps track of the total number of feature vectors for logic vector.
+		this.contentFeaturesCount = 0;	//keeps track of the total number of feature vectors for content vector. 
+		this.loadLogicHashMap();
+		this.loadContentHashMap();
 		this.loadWhitelistLibs();
 
 								
@@ -177,16 +186,38 @@ public class SmaliParser {
 		fr.close();
 	}
 
-	private void loadFeaturesHashMap() {
+	private void loadLogicHashMap() {
 		try {
 
-			BufferedReader in = new BufferedReader(new FileReader(featuresMapPath));
+			BufferedReader in = new BufferedReader(new FileReader(logicMapPath));
 			String str;
 			
 			while ((str = in.readLine()) != null) {
-				featuresHashMap.put(str, featuresCount);
-				featuresCount++;
+				featuresHashMap.put(str, logicFeaturesCount);
+				logicFeaturesCount++;
 			}
+			// Close buffered reader
+			in.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+	
+	private void loadContentHashMap() {
+		try {
+
+			BufferedReader in = new BufferedReader(new FileReader(contentMapPath));
+			String str;
+			
+			while ((str = in.readLine()) != null) {
+				contentHashMap.put(str, contentFeaturesCount);
+				contentFeaturesCount++;
+			}
+			
+			contentFeaturesCount = contentFeaturesCount*contentBitSize;
+			
 			// Close buffered reader
 			in.close();
 
@@ -204,8 +235,8 @@ public class SmaliParser {
 			
 			while ((str = in.readLine()) != null) {
 				str.replace("/", separatorSign);
-				whiteListHashMap.put(str, featuresCount);
-				featuresCount++;
+				whiteListHashMap.put(str, logicFeaturesCount);
+				logicFeaturesCount++;
 			}
 			// Close buffered reader
 			in.close();
@@ -253,20 +284,33 @@ public class SmaliParser {
 //	}
 	
 	//Traverses the decompiled folder that was produced from an APK
-	public void apkDirectoryTraversal(File folder, OpenBitSet bitSet) {
+	public void apkDirectoryTraversal(File folder, OpenBitSet lVector, OpenBitSet cVector) {
+		
+		int[] contentCount = new int[contentHashMap.size()];
+		
 		try {
-			File fileEntry = new File(folder.getAbsoluteFile() + "/smali/");
-			int folderNameLength = fileEntry.getAbsolutePath().length();
-
-			listFilesForFolder(fileEntry, bitSet, folderNameLength);
-
+			for (File fileEntry : folder.listFiles()) {
+				
+				if (fileEntry.getAbsolutePath().endsWith("smali")) {
+					int folderNameLength = fileEntry.getAbsolutePath().length();
+					listFilesForFolder(fileEntry, lVector, folderNameLength);
+				}else if (fileEntry.isDirectory()){
+					listContentForFolder(fileEntry,contentCount);
+				}
+				//Else fileEntry is a file & do nothing
+			}
 		} catch (Exception e) {
 			failedApk++;
 			e.printStackTrace();
+			return;
 		}
+		
+		createContentBitVector(cVector, contentCount);
+		
 	}
 	
-	//Traverses the decompiled folder that was produced from an APK
+	//Traverses the decompiled folder that was produced from an APK. This method is used by
+	//apkTester to test individual apks
 	public void apkDirectoryTraversal(File folder, OpenBitSet bitSet, boolean whiteListEnable) {
 		try {
 			File fileEntry = new File(folder.getAbsoluteFile() + "/smali/");
@@ -280,6 +324,29 @@ public class SmaliParser {
 		}
 	}
 
+	public void listContentForFolder(File folder, int[] contentCount) {
+		for (File fileEntry : folder.listFiles()) {
+			if (fileEntry.isDirectory()) {
+				listContentForFolder(fileEntry, contentCount);
+			} else {
+				try {
+					String ext = FilenameUtils.getExtension(fileEntry.getName());
+					Integer idx = contentHashMap.get(ext);
+					if (idx != null)
+						contentCount[idx]++;
+					
+				} catch (Exception e) {
+					System.out.println(folder.getName() + " Failed Decompilation");
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	
 	public void listFilesForFolder(File folder, OpenBitSet bitSet, int folderNameLength) {
 		for (File fileEntry : folder.listFiles()) {
 			if (isWhitelisted(fileEntry.getAbsolutePath().substring(folderNameLength))) {
@@ -292,9 +359,7 @@ public class SmaliParser {
 				listFilesForFolder(fileEntry, bitSet, folderNameLength);
 			} else {
 				try {
-					this.parseDelimitedFile(fileEntry.getAbsolutePath(),
-							bitSet);
-
+					this.parseDelimitedFile(fileEntry.getAbsolutePath(), bitSet);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -307,16 +372,16 @@ public class SmaliParser {
 		for (File fileEntry : folder.listFiles()) {
 			if (whiteListEnable && isWhitelisted(fileEntry.getAbsolutePath().substring(folderNameLength))) {
 				bitSet.fastSet(whiteListHashMap.get(fileEntry.getAbsolutePath().substring(folderNameLength)));
-				System.out.println("WHITELISTED: " + fileEntry.getAbsolutePath());
+				System.out.println("WHITELISTED: " + fileEntry.getAbsolutePath().substring(folderNameLength));
 				continue;
 			}
 
 			if (fileEntry.isDirectory()) {
-				System.out.println("\t" + fileEntry.getAbsolutePath());
+				System.out.println("\t" + fileEntry.getAbsolutePath().substring(folderNameLength));
 				listFilesForFolder(fileEntry, bitSet, folderNameLength, whiteListEnable);
 			} else {
 				try {
-					System.out.println("\t\t" + fileEntry.getAbsolutePath());
+					System.out.println("\t\t" + fileEntry.getName());
 					this.parseDelimitedFile(fileEntry.getAbsolutePath(), bitSet, true);
 
 				} catch (Exception e) {
@@ -460,6 +525,21 @@ public class SmaliParser {
 			return tmp;
 		}else
 			return null;
+	}
+	
+	void createContentBitVector(OpenBitSet cVector, int [] contentCount) {
+		int endBitIdx = 0;
+		for (int i = 0; i < contentCount.length; i++) {
+				if (contentCount[i] == 0)
+					continue;
+				else if (contentCount[i] >= contentBitSize)
+					endBitIdx = i*contentBitSize + contentBitSize;
+				else
+					endBitIdx = i*contentBitSize + contentCount[i];
+			
+				cVector.set(i*contentBitSize, endBitIdx-1);
+			}
+	
 	}
 
 }

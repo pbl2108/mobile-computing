@@ -111,10 +111,12 @@ public class DecompileTester {
 						System.out.print("WhiteListed and ");
 					System.out.println("Main Component From Package Folder");
 					System.out.println("=========================");
-					OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
+					OpenBitSet logicVector = new OpenBitSet(sp.logicFeaturesCount);
+					OpenBitSet contentVector = new OpenBitSet(sp.contentFeaturesCount);
+					AppVector appVector = new AppVector(logicVector, contentVector);
 					int folderNameLength = currentDir.getAbsolutePath().length();
-					sp.listFilesForFolder(mcDir, bitSet, folderNameLength, wlEnable);
-					System.out.println("Number of Bits set: " + bitSet.cardinality());
+					sp.listFilesForFolder(mcDir, logicVector, folderNameLength, wlEnable);
+					System.out.println("Number of Bits set: " + logicVector.cardinality());
 					System.out.println(sp.recognizedHashMap);
 				}else
 					System.out.println("Main Component From Package not Found");
@@ -129,10 +131,10 @@ public class DecompileTester {
 					System.out.print("WhiteListed and ");
 				System.out.println("Main Activity Folder");
 				System.out.println("=========================");
-				OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
+				OpenBitSet logicVector = new OpenBitSet(sp.logicFeaturesCount);
 				int folderNameLength = currentDir.getAbsolutePath().length();
-				sp.listFilesForFolder(maDir, bitSet, folderNameLength, wlEnable);
-				System.out.println("Number of Bits set: " + bitSet.cardinality());
+				sp.listFilesForFolder(maDir, logicVector, folderNameLength, wlEnable);
+				System.out.println("Number of Bits set: " + logicVector.cardinality());
 				System.out.println(sp.recognizedHashMap);
 			}else
 				System.out.println("Main Activity not Found");
@@ -145,9 +147,9 @@ public class DecompileTester {
 			
 			System.out.println("Results");
 			System.out.println("=========================");
-			OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
-			sp.apkDirectoryTraversal(currentDir, bitSet, wlEnable);
-			System.out.println("Number of Bits set: " + bitSet.cardinality());
+			OpenBitSet logicVector = new OpenBitSet(sp.logicFeaturesCount);
+			sp.apkDirectoryTraversal(currentDir, logicVector, wlEnable);
+			System.out.println("Number of Bits set: " + logicVector.cardinality());
 			System.out.println(sp.recognizedHashMap);
 
 		}

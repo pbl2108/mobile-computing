@@ -174,10 +174,10 @@ public class DecompileDriver {
 		
 		
 		while((currentDir = ad.disassembleNextFile()) != null) {
-			OpenBitSet logicVector = new OpenBitSet(sp.featuresCount);
-			OpenBitSet contentVector = new OpenBitSet(Constants.contentVectorSize);
+			OpenBitSet logicVector = new OpenBitSet(sp.logicFeaturesCount);
+			OpenBitSet contentVector = new OpenBitSet(sp.contentFeaturesCount);
 			AppVector appVector = new AppVector(logicVector, contentVector);
-			sp.apkDirectoryTraversal(currentDir, logicVector);
+			sp.apkDirectoryTraversal(currentDir, logicVector, contentVector);
 			bsb.add(currentDir.getName(), appVector);
 			try {
 				FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));

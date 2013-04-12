@@ -27,7 +27,6 @@ public class WhiteListGenerator {
 	public File folder;
 
 	private static final String separatorSign = "/";
-	private static final String whiteListClassFile = "whitelist_classes_";
 	private static final String whiteListLibraries = "whitelist_libraries.txt";
 
 
@@ -109,11 +108,6 @@ public class WhiteListGenerator {
 	
 	public void listFilesForFolder(File folder) {
 		for (File fileEntry : folder.listFiles()) {
-//			if (isWhitelisted(fileEntry.getAbsolutePath().contains(s))) {
-//				//System.out.println("WHITELISTED: " + fileEntry.getPath());
-//				continue;
-//			}
-			
 			if (fileEntry.getAbsolutePath().contains("smali")) {
 				//System.out.println("WHITELISTED: " + fileEntry.getPath());
 				continue;

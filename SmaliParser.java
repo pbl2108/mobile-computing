@@ -15,7 +15,7 @@ public class SmaliParser {
 	private static final String manifestName = "AndroidManifest.xml";
 	private static final String packageIndicator = "package=\"";
 	private static final String separatorSign = "/";
-	/* Store the main package name of an app */
+	/* Store the main activity and package name of an app */
 	public String mainActivity = null;
 	public String mainPackage = null;
 

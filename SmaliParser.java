@@ -15,6 +15,9 @@ public class SmaliParser {
 	private static final String manifestName = "AndroidManifest.xml";
 	private static final String packageIndicator = "package=\"";
 	private static final String separatorSign = "/";
+	/* Store the main package name of an app */
+	public String mainActivity = null;
+	public String mainPackage = null;
 
 	private static final String contentMapPath = "content_extensions.txt";
 	private static final String logicMapPath = "smali-methods.txt";
@@ -40,6 +43,7 @@ public class SmaliParser {
 	public int logicFeaturesCount;
 	public int contentFeaturesCount;
 	public int failedApk;
+
 	
 
 
@@ -193,20 +197,34 @@ public class SmaliParser {
 		FileReader fr = null;
 		BufferedReader br = null;
 		String currentRecord = null;
+		Boolean activityNotFound = true, packageNotFound = true;
+		String nearestName = null;
 		try {
 			fr = new FileReader(filePath);
 			br = new BufferedReader(fr);	
 			while ((currentRecord = br.readLine()) != null) {
+				/* Get permission. */
 				if (currentRecord.contains("<uses-permission") && currentRecord.contains("android:name=\"")) {
-					currentRecord = currentRecord.substring(currentRecord.indexOf("android:name=\"") + 14);
-					currentRecord = currentRecord.substring(0, currentRecord.indexOf('"'));
+					currentRecord = getNameAttr(currentRecord);
 					if (permissionsHashMap.containsKey(currentRecord)) {
 						bitSet.fastSet(permissionsHashMap.get(currentRecord));
+						continue;
 					}
+				}
+				/* Get main activity name. */
+				if (activityNotFound && currentRecord.contains("<activity") && currentRecord.contains("android:name=\""))
+					nearestName = getNameAttr(currentRecord);
+				else if (currentRecord.contains("android.intent.action.MAIN")) {
+					activityNotFound = false;
+				}
+				/* Get main package of the app. */
+				if(packageNotFound) {
+					mainPackage = extractPackageName(currentRecord);
+					if (mainPackage != null)
+						packageNotFound = false;
 				}
 				//TODO: possibly get features
 				//TODO: possibly get intents
-				//TODO: get main activity name while parsing the Manifest.XML
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -220,7 +238,14 @@ public class SmaliParser {
 				}
 			}
 		}
-		
+		/* Main activity found. */
+		if(!activityNotFound)
+			mainActivity = nearestName;
+	}
+	public String getNameAttr(String currentRecord){
+		currentRecord = currentRecord.substring(currentRecord.indexOf("android:name=\"") + 14);
+		currentRecord = currentRecord.substring(0, currentRecord.indexOf('"'));
+		return currentRecord;
 	}
 	
 	private void loadLogicHashMap() {
@@ -353,10 +378,10 @@ public class SmaliParser {
 			for (File fileEntry : folder.listFiles()) {
 				
 				absPath = fileEntry.getAbsolutePath();
-				//parse AndroidManifest.xml
-				if (absPath.endsWith(separatorSign + "AndroidManifest.xml"))
+				/* Parse AndroidManifest.xml. */
+				if (absPath.endsWith(separatorSign + manifestName)) {
 					this.parseManifestXML(absPath, cVector);
-				
+				}
 				if (absPath.endsWith("smali")) {
 					int folderNameLength = absPath.length();
 					listFilesForFolder(fileEntry, lVector, folderNameLength);
@@ -464,7 +489,7 @@ public class SmaliParser {
 	 * not a smali folder
 	 */
 	public String getMainPackageName(File folder) {
-
+		
 		String buff;
 		BufferedReader in = null;
 

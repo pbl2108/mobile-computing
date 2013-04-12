@@ -443,6 +443,55 @@ public class SmaliParser {
 
 		return line.substring(index, endIndex);
 	}
+	
+	/* get to the folder next to "com" */
+	public String getToDestinationLevel(String rootPath, String packageName) {
+		String ret = getFolderWithCom(packageName);
+		if (ret != null)
+			return ret;
+		//System.out.println(rootPath);
+		return getFolderWithoutCom(rootPath, packageName);
+	}
+	
+	public String getFolderWithCom(String packageName) {
+		int index = packageName.indexOf("com");		// start of "com"
+		if (index == -1)
+			return null;
+		int end = packageName.indexOf(".", index + 4);	// include the next level folder of "com"
+		
+		if (end != -1)
+			return packageName.substring(0, end);
+		else
+			return packageName;
+	}
+	
+	public String getFolderWithoutCom(String rootPath, String packageName) {
+		String[] folders = packageName.split("\\.");
+		String path = rootPath + separatorSign + "smali";
+		String ret = "";
+		int bound = (folders.length <= 2) ? (folders.length - 1) : 2;
+
+		for (int i = 0; i < bound; i++) {
+			if (ret.isEmpty())
+				ret = folders[i];
+			else
+				ret = ret + "." + folders[i];
+			if (isComLevel(path))
+				return ret + "." + folders[i+1];
+			path = path + separatorSign + folders[i];
+			//ret = ret + "." + folders[i + 1];
+		}
+		
+		return ret;
+	}
+	
+	public boolean isComLevel(String path) {
+		File f = new File(path);
+		for (File entry : f.listFiles())
+			if (entry.getName() == "com")
+				return true;
+		return false;
+	}
 
 	/*
 	 * go to the main component folder as the name indicated return the
@@ -450,7 +499,7 @@ public class SmaliParser {
 	 */
 	public File toMainFolder(String rootPath, String packageName) {
 		File tmp = new File(rootPath + separatorSign + "smali"
-				+ separatorSign + packageName.replace(".", separatorSign));
+				+ separatorSign + getToDestinationLevel(rootPath, packageName).replace(".", separatorSign));
 
 		if (tmp.exists())
 			return tmp;

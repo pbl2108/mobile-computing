@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 
 
@@ -22,6 +23,7 @@ public class WhiteListGenerator {
 	public long indivdualMethodCount;
 	public long totalCount;
 	public HashMap<String, Integer> whiteListHashMap;
+	public HashMap<String, Integer> contentHashMap;
 	public File folder;
 
 	private static final String separatorSign = "/";
@@ -31,12 +33,14 @@ public class WhiteListGenerator {
 
 	public HashMap<String, Integer> whiteListLibsHashMap;
 	public int featuresCount;
+	public String extension = "";
 	
 	
 	public WhiteListGenerator() {
 
 		this.whiteListHashMap = new HashMap<String, Integer>();
 		this.whiteListLibsHashMap = new HashMap<String, Integer>();
+		this.contentHashMap = new HashMap<String, Integer>();
 		this.loadWhitelistLibs();
 		this.totalCount = 0;
 		this.dirCount = 0;
@@ -52,6 +56,7 @@ public class WhiteListGenerator {
 		while((currentDir = ad.disassembleNextFile()) != null){
 			System.out.println(currentDir.getName());
 			this.apkDirectoryTraversal(currentDir);
+			this.apkContentTraversal(currentDir);
 			try {
 				FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));
 			} catch (IOException e) {
@@ -64,8 +69,7 @@ public class WhiteListGenerator {
 		long endTime = System.currentTimeMillis();
 		
 		
-		System.out.println("Total classes in Hash: "
-				+ this.whiteListHashMap.size());
+		System.out.println("Total classes in Hash: "+ this.whiteListHashMap.size());
 
 
 		System.out.println("Total time: " + (endTime - startTime)
@@ -73,7 +77,8 @@ public class WhiteListGenerator {
 		System.out.println("Time Per Apk " + (endTime - startTime)
 				/ (double) this.dirCount + " ms/file");
 		
-		this.printHashMap();
+		this.printHashMap(contentHashMap, "content");
+		this.printHashMap(whiteListHashMap, "wl");
 		
 		long endTime2 = System.currentTimeMillis();
 		
@@ -102,6 +107,39 @@ public class WhiteListGenerator {
 		}
 	}
 	
+	public void listFilesForFolder(File folder) {
+		for (File fileEntry : folder.listFiles()) {
+//			if (isWhitelisted(fileEntry.getAbsolutePath().contains(s))) {
+//				//System.out.println("WHITELISTED: " + fileEntry.getPath());
+//				continue;
+//			}
+			
+			if (fileEntry.getAbsolutePath().contains("smali")) {
+				//System.out.println("WHITELISTED: " + fileEntry.getPath());
+				continue;
+			}
+
+			if (fileEntry.isDirectory()) {
+				listFilesForFolder(fileEntry);
+			} else {
+				try {
+					String ext = FilenameUtils.getExtension(fileEntry.getName());
+					Integer count = contentHashMap.get(ext);
+					if (count == null) {
+						contentHashMap.put(ext, 1);
+					}
+					else {
+						contentHashMap.put(ext, count + 1);
+					}
+
+				} catch (Exception e) {
+					System.out.println(folder.getName() +" Failed Decompilation");
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	//Traverses the decompiled folder that was produced from an APK
 	public void apkDirectoryTraversal(File folder) {
 		try {
@@ -111,6 +149,23 @@ public class WhiteListGenerator {
 			this.dirCount++;
 			
 			listFilesForFolder(fileEntry, folderNameLength);
+
+		} catch (Exception e) {
+			System.out.println(folder.getName() +" Failed Decompilation");
+			e.printStackTrace();
+		}
+	}
+	
+	
+	//Traverses the decompiled folder that was produced from an APK
+	public void apkContentTraversal(File folder) {
+		try {
+			
+			//File fileEntry = new File(folder.getAbsoluteFile() + "/smali/");
+			//int folderNameLength = fileEntry.getAbsolutePath().length();
+			this.dirCount++;
+			
+			listFilesForFolder(folder);
 
 		} catch (Exception e) {
 			System.out.println(folder.getName() +" Failed Decompilation");
@@ -150,13 +205,13 @@ public class WhiteListGenerator {
 
 	}
 	
-	public void printHashMap() {
+	public void printHashMap(HashMap<String, Integer> map, String type) {
 
 		try {
 
-			ValueComparator bvc =  new ValueComparator(whiteListHashMap);
+			ValueComparator bvc =  new ValueComparator(map);
 	        TreeMap<String,Integer> sorted_map = new TreeMap<String,Integer>(bvc);
-	        sorted_map.putAll(whiteListHashMap);
+	        sorted_map.putAll(map);
 			
 	        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 	        
@@ -164,15 +219,8 @@ public class WhiteListGenerator {
 	        File directory = new File("outputLogs/");
 			directory.mkdirs();
 			
-	        File file = new File("outputLogs/" + whiteListClassFile + timeStamp + ".txt");
+	        File file = new File("outputLogs/" + type + "_" + timeStamp + ".txt");
 			
-			// if file doesnt exists, then create it
-//			if (!file.exists()) {
-//				file.createNewFile();
-//			}
-			
-			
-
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
 

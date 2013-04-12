@@ -41,7 +41,7 @@ public class DecompileDriver {
 		    System.exit(-1);
 		  }
 	
-	public static void main(String[] args) {
+	public static void main_(String[] args) {
 		//SmaliParser sp = new SmaliParser();
 		OpenBitSet x, y;
 		int size = 1000;
@@ -90,7 +90,7 @@ public class DecompileDriver {
 		System.out.println("X:" + xy[0] + " Y:" + xy[1]);
 	}
 
-	public static void main_(String[] args) {
+	public static void main(String[] args) {
 		
 		long startTime = System.currentTimeMillis();
 		ApkDisassembler ad = null;

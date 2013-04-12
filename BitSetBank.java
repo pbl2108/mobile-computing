@@ -21,6 +21,7 @@ import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.lucene.util.OpenBitSet;
+import org.jfree.chart.plot.Plot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -338,7 +339,7 @@ public class BitSetBank {
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
 		seriesCollection.addSeries(series);
 
-		Plot.ScatterPlot(seriesCollection, title);
+		//Plot.ScatterPlot(seriesCollection, title);
 		return seriesCollection;
 	}
 	/*

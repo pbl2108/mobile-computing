@@ -1,6 +1,7 @@
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URISyntaxException;
@@ -20,9 +21,9 @@ import java.util.jar.JarFile;
 public class MethodExtractor {
 
 	final static Charset ENCODING = StandardCharsets.UTF_8;
-	/*Text file to write the output to*/
+	/* Text file to write the output to */
 	final static String OUTPUT_FILE_NAME = "/home/peter/columbia/mob/smali-methods.txt";
-	
+
 	public static final HashMap<String, String> primitiveTypes = new HashMap<String, String>() {
 		{
 			put("void", "V");
@@ -36,6 +37,33 @@ public class MethodExtractor {
 			put("double", "D");
 		}
 	};
+
+	public Field[] GetFields(Class<?> t) {
+		return t.getDeclaredFields();
+	}
+
+	public ArrayList<String> GetFieldValues(Class<?> t) {
+		ArrayList<String> fieldValues = new ArrayList<String>();
+		Field[] fields = this.GetFields(t);
+		int length = fields.length;
+		for (int i = 0; i < length; i++) {
+			String fValue = "";
+			Object obj = new Object();
+			try {
+				fValue = fields[i].get(obj).toString();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (fValue != null)
+				fieldValues.add("");
+			System.out.println(fValue);
+		}
+		return fieldValues;
+	}
 
 	public String ReplacePeriods(String name) {
 		return name.replace('.', '/');
@@ -165,26 +193,32 @@ public class MethodExtractor {
 						if (entryName.startsWith(relPath)
 								&& entryName.length() > (relPath.length() + "/"
 										.length())) {
-							/*System.out.println("ClassDiscovery: JarEntry: "
-									+ entryName);*/
+							/*
+							 * System.out.println("ClassDiscovery: JarEntry: " +
+							 * entryName);
+							 */
 							String className = entryName.replace('/', '.')
 									.replace('\\', '.').replace(".class", "");
-							/*System.out.println("ClassDiscovery: className = "
-									+ className);*/
+							/*
+							 * System.out.println("ClassDiscovery: className = "
+							 * + className);
+							 */
 
 							Class<?> newClass = null;
 							try {
 								// classes.add(Class.forName(className));
 								newClass = Class.forName(className);
 							} catch (ClassNotFoundException e) {
-							} catch (ExceptionInInitializerError e){
+							} catch (ExceptionInInitializerError e) {
 							} catch (NoClassDefFoundError e) {
 							}
 
 							/* Write the methods to a file */
 							if (newClass != null) {
-								/*writeLargerTextFile(OUTPUT_FILE_NAME,
-										GetMethods(newClass));*/
+								/*
+								 * writeLargerTextFile(OUTPUT_FILE_NAME,
+								 * GetMethods(newClass));
+								 */
 								ArrayList<String> aLines = GetMethods(newClass);
 								for (String line : aLines) {
 									writer.write(line);

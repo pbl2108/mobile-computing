@@ -31,27 +31,19 @@ public class BitSetBank {
 	public static final String outputSimPath = "similarities.txt";
 	public static final String authorsMapPath = "results/apkSignatures3500.txt";
 
-	public HashMap<String, OpenBitSet> bitSetsHashMap;
+	public HashMap<String, AppVector> bitSetsHashMap;
 	public HashMap<String, String> authorsMap;
 	public double jaccardThreshold = .70;
 	//public MySQLAccess mySQL;
 
 	public BitSetBank() {
-		this.bitSetsHashMap = new HashMap<String, OpenBitSet>();
+		this.bitSetsHashMap = new HashMap<String, AppVector>();
 		this.authorsMap = new HashMap<String, String>();
-		//mySQL = new MySQLAccess();
 	}
 
-	public void add(String fileName, OpenBitSet bitSet) {
-		if (!bitSet.isEmpty()) {
-			bitSetsHashMap.put(fileName, bitSet);
-
-			/*try {
-				mySQL.insert(fileName, bitSet, "md5", 1.0, 1.0, 1.0);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
+	public void add(String fileName, AppVector appVector) {
+		if (!appVector.isEmpty()) {
+			bitSetsHashMap.put(fileName, appVector);
 		} else
 			System.out.println("No bits set for: " + fileName
 					+ ", Excluding package...");
@@ -68,7 +60,7 @@ public class BitSetBank {
 
 			FileInputStream fis = new FileInputStream(filePath);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			bitSetsHashMap = (HashMap<String, OpenBitSet>) ois.readObject();
+			bitSetsHashMap = (HashMap<String, AppVector>) ois.readObject();
 			ois.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -102,7 +94,7 @@ public class BitSetBank {
 				
 				FileInputStream fis = new FileInputStream(entry.getAbsoluteFile());
 				ObjectInputStream ois = new ObjectInputStream(fis);
-				HashMap<String, OpenBitSet> buff = (HashMap<String, OpenBitSet>) ois.readObject();
+				HashMap<String, AppVector> buff = (HashMap<String, AppVector>) ois.readObject();
 				ois.close();
 				//System.out.println(buff.size());
 				bitSetsHashMap.putAll(buff);
@@ -160,12 +152,12 @@ public class BitSetBank {
 	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, kdtreeCompare kdtree) {
 		OpenBitSet bitSet1;
 		double jSimX, jSimY;
-		HashMap<String, OpenBitSet> buff = (HashMap<String, OpenBitSet>) bitSetsHashMap.clone();
+		HashMap<String, AppVector> buff = (HashMap<String, AppVector>) bitSetsHashMap.clone();
 
 		try {
-			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = buff.entrySet().iterator(); iter1.hasNext();) {
-				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-				bitSet1 = entry1.getValue();
+			for (Iterator<Map.Entry<String, AppVector>> iter1 = buff.entrySet().iterator(); iter1.hasNext();) {
+				Map.Entry<String, AppVector> entry1 = iter1.next();
+				bitSet1 = entry1.getValue().LogicVector;
 				iter1.remove();
 				
 				if (x == null) { 
@@ -200,17 +192,17 @@ public class BitSetBank {
 		double min = 1.1, absCorrelation;
 		double[] xArr = new double[size], yArr = new double[size];
 		
-		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
-			Map.Entry<String, OpenBitSet> xEntry = iter1.next();
-			x = xEntry.getValue();
+		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+			Map.Entry<String, AppVector> xEntry = iter1.next();
+			x = xEntry.getValue().LogicVector;
 			xArr = this.getJaccardArray(x, xArr);
 		
-			for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
-				Map.Entry<String, OpenBitSet> yEntry = iter2.next();
+			for (Iterator<Map.Entry<String, AppVector>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
+				Map.Entry<String, AppVector> yEntry = iter2.next();
 				if (xEntry == yEntry)
 					continue;
 
-				y = yEntry.getValue();
+				y = yEntry.getValue().LogicVector;
 				xArr = this.getJaccardArray(y, yArr);
 				
 				absCorrelation = Math.abs(pCorr.correlation(xArr, yArr));
@@ -219,7 +211,7 @@ public class BitSetBank {
 					min = absCorrelation;
 					result[0] = xEntry.getKey();
 					result[1] = yEntry.getKey();
-					this.plotAndCompareBitSetBank(this.bitSetsHashMap.get(result[0]), this.bitSetsHashMap.get(result[1]), result[0] + "   and   " + result[1]);
+					this.plotAndCompareBitSetBank(this.bitSetsHashMap.get(result[0]).LogicVector, this.bitSetsHashMap.get(result[1]).LogicVector, result[0] + "   and   " + result[1]);
 				}
 				System.out.println(xEntry.getKey () + "   " + yEntry.getKey() + "   Absolute Correlation:  " + absCorrelation);
 			}
@@ -232,9 +224,9 @@ public class BitSetBank {
 	public double[] getJaccardArray(OpenBitSet x, double[] arr) {
 		OpenBitSet bitSet1;
 		int i = 0;
-		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
-			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-			bitSet1 = entry1.getValue();
+		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+			Map.Entry<String, AppVector> entry1 = iter1.next();
+			bitSet1 = entry1.getValue().LogicVector;
 			
 			arr[i] = this.JaccardSim(x, bitSet1);
 			System.out.println(arr[i] + "  " + i);
@@ -252,13 +244,13 @@ public class BitSetBank {
 		String maxApp = "";
 		OpenBitSet x, y, bitSet1;
 
-		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
-			Map.Entry<String, OpenBitSet> maxEntry = iter1.next();
-			x = maxEntry.getValue();
+		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+			Map.Entry<String, AppVector> maxEntry = iter1.next();
+			x = maxEntry.getValue().LogicVector;
 		
-			for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
-				Map.Entry<String, OpenBitSet> entry1 = iter2.next();
-				bitSet1 = entry1.getValue();
+			for (Iterator<Map.Entry<String, AppVector>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
+				Map.Entry<String, AppVector> entry1 = iter2.next();
+				bitSet1 = entry1.getValue().LogicVector;
 				
 				jSimX = this.JaccardSim(x, bitSet1);
 				
@@ -273,7 +265,7 @@ public class BitSetBank {
 			System.out.println("VARIANCE: " + variance);
 			if (variance > 0.015) {
 				String yKey = findMostDistant(x);
-				y = bitSetsHashMap.get(yKey);
+				y = bitSetsHashMap.get(yKey).LogicVector;
 			//	plotAndCompareBitSetBank(x, y, "X:" + maxEntry.getKey() + "   Y:" + yKey + "   V:" + variance);
 			}
 			
@@ -291,9 +283,9 @@ public class BitSetBank {
 		double jSimX, min = 1.0;
 		String minKey = "";
 		
-		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
-			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-			bitSet1 = entry1.getValue();
+		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+			Map.Entry<String, AppVector> entry1 = iter1.next();
+			bitSet1 = entry1.getValue().LogicVector;
 			
 			jSimX = this.JaccardSim(x, bitSet1);
 			if (min > jSimX) {
@@ -314,10 +306,10 @@ public class BitSetBank {
 		OpenBitSet bitSet1;
 		double jSimX, jSimY;
 
-		for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap
+		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap
 				.entrySet().iterator(); iter1.hasNext();) {
-			Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-			bitSet1 = entry1.getValue();
+			Map.Entry<String, AppVector> entry1 = iter1.next();
+			bitSet1 = entry1.getValue().LogicVector;
 			// Take first two apps as base X and Y
 			if (x == null) {
 				x = bitSet1;
@@ -368,9 +360,9 @@ public class BitSetBank {
 			bw.write("NAME      X      Y\n");
 			bw.write("==============================\n");
 
-			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
-				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-				bitSet1 = entry1.getValue();
+			for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
+				Map.Entry<String, AppVector> entry1 = iter1.next();
+				bitSet1 = entry1.getValue().LogicVector;
 				iter1.remove();
 				/* Take first two apps as base X and Y */
 				if (x == null) { 
@@ -418,18 +410,18 @@ public class BitSetBank {
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
 
-			for (Iterator<Map.Entry<String, OpenBitSet>> iter1 = bitSetsHashMap
+			for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap
 					.entrySet().iterator(); iter1.hasNext();) {
-				Map.Entry<String, OpenBitSet> entry1 = iter1.next();
-				bitSet1 = entry1.getValue();
+				Map.Entry<String, AppVector> entry1 = iter1.next();
+				bitSet1 = entry1.getValue().LogicVector;
 				iter1.remove();
 				bw.write("Jaccard Similarity for " + entry1.getKey()
 						+ " against:\n");
 
-				for (Iterator<Map.Entry<String, OpenBitSet>> iter2 = bitSetsHashMap
+				for (Iterator<Map.Entry<String, AppVector>> iter2 = bitSetsHashMap
 						.entrySet().iterator(); iter2.hasNext();) {
-					Map.Entry<String, OpenBitSet> entry2 = iter2.next();
-					bitSet2 = entry2.getValue();
+					Map.Entry<String, AppVector> entry2 = iter2.next();
+					bitSet2 = entry2.getValue().LogicVector;
 					jSim = this.JaccardSim(bitSet1, bitSet2);
 					bw.write("\t" + entry2.getKey() + " = " + jSim + "\n");
 
@@ -497,7 +489,7 @@ public class BitSetBank {
 	}
 	
 	public OpenBitSet getBitSetByName(String name) {
-		return this.bitSetsHashMap.get(name);
+		return this.bitSetsHashMap.get(name).LogicVector;
 	}
 
 	public void writeToSerial(int d, int s, int partNumber) {
@@ -520,7 +512,7 @@ public class BitSetBank {
 			oos.close();
 			
 			//Creates new hashmap to write bitSet data of next iteration in main loop 
-			this.bitSetsHashMap = new HashMap<String, OpenBitSet>();
+			this.bitSetsHashMap = new HashMap<String, AppVector>();
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

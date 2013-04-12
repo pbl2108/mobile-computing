@@ -21,7 +21,6 @@ public class SmaliParser {
 
 
 	public HashMap<String, Integer> featuresHashMap;
-	public HashMap<String, OpenBitSet> bitSetsHashMap;
 	public HashMap<String, Long> recognizedHashMap;
 	public HashMap<String, Long> unRecognizedHashMap;
 	public HashMap<String, Integer> whiteListHashMap;
@@ -40,7 +39,6 @@ public class SmaliParser {
 		this.featuresHashMap = new HashMap<String, Integer>();
 		this.recognizedHashMap = new HashMap<String, Long>();
 		this.unRecognizedHashMap = new HashMap<String, Long>();
-		this.bitSetsHashMap = new HashMap<String, OpenBitSet>();
 		this.whiteListHashMap = new HashMap<String, Integer>();
 		this.recCount = 0;
 		this.unRecCount = 0;

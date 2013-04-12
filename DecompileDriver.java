@@ -84,8 +84,8 @@ public class DecompileDriver {
 		
 		/* Minimum correlation */
 		String[] xy = bsb.findVectorsLeastCorrelation(size + 1);
-		x = bsb.bitSetsHashMap.get(xy[0]);
-		y = bsb.bitSetsHashMap.get(xy[1]);
+		x = bsb.bitSetsHashMap.get(xy[0]).LogicVector;
+		y = bsb.bitSetsHashMap.get(xy[1]).LogicVector;
 		bsb.plotAndCompareBitSetBank(x, y, xy[0] + "   and   " + xy[1]);
 		System.out.println("X:" + xy[0] + " Y:" + xy[1]);
 	}
@@ -173,10 +173,12 @@ public class DecompileDriver {
 		
 		
 		
-		while((currentDir = ad.disassembleNextFile()) != null){				
-			OpenBitSet bitSet = new OpenBitSet(sp.featuresCount);
-			sp.apkDirectoryTraversal(currentDir, bitSet);
-			bsb.add(currentDir.getName(), bitSet);
+		while((currentDir = ad.disassembleNextFile()) != null) {
+			OpenBitSet logicVector = new OpenBitSet(sp.featuresCount);
+			OpenBitSet contentVector = new OpenBitSet(Constants.contentVectorSize);
+			AppVector appVector = new AppVector(logicVector, contentVector);
+			sp.apkDirectoryTraversal(currentDir, logicVector);
+			bsb.add(currentDir.getName(), appVector);
 			try {
 				FileUtils.deleteDirectory(new File(currentDir.getAbsolutePath()));
 				apkNameBuffer[apkBufferIdx++] =  currentDir.getName();

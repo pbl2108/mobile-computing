@@ -20,6 +20,7 @@ public class SmaliParser {
 	private static final String logicMapPath = "smali-methods.txt";
 	private static final String outputFeaturePath = "testRun.txt";
 	private static final String whiteListLibraries = "whitelist_libraries.txt";
+	private static final String permissionsMapPath = "permissions.txt";
 	
 	public static final int contentBitSize = 32;
 
@@ -28,6 +29,7 @@ public class SmaliParser {
 	public HashMap<String, Long> unRecognizedHashMap;
 	public HashMap<String, Integer> whiteListHashMap;
 	public HashMap<String, Integer> contentHashMap;
+	public HashMap<String, Integer> permissionsHashMap;
 	public int bitSetsCount;
 	public long recCount;
 	public long unRecCount;
@@ -47,6 +49,7 @@ public class SmaliParser {
 		this.recognizedHashMap = new HashMap<String, Long>();
 		this.unRecognizedHashMap = new HashMap<String, Long>();
 		this.whiteListHashMap = new HashMap<String, Integer>();
+		this.permissionsHashMap = new HashMap<String, Integer>();
 		this.recCount = 0;
 		this.unRecCount = 0;
 		this.totalCount = 0;
@@ -59,7 +62,7 @@ public class SmaliParser {
 		this.loadLogicHashMap();
 		this.loadContentHashMap();
 		this.loadWhitelistLibs();
-
+		this.loadPermissionsHashMap();
 								
 	}
 
@@ -186,6 +189,40 @@ public class SmaliParser {
 		fr.close();
 	}
 
+	public void parseManifestXML(String filePath, OpenBitSet bitSet) {
+		FileReader fr = null;
+		BufferedReader br = null;
+		String currentRecord = null;
+		try {
+			fr = new FileReader(filePath);
+			br = new BufferedReader(fr);	
+			while ((currentRecord = br.readLine()) != null) {
+				if (currentRecord.contains("<uses-permission") && currentRecord.contains("android:name=\"")) {
+					currentRecord = currentRecord.substring(currentRecord.indexOf("android:name=\"") + 14);
+					currentRecord = currentRecord.substring(0, currentRecord.indexOf('"'));
+					if (permissionsHashMap.containsKey(currentRecord)) {
+						bitSet.fastSet(permissionsHashMap.get(currentRecord));
+					}
+				}
+				//TODO: possibly get features
+				//TODO: possibly get intents
+				//TODO: get main activity name while parsing the Manifest.XML
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (fr != null && br != null) {
+				try {
+					br.close();
+					fr.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+	
 	private void loadLogicHashMap() {
 		try {
 
@@ -246,7 +283,30 @@ public class SmaliParser {
 			System.exit(1);
 		}
 	}
+	
+	public void loadPermissionsHashMap(String filePath) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(filePath));
+			String str;
 
+			while ((str = in.readLine()) != null) {
+				str.replace("/", separatorSign);
+				permissionsHashMap.put(str, contentFeaturesCount);
+				contentFeaturesCount++;
+			}
+			
+			// Close buffered reader
+			in.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+	private void loadPermissionsHashMap() {
+		loadPermissionsHashMap(permissionsMapPath);
+	}
+	
 	private Boolean isWhitelisted(String fileEntryName) {
 		if (whiteListHashMap.containsKey(fileEntryName)) {
 			return true;
@@ -287,12 +347,18 @@ public class SmaliParser {
 	public void apkDirectoryTraversal(File folder, OpenBitSet lVector, OpenBitSet cVector) {
 		
 		int[] contentCount = new int[contentHashMap.size()];
-		
+		String absPath = null;
+
 		try {
 			for (File fileEntry : folder.listFiles()) {
 				
-				if (fileEntry.getAbsolutePath().endsWith("smali")) {
-					int folderNameLength = fileEntry.getAbsolutePath().length();
+				absPath = fileEntry.getAbsolutePath();
+				//parse AndroidManifest.xml
+				if (absPath.endsWith(separatorSign + "AndroidManifest.xml"))
+					this.parseManifestXML(absPath, cVector);
+				
+				if (absPath.endsWith("smali")) {
+					int folderNameLength = absPath.length();
 					listFilesForFolder(fileEntry, lVector, folderNameLength);
 				}else if (fileEntry.isDirectory()){
 					listContentForFolder(fileEntry,contentCount);

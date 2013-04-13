@@ -594,7 +594,7 @@ public class SmaliParser {
 	public boolean isComLevel(String path) {
 		File f = new File(path);
 		for (File entry : f.listFiles())
-			if (entry.getName() == "com")
+			if (entry.getName().equals("com"))
 				return true;
 		return false;
 	}
@@ -656,11 +656,11 @@ public class SmaliParser {
 		return line.substring(index, endIndex);
 	}
 	
-	/* return the file object of the folder containing main activity 
-	 * return null means no such folder or same with main component folder */
-	public File toMainActivityFolder(File folder) {
+	/* MODIFIED
+	 * return File object if can locate main activity folder, otherwise null */
+	public File toMainActivityFolder(String rootPath) {
 		
-		String activityName = null;
+		/*String activityName = null;
 		
 		try {
 			activityName = getMainActivityPath(folder);
@@ -678,6 +678,20 @@ public class SmaliParser {
 		if (tmp.exists()){
 			//System.out.println(tmp.getAbsolutePath());
 			return tmp;
+		}else
+			return null;*/
+		
+		/* main activity is in the folder of main component */
+		if (mainActivity == null || mainActivity.startsWith(".") || !mainActivity.contains("."))
+			return null;
+		
+		String temp = mainActivity.substring(0, mainActivity.lastIndexOf("."));	//eliminate activity name to get folder path
+		
+		File ret = new File(rootPath + separatorSign + "smali" + separatorSign + 
+				getToDestinationLevel(rootPath, temp).replace(".", separatorSign));
+		
+		if (ret.exists()){
+			return ret;
 		}else
 			return null;
 	}

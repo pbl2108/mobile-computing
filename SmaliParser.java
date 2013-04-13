@@ -376,15 +376,18 @@ public class SmaliParser {
 
 		try {
 			for (File fileEntry : folder.listFiles()) {
-				
 				absPath = fileEntry.getAbsolutePath();
 				/* Parse AndroidManifest.xml. */
 				if (absPath.endsWith(separatorSign + manifestName)) {
 					this.parseManifestXML(absPath, cVector);
 				}
+				/* Go into folder named "smali" */
 				if (absPath.endsWith("smali")) {
 					int folderNameLength = absPath.length();
-					listFilesForFolder(fileEntry, lVector, folderNameLength);
+					searchAdLibs(fileEntry, lVector, folderNameLength);
+					File mainComp = toMainFolder(folder.getAbsolutePath(), mainPackage);
+					listFilesForFolder(mainComp, lVector, folderNameLength);
+					System.out.println("MAIN COMP:" + mainComp.getAbsolutePath());
 				}else if (fileEntry.isDirectory()){
 					listContentForFolder(fileEntry,contentCount);
 				}
@@ -436,7 +439,19 @@ public class SmaliParser {
 	
 	
 	
-	
+	public void searchAdLibs(File folder, OpenBitSet bitSet, int folderNameLength)  {
+		for (File fileEntry : folder.listFiles()) {
+			if (isWhitelisted(fileEntry.getAbsolutePath().substring(folderNameLength))) {
+				bitSet.fastSet(whiteListHashMap.get(fileEntry.getAbsolutePath().substring(folderNameLength)));
+			//	System.out.println("WHITELISTED: " + fileEntry.getPath());
+				continue;
+			}
+
+			if (fileEntry.isDirectory()) {
+				listFilesForFolder(fileEntry, bitSet, folderNameLength);
+			}
+		}
+	}
 	
 	public void listFilesForFolder(File folder, OpenBitSet bitSet, int folderNameLength) {
 		for (File fileEntry : folder.listFiles()) {

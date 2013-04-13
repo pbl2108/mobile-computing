@@ -373,21 +373,33 @@ public class SmaliParser {
 		
 		int[] contentCount = new int[contentHashMap.size()];
 		String absPath = null;
-
+		
+		absPath = folder.getAbsolutePath();
+		/* Parse AndroidManifest.xml. */
+		this.parseManifestXML(absPath + separatorSign + manifestName, cVector);
+		
 		try {
 			for (File fileEntry : folder.listFiles()) {
-				absPath = fileEntry.getAbsolutePath();
-				/* Parse AndroidManifest.xml. */
-				if (absPath.endsWith(separatorSign + manifestName)) {
-					this.parseManifestXML(absPath, cVector);
-				}
 				/* Go into folder named "smali" */
-				if (absPath.endsWith("smali")) {
+				if (fileEntry.getAbsolutePath().endsWith("smali")) {
+					
 					int folderNameLength = absPath.length();
 					searchAdLibs(fileEntry, lVector, folderNameLength);
-					File mainComp = toMainFolder(folder.getAbsolutePath(), mainPackage);
+					File mainComp = toMainFolder(absPath, mainPackage);
+					//System.out.println("MAIN COMP:" + mainComp.getAbsolutePath());
+					//System.out.println("MAIN COMP:" + mainActivity);
+					
 					listFilesForFolder(mainComp, lVector, folderNameLength);
-					System.out.println("MAIN COMP:" + mainComp.getAbsolutePath());
+					
+					File mainActivity = toMainActivityFolder(absPath);
+					
+					if (mainActivity != null &&
+						!mainActivity.getAbsolutePath().equals(mainComp.getAbsolutePath())){
+						listFilesForFolder(mainComp, lVector, folderNameLength);
+						//System.out.println("MAIN ACTIVITY:" + mainActivity.getAbsolutePath());
+					}
+
+					
 				}else if (fileEntry.isDirectory()){
 					listContentForFolder(fileEntry,contentCount);
 				}

@@ -125,7 +125,7 @@ public class DecompileTester {
 		}
 		
 		if (maEnable){
-			File maDir = sp.toMainActivityFolder(currentDir);
+			File maDir = sp.toMainActivityFolder(currentDir.getAbsolutePath());
 			if(maDir != null){
 				if (wlEnable)
 					System.out.print("WhiteListed and ");

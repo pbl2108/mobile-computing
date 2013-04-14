@@ -161,7 +161,7 @@ public class BitSetBank {
 				contentVector = entry1.getValue().ContentVector;
 				iter1.remove();
 				
-				if (x == null) { 
+				if (x == null) {
 					x = logicVector;
 					y = contentVector;
 					continue;

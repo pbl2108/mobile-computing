@@ -1,5 +1,6 @@
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import org.apache.commons.cli.CommandLine;
@@ -28,9 +29,9 @@ public class PlotResults {
 	}
 
 	public void ScatterPlot(XYDataset dataSet, String title) {
-		ScatterPlot(dataSet, title, new ArrayList<String>());
+		ScatterPlot(dataSet, title, new HashMap<String, String>());
 	}
-	public void ScatterPlot(XYDataset dataSet, String title, ArrayList<String> listOfApps) {
+	public void ScatterPlot(XYDataset dataSet, String title, HashMap<String, String> revMap) {
 		JFreeChart chart = ChartFactory.createScatterPlot(title, // title
 				"X", // X - labels
 				"Y", // Y - label
@@ -41,24 +42,25 @@ public class PlotResults {
 				false // urls
 				);
 
+		
 		// create and display a frame...
 		ChartFrame frame = new ChartFrame(title, chart);
 		
-		OurMouseListener listener = new OurMouseListener(listOfApps);
+		OurMouseListener listener = new OurMouseListener(revMap);
 		frame.getChartPanel().addChartMouseListener(listener);
 		frame.pack();
 		frame.setVisible(true);
 	}
 	public class OurMouseListener implements ChartMouseListener {
 
-		ArrayList<String> listOfApps;
+		 HashMap<String, String> revMapofApps;
 		public OurMouseListener() {
 			super();
-			listOfApps = new ArrayList<String>();
+			revMapofApps = new HashMap<String, String>();
 		}
-		public OurMouseListener(ArrayList<String> list){
+		public OurMouseListener(HashMap<String, String> revMap){
 			this();
-			listOfApps = list;
+			revMapofApps = revMap;
 		}
 		
 		@Override
@@ -68,12 +70,14 @@ public class PlotResults {
 
 			if (entity != null && entity instanceof XYItemEntity) {
 				XYItemEntity ent = (XYItemEntity) entity;
-
+							
+				
 				int sindex = ent.getSeriesIndex();
 				int iindex = ent.getItem();
 				
+				XYDataset dataSet = ent.getDataset();
 				
-				System.out.println(listOfApps.get(iindex));
+				System.out.println(revMapofApps.get(dataSet.getXValue(sindex, iindex) + " " + dataSet.getYValue(sindex, iindex)));
 				System.out.println("Series Index x = " + sindex);
 				System.out.println("Item y = " + iindex);
 			}
@@ -82,7 +86,13 @@ public class PlotResults {
 		@Override
 		public void chartMouseMoved(ChartMouseEvent arg0) {
 			// TODO Auto-generated method stub
-			
+			ChartEntity entity = arg0.getEntity();
+			if (entity != null && entity instanceof XYItemEntity) {
+				XYItemEntity ent = (XYItemEntity) entity;
+							
+				ent.setToolTipText("Hello");
+
+			}
 		}
 		
 	}

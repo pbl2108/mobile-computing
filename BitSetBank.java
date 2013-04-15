@@ -310,7 +310,7 @@ public class BitSetBank {
 		XYSeries series = new XYSeries("Android Apps");
 		OpenBitSet logicBitSet, contentBitSet;
 		double jSimX, jSimY;
-		ArrayList<String> list = new ArrayList<String>();
+		HashMap<String, String> revMap = new HashMap<String,String>();
 
 		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap
 				.entrySet().iterator(); iter1.hasNext();) {
@@ -332,17 +332,27 @@ public class BitSetBank {
 			jSimY = this.JaccardSim(y, contentBitSet);
 			//jSimY = this.JaccardSim(y, logicBitSet);
 			series.add(jSimX, jSimY);
-			list.add(entry1.getKey());
+			
+			String str = revMap.get(jSimX + " " + jSimY);
+			if (str == null) {
+				revMap.put(jSimX + " " + jSimY,entry1.getKey());
+			}
+			else {
+				revMap.put(jSimX + " " + jSimY, entry1.getKey() + " " + str);
+			}
+			
+			
 //			if (jSimX > 0.0)
 //				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX
 //					+ " , " + jSimY + ")");
 		}
 
+		
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
 		seriesCollection.addSeries(series);
 		
 		PlotResults plotter = new PlotResults();
-		plotter.ScatterPlot(seriesCollection, title, list);
+		plotter.ScatterPlot(seriesCollection, title, revMap);
 		return seriesCollection;
 	}
 	/*

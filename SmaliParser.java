@@ -417,17 +417,50 @@ public class SmaliParser {
 	
 	//Traverses the decompiled folder that was produced from an APK. This method is used by
 	//apkTester to test individual apks
-	public void apkDirectoryTraversal(File folder, OpenBitSet bitSet, boolean whiteListEnable) {
+	public void apkDirectoryTraversal(File folder, OpenBitSet lVector, OpenBitSet cVector,  boolean whiteListEnable) {
+		
+		int[] contentCount = new int[contentHashMap.size()];
+		String absPath = null;
+		
+		absPath = folder.getAbsolutePath();
+		/* Parse AndroidManifest.xml. */
+		this.parseManifestXML(absPath + separatorSign + manifestName, cVector);
+		
 		try {
-			File fileEntry = new File(folder.getAbsoluteFile() + "/smali/");
-			int folderNameLength = fileEntry.getAbsolutePath().length();
+			for (File fileEntry : folder.listFiles()) {
+				/* Go into folder named "smali" */
+				if (fileEntry.getAbsolutePath().endsWith("smali")) {
+					
+					int folderNameLength = absPath.length();
+					searchAdLibs(fileEntry, lVector, folderNameLength);
+					File mainComp = toMainFolder(absPath, mainPackage);
+					System.out.println("MAIN COMP:" + mainComp.getAbsolutePath());
+					//System.out.println("MAIN COMP:" + mainActivity);
+					
+					listFilesForFolder(mainComp, lVector, folderNameLength,true);
+					
+					File mainActivity = toMainActivityFolder(absPath);
+					
+					if (mainActivity != null &&
+						!mainActivity.getAbsolutePath().equals(mainComp.getAbsolutePath())){
+						listFilesForFolder(mainComp, lVector, folderNameLength, true);
+						System.out.println("MAIN ACTIVITY:" + mainActivity.getAbsolutePath());
+					}
 
-			listFilesForFolder(fileEntry, bitSet, folderNameLength, whiteListEnable);
-
+					
+				}else if (fileEntry.isDirectory()){
+					listContentForFolder(fileEntry,contentCount);
+				}
+				//Else fileEntry is a file & do nothing
+			}
 		} catch (Exception e) {
 			failedApk++;
 			e.printStackTrace();
+			return;
 		}
+		
+		createContentBitVector(cVector, contentCount);
+		
 	}
 
 	public void listContentForFolder(File folder, int[] contentCount) {

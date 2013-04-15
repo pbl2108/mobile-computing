@@ -148,9 +148,13 @@ public class DecompileTester {
 			System.out.println("Results");
 			System.out.println("=========================");
 			OpenBitSet logicVector = new OpenBitSet(sp.logicFeaturesCount);
-			sp.apkDirectoryTraversal(currentDir, logicVector, wlEnable);
-			System.out.println("Number of Bits set: " + logicVector.cardinality());
-			System.out.println(sp.recognizedHashMap);
+			OpenBitSet contentVector = new OpenBitSet(sp.contentFeaturesCount);
+			AppVector appVector = new AppVector(logicVector, contentVector);
+			sp.apkDirectoryTraversal(currentDir, logicVector, contentVector, wlEnable);
+			//System.out.println(sp.recognizedHashMap);
+			
+			System.out.println("\nNumber of Logic Bits set: " + logicVector.cardinality());
+			System.out.println("Number of Content Bits set: " + contentVector.cardinality());
 
 		}
 		

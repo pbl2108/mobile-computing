@@ -18,7 +18,19 @@ for dirname, dirnames, filenames in os.walk(apkDirectory):
 			if startIdx != -1:
 				signatures_file.write(filename.replace('.apk','') + ' ' + md5[1][startIdx+6:startIdx+53].replace(':','') + '\n')
 			else:
-				print "No signature found for " + filename
+				time.sleep(.1)
+				md5 = commands.getstatusoutput('unzip -p ' + os.path.join(dirname, filename) + ' META-INF/*.RSA *.DSA| keytool -printcert | grep MD5')
+				startIdx = md5[1].find('MD5:')
+				if startIdx != -1:
+					signatures_file.write(filename.replace('.apk','') + ' ' + md5[1][startIdx+6:startIdx+53].replace(':','') + '\n')
+				else:
+					time.sleep(.1)
+					md5 = commands.getstatusoutput('unzip -p ' + os.path.join(dirname, filename) + ' META-INF/*.RSA *.DSA| keytool -printcert | grep MD5')
+					startIdx = md5[1].find('MD5:')
+					if startIdx != -1:
+						signatures_file.write(filename.replace('.apk','') + ' ' + md5[1][startIdx+6:startIdx+53].replace(':','') + '\n')
+					else:
+						print "No signature found for " + filename
 
 
 signatures_file.close()

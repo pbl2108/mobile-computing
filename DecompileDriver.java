@@ -47,7 +47,8 @@ public class DecompileDriver {
 		int size = 1000;
 		
 		BitSetBank bsb = new BitSetBank();
-		bsb.readFromSerial("/home/peter/Dropbox/mobile-computing/bitSetMap_d_15_s_7/part_0.ser");
+		//bsb.readFromSerial("/home/peter/Dropbox/mobile-computing/bitSetMap_d_15_s_7/part_0.ser");
+		bsb.readAllFromSerial("/home/peter/Dropbox/mobile-computing/bitSetMap_d_15_s_8");
 		size = bsb.bitSetsHashMap.values().size();
 		
 //		/* Random vectors */
@@ -68,15 +69,15 @@ public class DecompileDriver {
 //		}
 		
 		/* Max variance Logic and Max variance Content*/
-		String xKey = bsb.findVectorWithMaxVariance(true);
+		String xKey = "com.mcc.probeapp-2"; //bsb.findVectorWithMaxVariance(true);
 		System.out.println("X:" + xKey);
 		x = bsb.bitSetsHashMap.get(xKey).LogicVector;
 		
-		String yKey = bsb.findVectorWithMaxVariance(false);
+		String yKey = "com.mcp.android.dq4u-28"; //bsb.findVectorWithMaxVariance(false);
 		System.out.println("Y:" + yKey);
 		y = bsb.bitSetsHashMap.get(yKey).ContentVector;
 		
-		bsb.plotAndCompareBitSetBank(x, y, xKey + " and " + yKey);
+		bsb.plotAndCompareBitSetBank(x, y, " X: " + xKey + " \r\n Y:" + yKey);
 		
 //		/* Max variance and min */
 //		String yKey = bsb.findMostDistant(x);

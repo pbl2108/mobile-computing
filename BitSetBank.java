@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -309,6 +310,7 @@ public class BitSetBank {
 		XYSeries series = new XYSeries("Android Apps");
 		OpenBitSet logicBitSet, contentBitSet;
 		double jSimX, jSimY;
+		ArrayList<String> list = new ArrayList<String>();
 
 		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap
 				.entrySet().iterator(); iter1.hasNext();) {
@@ -330,6 +332,7 @@ public class BitSetBank {
 			jSimY = this.JaccardSim(y, contentBitSet);
 			//jSimY = this.JaccardSim(y, logicBitSet);
 			series.add(jSimX, jSimY);
+			list.add(entry1.getKey());
 //			if (jSimX > 0.0)
 //				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX
 //					+ " , " + jSimY + ")");
@@ -337,8 +340,9 @@ public class BitSetBank {
 
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
 		seriesCollection.addSeries(series);
-
-		PlotResults.ScatterPlot(seriesCollection, title);
+		
+		PlotResults plotter = new PlotResults();
+		plotter.ScatterPlot(seriesCollection, title, list);
 		return seriesCollection;
 	}
 	/*

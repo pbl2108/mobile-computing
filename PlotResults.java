@@ -1,3 +1,5 @@
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.apache.commons.cli.CommandLine;
@@ -9,7 +11,11 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.lucene.util.OpenBitSet;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartMouseEvent;
+import org.jfree.chart.ChartMouseListener;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.entity.ChartEntity;
+import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -17,11 +23,14 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class PlotResults {
 
-	public static void ScatterPlot(XYDataset dataSet) {
+	public void ScatterPlot(XYDataset dataSet) {
 		ScatterPlot(dataSet, "Jaccard Distance");
 	}
 
-	public static void ScatterPlot(XYDataset dataSet, String title) {
+	public void ScatterPlot(XYDataset dataSet, String title) {
+		ScatterPlot(dataSet, title, new ArrayList<String>());
+	}
+	public void ScatterPlot(XYDataset dataSet, String title, ArrayList<String> listOfApps) {
 		JFreeChart chart = ChartFactory.createScatterPlot(title, // title
 				"X", // X - labels
 				"Y", // Y - label
@@ -34,11 +43,51 @@ public class PlotResults {
 
 		// create and display a frame...
 		ChartFrame frame = new ChartFrame(title, chart);
+		
+		OurMouseListener listener = new OurMouseListener(listOfApps);
+		frame.getChartPanel().addChartMouseListener(listener);
 		frame.pack();
 		frame.setVisible(true);
 	}
+	public class OurMouseListener implements ChartMouseListener {
 
-	public static void SampleScatterPlot(XYDataset dataSet) {
+		ArrayList<String> listOfApps;
+		public OurMouseListener() {
+			super();
+			listOfApps = new ArrayList<String>();
+		}
+		public OurMouseListener(ArrayList<String> list){
+			this();
+			listOfApps = list;
+		}
+		
+		@Override
+		public void chartMouseClicked(ChartMouseEvent arg0) {
+			// TODO Auto-generated method stub
+			ChartEntity entity = arg0.getEntity();
+
+			if (entity != null && entity instanceof XYItemEntity) {
+				XYItemEntity ent = (XYItemEntity) entity;
+
+				int sindex = ent.getSeriesIndex();
+				int iindex = ent.getItem();
+				
+				
+				System.out.println(listOfApps.get(iindex));
+				System.out.println("Series Index x = " + sindex);
+				System.out.println("Item y = " + iindex);
+			}
+		}
+
+		@Override
+		public void chartMouseMoved(ChartMouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+
+	public void SampleScatterPlot(XYDataset dataSet) {
 		ScatterPlot(createDataset());
 	}
 

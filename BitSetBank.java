@@ -150,28 +150,31 @@ public class BitSetBank {
 	}
 	
 	public void compareBitSetBank_KDtree(OpenBitSet x, OpenBitSet y, kdtreeCompare kdtree) {
-		OpenBitSet bitSet1;
+		OpenBitSet logicVector, contentVector;
 		double jSimX, jSimY;
 		HashMap<String, AppVector> buff = (HashMap<String, AppVector>) bitSetsHashMap.clone();
 
 		try {
 			for (Iterator<Map.Entry<String, AppVector>> iter1 = buff.entrySet().iterator(); iter1.hasNext();) {
 				Map.Entry<String, AppVector> entry1 = iter1.next();
-				bitSet1 = entry1.getValue().LogicVector;
+				logicVector = entry1.getValue().LogicVector;
+				contentVector = entry1.getValue().ContentVector;
 				iter1.remove();
 				
-				if (x == null) { 
-					x = bitSet1;
+				if (x == null) {
+					x = logicVector;
+					y = contentVector;
 					continue;
 				}
 				if (y == null) { 
-					y = bitSet1;
+					y = logicVector;
 					continue;
 				}
 				
 				/* Calculate distance between X, Y sand App */
-				jSimX = this.JaccardSim(x, bitSet1);
-				jSimY = this.JaccardSim(y, bitSet1);
+				jSimX = this.JaccardSim(x, logicVector);
+				jSimY = this.JaccardSim(y, contentVector);
+				//jSimY = this.JaccardSim(y, logicVector);
 				
 				/*insert code for KD-tree*/
 				kdtree.insertKdtree(entry1.getKey(), jSimX, jSimY);
@@ -195,15 +198,15 @@ public class BitSetBank {
 		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 			Map.Entry<String, AppVector> xEntry = iter1.next();
 			x = xEntry.getValue().LogicVector;
-			xArr = this.getJaccardArray(x, xArr);
+			xArr = this.getJaccardArray(x, xArr, true);
 		
 			for (Iterator<Map.Entry<String, AppVector>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
 				Map.Entry<String, AppVector> yEntry = iter2.next();
-				if (xEntry == yEntry)
-					continue;
+				//if (xEntry == yEntry)
+				//	continue;
 
-				y = yEntry.getValue().LogicVector;
-				xArr = this.getJaccardArray(y, yArr);
+				y = yEntry.getValue().ContentVector;
+				xArr = this.getJaccardArray(y, yArr, false);
 				
 				absCorrelation = Math.abs(pCorr.correlation(xArr, yArr));
 				
@@ -211,7 +214,7 @@ public class BitSetBank {
 					min = absCorrelation;
 					result[0] = xEntry.getKey();
 					result[1] = yEntry.getKey();
-					this.plotAndCompareBitSetBank(this.bitSetsHashMap.get(result[0]).LogicVector, this.bitSetsHashMap.get(result[1]).LogicVector, result[0] + "   and   " + result[1]);
+					this.plotAndCompareBitSetBank(this.bitSetsHashMap.get(result[0]).LogicVector, this.bitSetsHashMap.get(result[1]).ContentVector, result[0] + "   and   " + result[1]);
 				}
 				System.out.println(xEntry.getKey () + "   " + yEntry.getKey() + "   Absolute Correlation:  " + absCorrelation);
 			}
@@ -221,12 +224,12 @@ public class BitSetBank {
 	/*
 	 * Gets array containing all the Jaccard distances from base app X.
 	 */
-	public double[] getJaccardArray(OpenBitSet x, double[] arr) {
+	public double[] getJaccardArray(OpenBitSet x, double[] arr, boolean isLogic) {
 		OpenBitSet bitSet1;
 		int i = 0;
 		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 			Map.Entry<String, AppVector> entry1 = iter1.next();
-			bitSet1 = entry1.getValue().LogicVector;
+			bitSet1 = isLogic ? entry1.getValue().LogicVector : entry1.getValue().ContentVector;
 			
 			arr[i] = this.JaccardSim(x, bitSet1);
 			System.out.println(arr[i] + "  " + i);
@@ -238,7 +241,7 @@ public class BitSetBank {
 	/*
 	 * Finds the app that produces the greatest variance; 
 	 */
-	public String findVectorWithMaxVariance() {
+	public String findVectorWithMaxVariance(boolean isLogic) {
 		DescriptiveStatistics stats = new DescriptiveStatistics();
 		double jSimX, max = 0.0;
 		String maxApp = "";
@@ -246,11 +249,11 @@ public class BitSetBank {
 
 		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 			Map.Entry<String, AppVector> maxEntry = iter1.next();
-			x = maxEntry.getValue().LogicVector;
+			x = isLogic ? maxEntry.getValue().LogicVector : maxEntry.getValue().ContentVector;
 		
 			for (Iterator<Map.Entry<String, AppVector>> iter2 = bitSetsHashMap.entrySet().iterator(); iter2.hasNext();) {
 				Map.Entry<String, AppVector> entry1 = iter2.next();
-				bitSet1 = entry1.getValue().LogicVector;
+				bitSet1 = isLogic ? entry1.getValue().LogicVector : entry1.getValue().ContentVector;
 				
 				jSimX = this.JaccardSim(x, bitSet1);
 				
@@ -262,31 +265,32 @@ public class BitSetBank {
 				maxApp = maxEntry.getKey();
 			}
 			
-			System.out.println("VARIANCE: " + variance);
+			//System.out.println("VARIANCE: " + variance);
 			if (variance > 0.015) {
-				String yKey = findMostDistant(x);
-				y = bitSetsHashMap.get(yKey).LogicVector;
+				String yKey = findMostDistant(x, isLogic);
+				y = isLogic ? bitSetsHashMap.get(yKey).LogicVector : bitSetsHashMap.get(yKey).ContentVector ;
 			//	plotAndCompareBitSetBank(x, y, "X:" + maxEntry.getKey() + "   Y:" + yKey + "   V:" + variance);
 			}
 			
 			stats.clear();
 		}
-		System.out.println("MAX__VARIANCE: " + max);
+		String str = isLogic ? "LOGIC" : "CONTENT";
+		System.out.println(str + " MAX__VARIANCE: " + max);
 		return maxApp;
 	}
 	
 	/*
 	 * Finds the most distant (dissimilar) app to the bit vector passed.
 	 */
-	public String findMostDistant(OpenBitSet x) {
+	public String findMostDistant(OpenBitSet x, boolean isLogic) {
 		OpenBitSet bitSet1;
 		double jSimX, min = 1.0;
 		String minKey = "";
 		
 		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 			Map.Entry<String, AppVector> entry1 = iter1.next();
-			bitSet1 = entry1.getValue().LogicVector;
-			
+			bitSet1 = isLogic ? entry1.getValue().LogicVector : entry1.getValue().ContentVector;
+
 			jSimX = this.JaccardSim(x, bitSet1);
 			if (min > jSimX) {
 				min = jSimX;
@@ -297,31 +301,34 @@ public class BitSetBank {
 	}
 	
 	/*
-	 * Create a scatter plot of the data comparing it to X and Y.
+	 * Create a scatter plot of the data comparing it to X and Y. X - logicVector, Y - contentVector
 	 */
 	public XYSeriesCollection plotAndCompareBitSetBank(OpenBitSet x,
 			OpenBitSet y, String title) {
 
 		XYSeries series = new XYSeries("Android Apps");
-		OpenBitSet bitSet1;
+		OpenBitSet logicBitSet, contentBitSet;
 		double jSimX, jSimY;
 
 		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap
 				.entrySet().iterator(); iter1.hasNext();) {
 			Map.Entry<String, AppVector> entry1 = iter1.next();
-			bitSet1 = entry1.getValue().LogicVector;
+			logicBitSet = entry1.getValue().LogicVector;
+			contentBitSet = entry1.getValue().ContentVector;
 			// Take first two apps as base X and Y
 			if (x == null) {
-				x = bitSet1;
+				x = logicBitSet;
+				y = contentBitSet;
 				continue;
 			}
 			if (y == null) {
-				y = bitSet1;
+				y = logicBitSet;
 				continue;
 			}
 			// Calculate distance between X, Y and each app
-			jSimX = this.JaccardSim(x, bitSet1);
-			jSimY = this.JaccardSim(y, bitSet1);
+			jSimX = this.JaccardSim(x, logicBitSet);
+			jSimY = this.JaccardSim(y, contentBitSet);
+			//jSimY = this.JaccardSim(y, logicBitSet);
 			series.add(jSimX, jSimY);
 //			if (jSimX > 0.0)
 //				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX
@@ -331,7 +338,7 @@ public class BitSetBank {
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
 		seriesCollection.addSeries(series);
 
-		//Plot.ScatterPlot(seriesCollection, title);
+		PlotResults.ScatterPlot(seriesCollection, title);
 		return seriesCollection;
 	}
 	/*
@@ -345,7 +352,8 @@ public class BitSetBank {
 	 * Calculates the Jaccard distance using 2 base apps and outputs to custom location.
 	 */
 	public void compareBitSetBank(OpenBitSet x, OpenBitSet y, String outFilePath) {
-		OpenBitSet bitSet1;
+		OpenBitSet logicBitSet, contentBitSet;
+		
 		double jSimX, jSimY;
 
 		try {
@@ -362,20 +370,23 @@ public class BitSetBank {
 
 			for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap.entrySet().iterator(); iter1.hasNext();) {
 				Map.Entry<String, AppVector> entry1 = iter1.next();
-				bitSet1 = entry1.getValue().LogicVector;
+				logicBitSet = entry1.getValue().LogicVector;
+				contentBitSet = entry1.getValue().ContentVector;
 				iter1.remove();
 				/* Take first two apps as base X and Y */
 				if (x == null) { 
-					x = bitSet1;
+					x = logicBitSet;
+					y = contentBitSet;
 					continue;
 				}
 				if (y == null) {
-					y = bitSet1;
+					y = logicBitSet;
 					continue;
 				}
 				/* Calculate distance between X, Y and each app */
-				jSimX = this.JaccardSim(x, bitSet1);
-				jSimY = this.JaccardSim(y, bitSet1);
+				jSimX = this.JaccardSim(x, logicBitSet);
+				jSimY = this.JaccardSim(y, contentBitSet);
+				//jSimY = this.JaccardSim(y, logicBitSet);
 				/* Write to file */
 				bw.write(entry1.getKey() + "\t" + jSimX + "\t" + jSimY + "\n");
 				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX + " , " + jSimY +")");

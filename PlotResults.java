@@ -8,7 +8,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class Plot {
+public class PlotResults {
 
 	public static void ScatterPlot(XYDataset dataSet) {
 		ScatterPlot(dataSet, "Jaccard Distance");

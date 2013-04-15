@@ -41,13 +41,13 @@ public class DecompileDriver {
 		    System.exit(-1);
 		  }
 	
-	public static void main_(String[] args) {
+	public static void main_PLOT(String[] args) {
 		//SmaliParser sp = new SmaliParser();
 		OpenBitSet x, y;
 		int size = 1000;
 		
 		BitSetBank bsb = new BitSetBank();
-		bsb.readFromSerial("/home/ewg2115/mobile-computing/results/bitSetMap1000.ser");
+		bsb.readFromSerial("/home/peter/Dropbox/mobile-computing/bitSetMap_d_15_s_7/part_0.ser");
 		size = bsb.bitSetsHashMap.values().size();
 		
 //		/* Random vectors */
@@ -67,14 +67,16 @@ public class DecompileDriver {
 //			System.out.println("(x,y)=(" + xArr[i] + "," + yArr[i] + ")");
 //		}
 		
-//		/* Max variance and second max */
-//		String xKey = bsb.findVectorWithMaxVariance(null);
-//		System.out.println("X:" + xKey);
-//		x = bsb.bitSetsHashMap.get(xKey);
-//		
-//		String yKey = bsb.findVectorWithMaxVariance(xKey);
-//		System.out.println("Y:" + yKey);
-//		y = bsb.bitSetsHashMap.get(xKey);
+		/* Max variance Logic and Max variance Content*/
+		String xKey = bsb.findVectorWithMaxVariance(true);
+		System.out.println("X:" + xKey);
+		x = bsb.bitSetsHashMap.get(xKey).LogicVector;
+		
+		String yKey = bsb.findVectorWithMaxVariance(false);
+		System.out.println("Y:" + yKey);
+		y = bsb.bitSetsHashMap.get(yKey).ContentVector;
+		
+		bsb.plotAndCompareBitSetBank(x, y, xKey + " and " + yKey);
 		
 //		/* Max variance and min */
 //		String yKey = bsb.findMostDistant(x);
@@ -82,12 +84,12 @@ public class DecompileDriver {
 //		y = bsb.bitSetsHashMap.get(yKey);
 //		bsb.plotAndCompareBitSetBank(x, y, xKey + " and " + yKey);
 		
-		/* Minimum correlation */
-		String[] xy = bsb.findVectorsLeastCorrelation(size + 1);
-		x = bsb.bitSetsHashMap.get(xy[0]).LogicVector;
-		y = bsb.bitSetsHashMap.get(xy[1]).LogicVector;
-		bsb.plotAndCompareBitSetBank(x, y, xy[0] + "   and   " + xy[1]);
-		System.out.println("X:" + xy[0] + " Y:" + xy[1]);
+//		/* Minimum correlation */
+//		String[] xy = bsb.findVectorsLeastCorrelation(size + 1);
+//		x = bsb.bitSetsHashMap.get(xy[0]).LogicVector;
+//		y = bsb.bitSetsHashMap.get(xy[1]).LogicVector;
+//		bsb.plotAndCompareBitSetBank(x, y, xy[0] + "   and   " + xy[1]);
+//		System.out.println("X:" + xy[0] + " Y:" + xy[1]);
 	}
 
 	public static void main(String[] args) {

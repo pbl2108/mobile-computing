@@ -87,20 +87,8 @@ public class BitSetBank {
 			if (dir.isFile())
 				return;
 			
-			/* read all serial files in the folder */
-			for (File entry : dir.listFiles()) {
-				//System.out.println(entry.getName());
-				if (!entry.getName().endsWith(".ser"))
-					continue;
-				
-				FileInputStream fis = new FileInputStream(entry.getAbsoluteFile());
-				ObjectInputStream ois = new ObjectInputStream(fis);
-				HashMap<String, AppVector> buff = (HashMap<String, AppVector>) ois.readObject();
-				ois.close();
-				//System.out.println(buff.size());
-				bitSetsHashMap.putAll(buff);
-				//System.out.println(bitSetsHashMap.size());
-			}
+			_readAllFromSerial(dir);
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,6 +98,29 @@ public class BitSetBank {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	private void _readAllFromSerial(File file) throws IOException, ClassNotFoundException {
+		
+		/* read all serial files in the folder */
+		for (File entry : file.listFiles()) {
+			
+			if (entry.isDirectory()) {
+				_readAllFromSerial(entry);
+				continue;
+			}
+			
+			if (entry.isFile() && !entry.getName().endsWith(".ser"))
+				continue;
+			
+			FileInputStream fis = new FileInputStream(entry.getAbsoluteFile());
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			HashMap<String, AppVector> buff = (HashMap<String, AppVector>) ois.readObject();
+			ois.close();
+			//System.out.println(buff.size());
+			bitSetsHashMap.putAll(buff);
+			//System.out.println(bitSetsHashMap.size());
 		}
 	}
 
@@ -509,12 +520,20 @@ public class BitSetBank {
 		return jaccardSim;
 	}
 	
-	public double JaccardSim(String name1, String name2) {
-		return JaccardSim(getBitSetByName(name1), getBitSetByName(name2));
+	public double JaccardSimLogic(String name1, String name2) {
+		return JaccardSim(getBitSetLogicByName(name1), getBitSetLogicByName(name2));
 	}
 	
-	public OpenBitSet getBitSetByName(String name) {
+	public double JaccardSimContent(String name1, String name2) {
+		return JaccardSim(getBitSetContentByName(name1), getBitSetContentByName(name2));
+	}
+	
+	public OpenBitSet getBitSetLogicByName(String name) {
 		return this.bitSetsHashMap.get(name).LogicVector;
+	}
+	
+	public OpenBitSet getBitSetContentByName(String name) {
+		return this.bitSetsHashMap.get(name).ContentVector;
 	}
 
 	public void writeToSerial(int d, int s, int partNumber) {

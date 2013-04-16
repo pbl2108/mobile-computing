@@ -1,4 +1,3 @@
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
@@ -7,12 +6,12 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
-
 public class runKdTree {
 	
 	static class TimeReport {
 		private long start;
 		private long readEnd = 0;
+		private long baseEnd = 0;
 		private long insertEnd = 0;
 		private long compareEnd = 0;
 		
@@ -26,6 +25,10 @@ public class runKdTree {
 			readEnd = System.currentTimeMillis();
 		}
 		
+		public void endTimerForBase() {
+			baseEnd = System.currentTimeMillis();
+		}
+		
 		public void endTimerForInsert() {
 			insertEnd = System.currentTimeMillis();
 		}
@@ -37,14 +40,15 @@ public class runKdTree {
 		public void printTimerReport() {
 			System.out.println("-----------------------");
 			System.out.println("Time for read searial files: " + (readEnd - start));
-			System.out.println("Time for insert kdtree: " + (insertEnd - readEnd));
+			System.out.println("Time for find base apps: " + (baseEnd - readEnd));
+			System.out.println("Time for insert kdtree: " + (insertEnd - baseEnd));
 			System.out.println("Time for compare with neighbors: " + (compareEnd - insertEnd));
 			System.out.println("Total runtime is: " + (compareEnd - start));
 		}
 	}
 	
 	private static final double defaultRadius = 0.1;
-	private static final String defaultSerialPath = "results";
+	private static final String defaultSerialPath = "/Users/xuyiming/Desktop/result";
 	
 	private static final String radiusOption = "r";
 	private static final String helpOption = "h";
@@ -95,7 +99,7 @@ public class runKdTree {
 			
 			double radius = getRadius(cmd);
 			String path = getSerialPath(cmd);
-			System.out.println(path);
+			//System.out.println(path);
 			
 			timer.startTimer();
 		
@@ -103,7 +107,16 @@ public class runKdTree {
 			bsb.readAllFromSerial(path);
 			timer.endTimerForRead();
 			
-			bsb.compareBitSetBank_KDtree(null, null, kd);
+			System.out.println("Use base:");
+			String xKey = bsb.findVectorWithMaxVariance(true);
+			String yKey = bsb.findVectorWithMaxVariance(false);
+			System.out.println("X: " + xKey);
+			System.out.println("Y: " + yKey);
+			System.out.println("-----------------");
+			timer.endTimerForBase();
+			
+			bsb.compareBitSetBank_KDtree(bsb.bitSetsHashMap.get(xKey).LogicVector, bsb.bitSetsHashMap.get(yKey).ContentVector, kd);
+			//bsb.compareBitSetBank_KDtree(null, null, kd);
 			timer.endTimerForInsert();
 			
 			kd.runKdtreeCompare(radius, bsb);

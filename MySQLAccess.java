@@ -1,4 +1,8 @@
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,6 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.lucene.util.OpenBitSet;
 
@@ -62,8 +69,8 @@ public class MySQLAccess {
 		statement = connect.createStatement();
 		// Result set get the result of the SQL query
 		resultSet = statement
-				.executeQuery("select * from test.appstable1 limit 10");
-		printResultSetToConsole(resultSet);
+				.executeQuery("select * from test.appstable1");
+		// printResultSetToConsole(resultSet);
 	}
 
 	public void read(String app1, String app2) throws Exception {
@@ -154,18 +161,120 @@ public class MySQLAccess {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return a[0].compareToIgnoreCase(a[1]) == 0;
 	}
 
-	public static void main(String[] args) {
-		MySQLAccess access = new MySQLAccess();
+	HashMap<String, Integer> tmpHashMap = new HashMap<String, Integer>();
+
+	public void getAllLibsAndPermissions(String field) {
+		String[] a;
+		String val;
+		int i;
 		try {
-			boolean res = access
-					.IsAuthorEqual("a.a.lens-3", "a.accelerodraw-3");
-			System.out.println(res);
+			read();
+			while (resultSet.next()) {
+				val = resultSet.getString(field);
+				if (val.isEmpty() || val == null || val.length() == 2)
+					continue;
+				a = val.split("\", \"");
+				a[0] = a[0].substring(2);
+				a[a.length - 1] = a[a.length - 1].replaceAll("\"]", "");
+				for (i = 0; i < a.length; i++) {
+					if (tmpHashMap.containsKey(a[i])) {
+						tmpHashMap.put(a[i], tmpHashMap.get(a[i]) + 1);
+						continue;
+					}
+					tmpHashMap.put(a[i], 0);
+				}
+			}
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	public void getAllLibsAndPermissionsME(String field) {
+		StringBuilder sb = new StringBuilder();
+		String[] a;
+		try {
+			read();
+			while (resultSet.next()) {
+				sb.append(resultSet.getString(field));
+				// String val = resultSet.getString(field);
+				if (sb.length() == 2)
+					continue;
+				sb.delete(0, 2);
+				sb.delete(sb.length() - 2, sb.length());
+				a = sb.toString().split("\", \"");
+				// a[0] = a[0].substring(2);
+				// a[a.length - 1] = a[a.length - 1].replaceAll("\"]", "");
+				for (String t : a) {
+					if (tmpHashMap.containsKey(t)) {
+						tmpHashMap.put(t, tmpHashMap.get(t) + 1);
+						continue;
+					}
+					tmpHashMap.put(t, 0);
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+
+		long start = System.currentTimeMillis();
+		System.out.println("START:" + System.currentTimeMillis());
+
+		MySQLAccess access = new MySQLAccess();
+
+		access.getAllLibsAndPermissions("lib_names");
+		System.out.println("Write to File");
+		access.writeHashMapToTXT(null, "lib_names", true, true);
+		//access.writeHashMapToTXT(null, "lib_names", true, false);
+		System.out.println("TIME:" + (System.currentTimeMillis() - start));
+	}
+
+	public void writeHashMapToTXT(HashMap<String, Integer> map,
+			String fileName, boolean usePathSeparator, boolean writeCount) {
+		if (map == null)
+			map = tmpHashMap;
+		String t = null;
+		FileWriter fw = null;
+		BufferedWriter bw = null;
+		try {
+			// Creates outputLogs Directory if it Does not Exist
+			File directory = new File("outputLogs/");
+			directory.mkdirs();
+			File file = new File("outputLogs/" + fileName + ".txt");
+			file.createNewFile();
+
+			fw = new FileWriter(file.getAbsoluteFile(), true);
+			bw = new BufferedWriter(fw);
+
+			for (Iterator<Map.Entry<String, Integer>> iter1 = map.entrySet()
+					.iterator(); iter1.hasNext();) {
+				Map.Entry<String, Integer> entry1 = iter1.next();
+				t = entry1.getKey();
+				if (usePathSeparator)
+					t = "/" + t.replace('.', '/');
+				if (writeCount)
+					bw.write(t + " " + entry1.getValue() + "\n");
+				else
+					bw.write(t + "\n");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				bw.close();
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

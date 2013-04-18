@@ -108,8 +108,8 @@ public class runKdTree {
 			timer.endTimerForRead();
 			
 			System.out.println("Use base:");
-			String xKey = bsb.findVectorWithMaxVariance(true);
-			String yKey = bsb.findVectorWithMaxVariance(false);
+			String xKey = "com.mcc.probeapp-2"; //bsb.findVectorWithMaxVariance(true);
+			String yKey = "com.mcp.android.dq4u-28"; //bsb.findVectorWithMaxVariance(false);
 			System.out.println("X: " + xKey);
 			System.out.println("Y: " + yKey);
 			System.out.println("-----------------");

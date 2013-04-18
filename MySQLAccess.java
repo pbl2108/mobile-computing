@@ -22,6 +22,18 @@ public class MySQLAccess {
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
+	
+	public MySQLAccess() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		
+		// Setup the connection with the DB
+			connect = DriverManager.getConnection(connectionString);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void insert(String name, OpenBitSet featureVector, String md5,
 			Double x, Double y, Double z) throws Exception {
@@ -61,10 +73,6 @@ public class MySQLAccess {
 	}
 
 	public void read() throws Exception {
-		Class.forName("com.mysql.jdbc.Driver");
-		// Setup the connection with the DB
-		connect = DriverManager.getConnection(connectionString);
-
 		// Statements allow to issue SQL queries to the database
 		statement = connect.createStatement();
 		// Result set get the result of the SQL query
@@ -74,31 +82,21 @@ public class MySQLAccess {
 	}
 
 	public void read(String app1, String app2) throws Exception {
-		Class.forName("com.mysql.jdbc.Driver");
-		// Setup the connection with the DB
-		connect = DriverManager.getConnection(connectionString);
-
 		// Statements allow to issue SQL queries to the database
 		statement = connect.createStatement();
 		// Result set get the result of the SQL query
 		String query = "select * from test.appstable1 where eid in (\"" + app1
 				+ "\",\"" + app2 + "\")";
-		System.out.println(query);
 		resultSet = statement.executeQuery(query);
 		printResultSetToConsole(resultSet);
 	}
 
 	public ResultSet readResultSet(String app1, String app2) throws Exception {
-		Class.forName("com.mysql.jdbc.Driver");
-		// Setup the connection with the DB
-		connect = DriverManager.getConnection(connectionString);
-
 		// Statements allow to issue SQL queries to the database
 		statement = connect.createStatement();
 		// Result set get the result of the SQL query
 		String query = "select * from test.appstable1 where eid in (\"" + app1
 				+ "\",\"" + app2 + "\")";
-		System.out.println(query);
 		return statement.executeQuery(query);
 	}
 
@@ -155,14 +153,20 @@ public class MySQLAccess {
 			int i = 0;
 			while (resultSet.next()) {
 				a[i] = resultSet.getString("creator");
-				System.out.println("Creator: " + a[i]);
 				i++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return a[0].compareToIgnoreCase(a[1]) == 0;
+		
+		if (a[0] == null || a[1] == null)
+		{ 
+			//System.out.println("null");
+			return true;
+		}
+		//System.out.println("Creator: " + a[0] + " +++++++++++++++++++++ " + a[1]);
+		
+		return !(a[0].compareToIgnoreCase(a[1]) == 0);
 	}
 
 	HashMap<String, Integer> tmpHashMap = new HashMap<String, Integer>();
@@ -224,17 +228,19 @@ public class MySQLAccess {
 	}
 
 	public static void main(String[] args) {
+		String[] a = {"Aaa", "aaa"};
+		System.out.println(a[0].compareToIgnoreCase(a[1]) == 0);
 
-		long start = System.currentTimeMillis();
-		System.out.println("START:" + System.currentTimeMillis());
-
-		MySQLAccess access = new MySQLAccess();
-
-		access.getAllLibsAndPermissions("lib_names");
-		System.out.println("Write to File");
-		access.writeHashMapToTXT(null, "lib_names", true, true);
-		//access.writeHashMapToTXT(null, "lib_names", true, false);
-		System.out.println("TIME:" + (System.currentTimeMillis() - start));
+//		long start = System.currentTimeMillis();
+//		System.out.println("START:" + System.currentTimeMillis());
+//
+//		MySQLAccess access = new MySQLAccess();
+//
+//		access.getAllLibsAndPermissions("lib_names");
+//		System.out.println("Write to File");
+//		access.writeHashMapToTXT(null, "lib_names", true, true);
+//		//access.writeHashMapToTXT(null, "lib_names", true, false);
+//		System.out.println("TIME:" + (System.currentTimeMillis() - start));
 	}
 
 	public void writeHashMapToTXT(HashMap<String, Integer> map,

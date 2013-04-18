@@ -44,11 +44,14 @@ public class kdtreeCompare {
 	private ArrayList<AppData> appList;
 	private static final double defaultCompareRadius = 0.01;
 	private statistics stat;
+	public final double threshold = 0.9;
 	
+	MySQLAccess sqlAccess;
 	public kdtreeCompare() {
 		kdtree = new KdTree();
 		appList = new ArrayList<AppData>();
 		stat = new statistics();
+		this.sqlAccess = new MySQLAccess();
 	}
 	
 	public void insertKdtree(String name, double x, double y) {
@@ -75,7 +78,7 @@ public class kdtreeCompare {
 		int totalSim = 0;
 		int comp = 0;
 		
-		bsb.loadAuthorsMap();
+		//bsb.loadAuthorsMap();
 		
 		for (int i = 0; i < appList.size(); i++) {
 			nearApps = kdtree.searchRange(appList.get(i), radius);
@@ -105,13 +108,14 @@ public class kdtreeCompare {
 	}
 	
 	private int doPairwiseComparisonWithNeighbors(AppData base, ArrayList<AppData> list, BitSetBank bsb) {
+		
 		double simLogic, simContent;
 		int count = 0;
 		
 		for (int i = 0; i < list.size(); i++) {
 			simLogic = bsb.JaccardSimLogic(base.getName(), list.get(i).getName());
 			simContent = bsb.JaccardSimContent(base.getName(), list.get(i).getName());
-			if (simLogic > 0.7 && simContent > 0.7 && bsb.isDifferentAuthors(base.getName(), list.get(i).getName())) {
+			if (simLogic > threshold && simContent > threshold && sqlAccess.IsAuthorEqual(base.getName(), list.get(i).getName())) {
 				System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity (" + simLogic + ", " + simContent + ")");
 				count++;
 				stat.recordStatistics(simLogic, simContent);
@@ -130,7 +134,7 @@ public class kdtreeCompare {
 			if (base != list.get(i)) {
 			similarity = bsb.JaccardSimLogic(base.getName(), list.get(i).getName());
 			//System.out.println(similarity);
-			if (similarity > 0.7) {
+			if (similarity > threshold) {
 				System.out.println(base.getName() + ", " + list.get(i).getName());
 				count++;
 			}

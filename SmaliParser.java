@@ -22,7 +22,7 @@ public class SmaliParser {
 	private static final String contentMapPath = "content_extensions.txt";
 	private static final String logicMapPath = "smali-methods.txt";
 	private static final String outputFeaturePath = "testRun.txt";
-	private static final String whiteListLibraries = "whitelist_libraries.txt";
+	private static final String whiteListLibraries = "whitelist_librariesDB.txt";
 	private static final String permissionsMapPath = "permissions.txt";
 	
 	public static final int contentBitSize = 32;
@@ -42,6 +42,7 @@ public class SmaliParser {
 	public long dirCount;
 	public int logicFeaturesCount;
 	public int contentFeaturesCount;
+	public int filesInContentVector;
 	public int failedApk;
 
 	
@@ -274,12 +275,14 @@ public class SmaliParser {
 			String str;
 			
 			while ((str = in.readLine()) != null) {
-				contentHashMap.put(str, contentFeaturesCount);
-				contentFeaturesCount++;
+				Integer count = contentHashMap.get(str);
+				if (count == null) {
+					contentHashMap.put(str, contentFeaturesCount);
+					contentFeaturesCount++;
+				}
 			}
 			
 			contentFeaturesCount = contentFeaturesCount*contentBitSize;
-			
 			// Close buffered reader
 			in.close();
 
@@ -296,9 +299,12 @@ public class SmaliParser {
 			String str;
 			
 			while ((str = in.readLine()) != null) {
-				str.replace("/", separatorSign);
-				whiteListHashMap.put(str, logicFeaturesCount);
-				logicFeaturesCount++;
+				Integer count = whiteListHashMap.get(str);
+				if (count == null) {
+					str.replace("/", separatorSign);
+					whiteListHashMap.put(str, contentFeaturesCount);
+					contentFeaturesCount++;
+				}
 			}
 			// Close buffered reader
 			in.close();
@@ -370,7 +376,6 @@ public class SmaliParser {
 	
 	//Traverses the decompiled folder that was produced from an APK
 	public void apkDirectoryTraversal(File folder, OpenBitSet lVector, OpenBitSet cVector) {
-		
 		int[] contentCount = new int[contentHashMap.size()];
 		String absPath = null;
 		
@@ -406,6 +411,7 @@ public class SmaliParser {
 				//Else fileEntry is a file & do nothing
 			}
 		} catch (Exception e) {
+			System.out.println(folder.getName() + " failed decompilation");
 			failedApk++;
 			e.printStackTrace();
 			return;
@@ -464,18 +470,21 @@ public class SmaliParser {
 	}
 
 	public void listContentForFolder(File folder, int[] contentCount) {
+		String ext = null;
+		Integer idx = 0;
 		for (File fileEntry : folder.listFiles()) {
 			if (fileEntry.isDirectory()) {
 				listContentForFolder(fileEntry, contentCount);
 			} else {
 				try {
-					String ext = FilenameUtils.getExtension(fileEntry.getName());
-					Integer idx = contentHashMap.get(ext);
+					ext = FilenameUtils.getExtension(fileEntry.getName());
+					idx = contentHashMap.get(ext);
 					if (idx != null)
 						contentCount[idx]++;
 					
 				} catch (Exception e) {
-					System.out.println(folder.getName() + " Failed Decompilation");
+					System.out.println(fileEntry.getAbsolutePath() + " Failed Content Count");
+					System.out.println("idx = " + idx +  " ext = " + ext + " hashSize = " + contentHashMap.size() + " arraySize = " +contentCount.length);
 					e.printStackTrace();
 				}
 			}

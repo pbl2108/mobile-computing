@@ -297,8 +297,8 @@ public class SmaliParser {
 			
 			while ((str = in.readLine()) != null) {
 				str.replace("/", separatorSign);
-				whiteListHashMap.put(str, logicFeaturesCount);
-				logicFeaturesCount++;
+				whiteListHashMap.put(str, contentFeaturesCount);
+				contentFeaturesCount++;
 			}
 			// Close buffered reader
 			in.close();

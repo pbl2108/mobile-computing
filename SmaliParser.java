@@ -22,7 +22,7 @@ public class SmaliParser {
 	private static final String contentMapPath = "content_extensions.txt";
 	private static final String logicMapPath = "smali-methods.txt";
 	private static final String outputFeaturePath = "testRun.txt";
-	private static final String whiteListLibraries = "whitelist_libraries.txt";
+	private static final String whiteListLibraries = "whitelist_librariesDB.txt";
 	private static final String permissionsMapPath = "permissions.txt";
 	
 	public static final int contentBitSize = 32;

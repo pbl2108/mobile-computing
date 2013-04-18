@@ -124,6 +124,17 @@ public class PlotResults {
 				System.out.println("Please specify a directory of .ser files.");
 				showHelp(options);
 			}
+//			
+//			long k = bsb.bitSetsHashMap.get("com.mcc.probeapp-2").LogicVector.capacity();
+//			OpenBitSet logic1 = new OpenBitSet (k);
+//			OpenBitSet logic2 = new OpenBitSet (k);
+//			for (int i = 0; i< k; i++){
+//				if (i % 2 == 0)
+//					logic1.fastSet(i);
+//				else
+//					logic2.fastSet(i);
+//			}
+			
 			/* Max variance Logic and Max variance Content */
 			String xKey = cmd.getOptionValue("x");// "com.mcc.probeapp-2"; 
 			if (xKey == null)
@@ -145,6 +156,8 @@ public class PlotResults {
 			e.printStackTrace();
 		}
 	}
+
+
 	private static Options createOptions() {
 		Options options = new Options();
 		options.addOption("h", "help", false, "print this message and exit");

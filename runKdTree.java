@@ -48,7 +48,7 @@ public class runKdTree {
 	}
 	
 	private static final double defaultRadius = 0.1;
-	private static final String defaultSerialPath = "/Users/xuyiming/Desktop/result";
+	private static final String defaultSerialPath = "/Users/xuyiming/Desktop/result2";
 	
 	private static final String radiusOption = "r";
 	private static final String helpOption = "h";
@@ -108,15 +108,19 @@ public class runKdTree {
 			timer.endTimerForRead();
 			
 			System.out.println("Use base:");
-			String xKey = "com.mcc.probeapp-2"; //bsb.findVectorWithMaxVariance(true);
-			String yKey = "com.mcp.android.dq4u-28"; //bsb.findVectorWithMaxVariance(false);
+			String xKey = bsb.findVectorWithMaxVariance(true);
+			String yKey = bsb.findVectorWithMaxVariance(false);
+			//String xKey = "com.mcc.probeapp-2";
+			//String yKey = "com.mcp.android.dq4u-28";
+			//String xKey = "com.init-2";
+			//String yKey = "com.jb.gosmspro.theme.picnic-1";
 			System.out.println("X: " + xKey);
 			System.out.println("Y: " + yKey);
 			System.out.println("-----------------");
 			timer.endTimerForBase();
 			
-			bsb.compareBitSetBank_KDtree(bsb.bitSetsHashMap.get(xKey).LogicVector, bsb.bitSetsHashMap.get(yKey).ContentVector, kd);
-			//bsb.compareBitSetBank_KDtree(null, null, kd);
+			//bsb.compareBitSetBank_KDtree(bsb.bitSetsHashMap.get(xKey).LogicVector, bsb.bitSetsHashMap.get(yKey).ContentVector, kd);
+			bsb.compareBitSetBank_KDtree(null, null, kd);
 			timer.endTimerForInsert();
 			
 			kd.runKdtreeCompare(radius, bsb);

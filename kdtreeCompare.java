@@ -73,18 +73,23 @@ public class kdtreeCompare {
 	public void runKdtreeCompare(double radius, BitSetBank bsb) {
 		
 		ArrayList<AppData> nearApps;
+		//AppData buff;
 		ArrayList<String> highSimApps = new ArrayList<String>();
 		int ret = 0;
 		int totalSim = 0;
 		int comp = 0;
 		
-		//bsb.loadAuthorsMap();
+		bsb.loadAuthorsMap();
 		
 		for (int i = 0; i < appList.size(); i++) {
+		//while (!appList.isEmpty()) {
 			nearApps = kdtree.searchRange(appList.get(i), radius);
 			ret = doPairwiseComparisonWithNeighbors(appList.get(i), nearApps, bsb);
-			//ret = doPairwiseComparison(appList.get(i), appList, bsb);
+//			buff = appList.get(0);
+//			appList.remove(0);
+//			ret = doPairwiseComparison(buff, appList, bsb);
 			comp += nearApps.size();
+			//comp += appList.size() - 1;
 			
 			if (ret != 0) {
 				System.out.println("total number: " + ret);
@@ -93,6 +98,7 @@ public class kdtreeCompare {
 				
 				if (ret >= 25)
 					highSimApps.add(appList.get(i).getName() + ".apk");
+					//highSimApps.add(buff.getName() + ".apk");
 			}
 		}
 		
@@ -115,7 +121,9 @@ public class kdtreeCompare {
 		for (int i = 0; i < list.size(); i++) {
 			simLogic = bsb.JaccardSimLogic(base.getName(), list.get(i).getName());
 			simContent = bsb.JaccardSimContent(base.getName(), list.get(i).getName());
-			if (simLogic > threshold && simContent > threshold && sqlAccess.IsAuthorEqual(base.getName(), list.get(i).getName())) {
+			if (simLogic > threshold && simContent > threshold
+					&& bsb.isDifferentAuthors(base.getName(), list.get(i).getName())
+					&& sqlAccess.IsAuthorEqual(base.getName(), list.get(i).getName())) {
 				System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity (" + simLogic + ", " + simContent + ")");
 				count++;
 				stat.recordStatistics(simLogic, simContent);
@@ -127,17 +135,20 @@ public class kdtreeCompare {
 	
 	/* pure pairwise comparison */
 	private int doPairwiseComparison(AppData base, ArrayList<AppData> list, BitSetBank bsb) {
-		double similarity;
+		double simLogic, simContent;
 		int count = 0;
 		
 		for (int i = 0; i < list.size(); i++) {
 			if (base != list.get(i)) {
-			similarity = bsb.JaccardSimLogic(base.getName(), list.get(i).getName());
-			//System.out.println(similarity);
-			if (similarity > threshold) {
-				System.out.println(base.getName() + ", " + list.get(i).getName());
-				count++;
-			}
+				simLogic = bsb.JaccardSimLogic(base.getName(), list.get(i).getName());
+				simContent = bsb.JaccardSimContent(base.getName(), list.get(i).getName());
+				if (simLogic > threshold && simContent > threshold
+						&& bsb.isDifferentAuthors(base.getName(), list.get(i).getName())
+						&& sqlAccess.IsAuthorEqual(base.getName(), list.get(i).getName())) {
+					System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity (" + simLogic + ", " + simContent + ")");
+					count++;
+					stat.recordStatistics(simLogic, simContent);
+				}
 			}
 		}
 		

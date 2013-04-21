@@ -144,6 +144,29 @@ public class ApkDisassembler {
 			System.out.println("============================================");
 		}
 		
+		public void getFiles(int start, int stop) {
+			int idx;
+			int fileCount = 0;
+			int arrayLength;
+			
+			File[] files = topDir.listFiles();
+			
+			arrayLength = stop - start;
+			idx = start;
+						
+			this.fileArray = new File[arrayLength];
+								
+			while (fileCount < arrayLength){
+				fileArray[fileCount] = files[idx];
+								
+				idx++;
+				fileCount++;
+			}
+			
+			System.out.println("Total files in folder:  " + files.length);
+			System.out.println("Processing " + arrayLength + " files [" + (idx - arrayLength) + "," + idx + ")" );
+			System.out.println("============================================");
+		}
 		
 		private void disassembleApk(File apk, String pureName) throws Exception {
 			Process p = Runtime.getRuntime().exec(getDisassembleCmd(apk, pureName));

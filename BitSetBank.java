@@ -603,7 +603,7 @@ public class BitSetBank {
 	
 	public ArrayList<String> getSmaliMethodsFromBitVector(AppVector app) {
 		OpenBitSet x = app.LogicVector;
-		
+		//bitSetsHashMap.values().get
 		return null;
 	}
 	public ArrayList<String> getPermissionsFromBitVector(AppVector app) {

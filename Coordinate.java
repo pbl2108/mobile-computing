@@ -21,8 +21,11 @@ public class Coordinate {
 		return this.getCoordinateWithDimension(d) < obj.getCoordinateWithDimension(d);
 	}
 	
-	@Override
 	public String toString() {
 		return "(" + x + "," + y + ")";
+	}
+	
+	public String toStringCSV() {
+		return x + "," + y;
 	}
 }

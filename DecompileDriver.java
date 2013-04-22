@@ -29,6 +29,8 @@ public class DecompileDriver {
 		    options.addOption("a", "all", false, "decompile all apks");
 		    options.addOption("d", "divisor", true, "number of sections the total apks should be divided into");
 		    options.addOption("s", "section", true, "respective fraction of the apks to be processed");
+		    options.addOption("st", "start", true, "start of apks to be processed");
+		    options.addOption("e", "end", true, "end of apks to be processed");
 		    options.addOption("w", "whitelist", false, "generate whitelist for files; output class file is whitelist-classes.txt");
 		    
 		    return options;

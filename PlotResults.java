@@ -1,4 +1,11 @@
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -78,8 +85,7 @@ public class PlotResults {
 				XYDataset dataSet = ent.getDataset();
 				
 				System.out.println(revMapofApps.get(dataSet.getXValue(sindex, iindex) + " " + dataSet.getYValue(sindex, iindex)));
-				System.out.println("Series Index x = " + sindex);
-				System.out.println("Item y = " + iindex);
+				System.out.println("x = " + dataSet.getXValue(sindex, iindex) + " y = " + dataSet.getYValue(sindex, iindex));
 			}
 		}
 
@@ -89,8 +95,13 @@ public class PlotResults {
 			ChartEntity entity = arg0.getEntity();
 			if (entity != null && entity instanceof XYItemEntity) {
 				XYItemEntity ent = (XYItemEntity) entity;
+				
+				int sindex = ent.getSeriesIndex();
+				int iindex = ent.getItem();
+				
+				XYDataset dataSet = ent.getDataset();
 							
-				ent.setToolTipText("Hello");
+				ent.setToolTipText(revMapofApps.get(dataSet.getXValue(sindex, iindex) + " " + dataSet.getYValue(sindex, iindex)) + " x = " + dataSet.getXValue(sindex, iindex) + " y = " + dataSet.getYValue(sindex, iindex));
 
 			}
 		}
@@ -115,15 +126,48 @@ public class PlotResults {
 
 
 			cmd = parser.parse(options, args);
-
+			
+			String inputCSV = cmd.getOptionValue("c");
 			String inputPath = cmd.getOptionValue("i");
-			if (inputPath != null) {
+			if (inputCSV != null) {
+				
+				XYSeries series = new XYSeries("Android Apps");
+				HashMap<String, String> revMap = new HashMap<String,String>();
+				
+				readFromCSV(inputCSV, series, revMap);
+				
+				XYSeriesCollection seriesCollection = new XYSeriesCollection();
+				seriesCollection.addSeries(series);
+				
+				PlotResults plotter = new PlotResults();
+				plotter.ScatterPlot(seriesCollection, inputCSV, revMap);
+			}else if (inputPath != null) {
 				bsb.readAllFromSerial(inputPath);
+				
+				/* Max variance Logic and Max variance Content */
+				String xKey = cmd.getOptionValue("x");// "com.mcc.probeapp-2"; 
+				if (xKey == null)
+					xKey = bsb.findVectorWithMaxVariance(true);
+				System.out.println("X:" + xKey);
+				x = bsb.bitSetsHashMap.get(xKey).LogicVector;
+
+				String yKey = cmd.getOptionValue("y"); //"com.mcp.android.dq4u-28";
+				if (yKey == null)
+					 bsb.findVectorWithMaxVariance(false);
+				System.out.println("Y:" + yKey);
+				y = bsb.bitSetsHashMap.get(yKey).ContentVector;
+
+				bsb.plotAndCompareBitSetBank(x, y, " X: " + xKey + " \r\n Y:"
+						+ yKey);
 			}
 			else{
-				System.out.println("Please specify a directory of .ser files.");
+				System.out.println("Please specify a directory of .csv or .ser files.");
 				showHelp(options);
 			}
+
+
+			
+			
 //			
 //			long k = bsb.bitSetsHashMap.get("com.mcc.probeapp-2").LogicVector.capacity();
 //			OpenBitSet logic1 = new OpenBitSet (k);
@@ -135,21 +179,7 @@ public class PlotResults {
 //					logic2.fastSet(i);
 //			}
 			
-			/* Max variance Logic and Max variance Content */
-			String xKey = cmd.getOptionValue("x");// "com.mcc.probeapp-2"; 
-			if (xKey == null)
-				xKey = bsb.findVectorWithMaxVariance(true);
-			System.out.println("X:" + xKey);
-			x = bsb.bitSetsHashMap.get(xKey).LogicVector;
 
-			String yKey = cmd.getOptionValue("y"); //"com.mcp.android.dq4u-28";
-			if (yKey == null)
-				 bsb.findVectorWithMaxVariance(false);
-			System.out.println("Y:" + yKey);
-			y = bsb.bitSetsHashMap.get(yKey).ContentVector;
-
-			bsb.plotAndCompareBitSetBank(x, y, " X: " + xKey + " \r\n Y:"
-					+ yKey);
 			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -157,11 +187,85 @@ public class PlotResults {
 		}
 	}
 
+	public static void readFromCSV(String filePath, XYSeries series, HashMap<String, String> revMap) {
+		try {
+			if (filePath == null || filePath.isEmpty())
+				return;
+			
+			if (filePath.endsWith(".csv"))
+				readandPlotCSV(filePath, series, revMap);
+			
+			File dir = new File(filePath);
+			if (dir.isFile())
+				return;
+			
+			readAllFromCSV(dir, series, revMap);
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void readAllFromCSV(File dir, XYSeries series, HashMap<String, String> revMap) {
+		try {
+			for (File entry : dir.listFiles()) {
+					
+					if (entry.isDirectory()) {
+						readAllFromCSV(entry, series, revMap);
+						continue;
+					}
+					
+					if (entry.isFile() && !entry.getName().endsWith(".csv"))
+						continue;
+					else
+						readandPlotCSV(entry.getAbsolutePath(), series, revMap);
+	
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	private static void readandPlotCSV(String filePath, XYSeries series, HashMap<String, String> revMap) throws IOException {
+			FileReader fr = new FileReader(filePath);
+			BufferedReader br = new BufferedReader(fr);
+			String currentRow;
+			String delimiter = "\\s*,\\s*";
+			String tokens[];
+			String token;
+
+						
+			while ((currentRow = br.readLine()) != null) {
+				tokens = currentRow.split(delimiter);
+				double jSimX = Double.parseDouble(tokens[1]);
+				double jSimY = Double.parseDouble(tokens[2]);
+				series.add(jSimX, jSimY);
+				revMap.put(jSimX + " " + jSimY,tokens[0]);
+
+			}
+			
+			br.close();
+			fr.close();
+
+
+
+	}
+		
 
 	private static Options createOptions() {
 		Options options = new Options();
 		options.addOption("h", "help", false, "print this message and exit");
 		options.addOption("i", "input", true, "input folder containing .ser files for loading the hashmap of vectors");
+		options.addOption("c", "csv", true, "input is csv file");
 		options.addOption("x", "X-app", true, "the name of the app used as X: base vector for plotting. The app has to be present in the .ser file(s).");
 		options.addOption("y", "Y-app", true, "the name of the app used as Y: base vector for plotting. The app has to be present in the .ser file(s).");
 

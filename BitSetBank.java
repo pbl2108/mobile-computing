@@ -322,6 +322,7 @@ public class BitSetBank {
 		OpenBitSet logicBitSet, contentBitSet;
 		double jSimX, jSimY;
 		HashMap<String, String> revMap = new HashMap<String,String>();
+		ArrayList<String> phonegapList = new ArrayList<String>();
 
 		for (Iterator<Map.Entry<String, AppVector>> iter1 = bitSetsHashMap
 				.entrySet().iterator(); iter1.hasNext();) {
@@ -338,11 +339,18 @@ public class BitSetBank {
 				y = logicBitSet;
 				continue;
 			}
+			
+			if (entry1.getKey().contains("phonegap")){
 			// Calculate distance between X, Y and each app
 			jSimX = this.JaccardSim(x, logicBitSet);
 			jSimY = this.JaccardSim(y, contentBitSet);
 			//jSimY = this.JaccardSim(y, logicBitSet);
 			series.add(jSimX, jSimY);
+			
+			
+			if (entry1.getKey().contains("phonegap")){
+				phonegapList.add(entry1.getKey() + " " + jSimX + " "+ jSimY);
+			}
 			
 			String str = revMap.get(jSimX + " " + jSimY);
 			if (str == null) {
@@ -352,12 +360,16 @@ public class BitSetBank {
 				revMap.put(jSimX + " " + jSimY, entry1.getKey() + " " + str);
 			}
 			
-			
+			}
 //			if (jSimX > 0.0)
 //				System.out.println(entry1.getKey() + "--->(X,Y) = (" + jSimX
 //					+ " , " + jSimY + ")");
 		}
 
+//		for (String str : phonegapList){
+//			System.out.println(str);
+//		}
+		System.out.println("phonegap apps: " + phonegapList.size());
 		
 		XYSeriesCollection seriesCollection = new XYSeriesCollection();
 		seriesCollection.addSeries(series);

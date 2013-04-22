@@ -17,7 +17,10 @@ public class DecompileDriver {
 	public static File outputFolder;
 	public static int divisor = 0;
 	public static int sectionNumber = 0;
+	public static int partNumber = 0;
 	public static int apkBufferLength = 500;
+	public static int apkBufferIdx = 0;
+	public static int apkBufferIteration = 0;
 	
 	  private static Options createOptions() {
 		    Options options = new Options();
@@ -29,8 +32,7 @@ public class DecompileDriver {
 		    options.addOption("a", "all", false, "decompile all apks");
 		    options.addOption("d", "divisor", true, "number of sections the total apks should be divided into");
 		    options.addOption("s", "section", true, "respective fraction of the apks to be processed");
-		    options.addOption("st", "start", true, "start of apks to be processed");
-		    options.addOption("e", "end", true, "end of apks to be processed");
+		    options.addOption("st", "p", true, "part number of apks to start at");
 		    options.addOption("w", "whitelist", false, "generate whitelist for files; output class file is whitelist-classes.txt");
 		    
 		    return options;
@@ -136,6 +138,12 @@ public class DecompileDriver {
 			if( cmd.getOptionValue( "r" ) != null ) {
 				int randSize = Integer.parseInt(cmd.getOptionValue( "r" ));
 				ad.getRandomFiles(randSize);
+			}else if( cmd.getOptionValue( "p" ) != null && cmd.getOptionValue( "d" ) != null && cmd.getOptionValue( "s" ) != null ) {
+					partNumber = Integer.parseInt(cmd.getOptionValue( "p" ));
+					divisor = Integer.parseInt(cmd.getOptionValue( "d" ));
+					sectionNumber = Integer.parseInt(cmd.getOptionValue( "s" ));
+					apkBufferIteration = partNumber;
+					ad.continueFileSection(divisor, sectionNumber, partNumber, apkBufferLength);
 			}else if( cmd.getOptionValue( "d" ) != null && cmd.getOptionValue( "s" ) != null ) {
 				divisor = Integer.parseInt(cmd.getOptionValue( "d" ));
 				sectionNumber = Integer.parseInt(cmd.getOptionValue( "s" ));
@@ -171,8 +179,7 @@ public class DecompileDriver {
 		File currentDir;
 		
 		ad.createApkListLog(divisor, sectionNumber);
-		int apkBufferIdx = 0;
-		int apkBufferIteration = 0;
+
 		
 		String[] apkNameBuffer = new String[apkBufferLength];
 		
@@ -213,7 +220,11 @@ public class DecompileDriver {
 		
 		
 		System.out.println("\nTotal time: " + (endTime - startTime) + " ms");
-		System.out.println("\nAverage time for 1 out of " + (apkBufferLength*apkBufferIteration+apkBufferIdx) 
+		if (partNumber != 0)
+			System.out.println("\nAverage time for 1 out of " + (apkBufferLength*apkBufferIteration+apkBufferIdx - apkBufferLength*partNumber) 
+					+ " app: " + (endTime - startTime)/(apkBufferLength*apkBufferIteration+apkBufferIdx) + " ms/app");
+		else
+			System.out.println("\nAverage time for 1 out of " + (apkBufferLength*apkBufferIteration+apkBufferIdx) 
 							+ " app: " + (endTime - startTime)/(apkBufferLength*apkBufferIteration+apkBufferIdx) + " ms/app");
 		System.out.println("Failed APK's: " + sp.failedApk);
 	}

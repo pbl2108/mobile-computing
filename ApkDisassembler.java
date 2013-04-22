@@ -144,27 +144,34 @@ public class ApkDisassembler {
 			System.out.println("============================================");
 		}
 		
-		public void getFiles(int start, int stop) {
+		public void continueFileSection(int divisor, int sectionNumber, int partNumber, int apkBufferLength) {
 			int idx;
 			int fileCount = 0;
-			int arrayLength;
+			int originalArrayLength, arrayLength;
 			
 			File[] files = topDir.listFiles();
 			
-			arrayLength = stop - start;
-			idx = start;
+			originalArrayLength = files.length/divisor;
+			idx = originalArrayLength * (sectionNumber-1);
 						
+			if (divisor == sectionNumber)
+				originalArrayLength = files.length - idx;
+			
+			int startIdx = idx + partNumber*apkBufferLength;
+			arrayLength = originalArrayLength - partNumber*apkBufferLength;
+		
 			this.fileArray = new File[arrayLength];
 								
 			while (fileCount < arrayLength){
-				fileArray[fileCount] = files[idx];
+				fileArray[fileCount] = files[startIdx];
 								
-				idx++;
+				startIdx++;
 				fileCount++;
 			}
 			
 			System.out.println("Total files in folder:  " + files.length);
-			System.out.println("Processing " + arrayLength + " files [" + (idx - arrayLength) + "," + idx + ")" );
+			System.out.println("Originally Processing " + originalArrayLength + " files [" + idx + "," + (idx + originalArrayLength) + ")" );
+			System.out.println("Continuing at " + (startIdx - arrayLength));
 			System.out.println("============================================");
 		}
 		

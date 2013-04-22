@@ -201,7 +201,7 @@ public class kdtreeCompare {
 				
 				if (simContent > threshold
 						&& bsb.isDifferentAuthors(base.getName(), list.get(i).getName())
-						&& sqlAccess.IsAuthorEqual(base.getName(), list.get(i).getName())) {
+						&& sqlAccess.isAuthorDifferent(base.getName(), list.get(i).getName())) {
 					
 					System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity (" + simLogic + ", " + simContent + ")");
 					count++;
@@ -227,7 +227,7 @@ public class kdtreeCompare {
 				simContent = bsb.JaccardSimContent(base.getName(), list.get(i).getName());
 				if (simLogic > threshold && simContent > threshold
 						&& bsb.isDifferentAuthors(base.getName(), list.get(i).getName())
-						&& sqlAccess.IsAuthorEqual(base.getName(), list.get(i).getName())) {
+						&& sqlAccess.isAuthorDifferent(base.getName(), list.get(i).getName())) {
 					System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity (" + simLogic + ", " + simContent + ")");
 					count++;
 					stat.recordStatistics(simLogic, simContent);

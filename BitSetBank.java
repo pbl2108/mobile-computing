@@ -588,4 +588,14 @@ public class BitSetBank {
 			e.printStackTrace();
 		}
 	}
+	
+	public ArrayList<String> getSmaliMethodsFromBitVector(AppVector app) {
+		OpenBitSet x = app.LogicVector;
+		
+		return null;
+	}
+	public ArrayList<String> getPermissionsFromBitVector(AppVector app) {
+		
+		return null;
+	}
 }

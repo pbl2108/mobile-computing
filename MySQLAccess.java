@@ -1,6 +1,8 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -19,15 +21,17 @@ import org.apache.lucene.util.OpenBitSet;
 public class MySQLAccess {
 	private Connection connect = null;
 	private static final String connectionString = "jdbc:mysql://localhost/test?user=apps_user&password=apps_userpw";
+	// private static final String connectionString =
+	// "jdbc:mysql://localhost/test";
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
-	
+
 	public MySQLAccess() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-		
-		// Setup the connection with the DB
+
+			// Setup the connection with the DB
 			connect = DriverManager.getConnection(connectionString);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -76,8 +80,7 @@ public class MySQLAccess {
 		// Statements allow to issue SQL queries to the database
 		statement = connect.createStatement();
 		// Result set get the result of the SQL query
-		resultSet = statement
-				.executeQuery("select * from test.appstable1");
+		resultSet = statement.executeQuery("select * from test.appstable1");
 		// printResultSetToConsole(resultSet);
 	}
 
@@ -110,9 +113,11 @@ public class MySQLAccess {
 			// e.g. resultSet.getSTring(2);
 			String eid = resultSet.getString("eid");
 			String creator = resultSet.getString("creator");
+			String hash = resultSet.getString("contact_phone");
 
 			System.out.println("EID: " + eid);
 			System.out.println("Creator: " + creator);
+			System.out.println("HASH: " + hash);
 		}
 	}
 
@@ -146,27 +151,28 @@ public class MySQLAccess {
 		}
 	}
 
-	public boolean IsAuthorEqual(String app1, String app2) {
+	public boolean isAuthorDifferent(String app1, String app2) {
 		String[] a = new String[2];
+		String[] b = new String[2];
 		try {
 			ResultSet resultSet = this.readResultSet(app1, app2);
 			int i = 0;
 			while (resultSet.next()) {
 				a[i] = resultSet.getString("creator");
+				b[i] = resultSet.getString("contact_phone");
 				i++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		if (a[0] == null || a[1] == null)
-		{ 
-			//System.out.println("null");
+
+		if ((a[0] == null || a[1] == null) && (b[0] == null || b[1] == null)) {
 			return true;
 		}
-		//System.out.println("Creator: " + a[0] + " +++++++++++++++++++++ " + a[1]);
-		
-		return !(a[0].compareToIgnoreCase(a[1]) == 0);
+		// System.out.println("Creator: " + a[0] + " +++++++++++++++++++++ " +
+		// a[1]);
+
+		return !(a[0].compareToIgnoreCase(a[1]) == 0) && !(b[0].compareToIgnoreCase(b[1]) == 0);
 	}
 
 	HashMap<String, Integer> tmpHashMap = new HashMap<String, Integer>();
@@ -227,20 +233,42 @@ public class MySQLAccess {
 		}
 	}
 
-	public static void main(String[] args) {
-		String[] a = {"Aaa", "aaa"};
-		System.out.println(a[0].compareToIgnoreCase(a[1]) == 0);
+	public void temp() {
+		try {
+			statement = connect.createStatement();
+			// Result set get the result of the SQL query
+			resultSet = statement.executeQuery("select * from test.appstable1 where eid");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-//		long start = System.currentTimeMillis();
-//		System.out.println("START:" + System.currentTimeMillis());
-//
-//		MySQLAccess access = new MySQLAccess();
-//
-//		access.getAllLibsAndPermissions("lib_names");
-//		System.out.println("Write to File");
-//		access.writeHashMapToTXT(null, "lib_names", true, true);
-//		//access.writeHashMapToTXT(null, "lib_names", true, false);
-//		System.out.println("TIME:" + (System.currentTimeMillis() - start));
+	}
+	
+	public static void main(String[] args) {
+
+		long start = System.currentTimeMillis();
+		System.out.println("Load Authors!");
+		System.out.println(start);
+		MySQLAccess access = new MySQLAccess();
+		//access.loadAuthorsMapIntoDB("/home/peter/apkSignatures_d78910.txt");
+		try {
+			access.read("com.infiniteangle.RayWar-7","com.infiniteappz.chemistrycalculators-1");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// printResultSetToConsole(resultSet);
+
+		// System.out.println("START:" + System.currentTimeMillis());
+		//
+		// MySQLAccess access = new MySQLAccess();
+		//
+		// access.getAllLibsAndPermissions("lib_names");
+		// System.out.println("Write to File");
+		// access.writeHashMapToTXT(null, "lib_names", true, true);
+		// //access.writeHashMapToTXT(null, "lib_names", true, false);
+		 System.out.println("TIME:" + (System.currentTimeMillis() - start));
 	}
 
 	public void writeHashMapToTXT(HashMap<String, Integer> map,
@@ -282,6 +310,40 @@ public class MySQLAccess {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void loadAuthorsMapIntoDB(String filePath) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(filePath));
+			String delimiter = "\\s+";
+			String currentLine;
+			String tokens[];
+
+			while ((currentLine = in.readLine()) != null) {
+				tokens = currentLine.split(delimiter);
+				this.updateAuthor(tokens[0], tokens[1]);
+			}
+			// Close buffered reader
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void updateAuthor(String appName, String authorHash) {
+		// Statements allow to issue SQL queries to the database
+		try {
+			statement = connect.createStatement();
+
+			String query = "UPDATE test.appstable1 SET contact_phone = \""
+					+ authorHash + "\" WHERE eid = \"" + appName + "\"";
+			statement.executeUpdate(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// Result set get the result of the SQL query
+
 	}
 
 }

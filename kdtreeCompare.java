@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.lucene.util.OpenBitSet;
@@ -39,6 +42,72 @@ public class kdtreeCompare {
 			System.out.println("match both: (0.7, 0.8]: " + both[0] + "; (0.8, 0.9]: " + both[1] + "; (0.9, 1.0]: " + both[2]);
 		}
 	}
+	
+	class plotRecorder {
+		
+		private BufferedWriter similarityWriter;
+		private BufferedWriter clusterWriter;
+		
+		private boolean baseToCluster;
+		private boolean baseToSimilar;
+		
+		public plotRecorder() {
+			try {
+				clusterWriter = new BufferedWriter(new FileWriter("/Users/xuyiming/Desktop/cluster.csv"));
+				similarityWriter = new BufferedWriter(new FileWriter("/Users/xuyiming/Desktop/similar.csv"));
+			} catch (IOException e) {
+				// do nothing
+			}
+			this.clear();
+		}
+		
+		private void clear() {
+			baseToCluster = false;
+			baseToSimilar = false;
+		}
+		
+		public void writeToCluster(AppData app) {
+			try {
+				if (!app.isWritenToCluster()) {
+					clusterWriter.write(app.getAppInfoCSV() + "\n");
+					app.markAsWritenToCluster();
+					baseToCluster = true;
+				}
+			} catch (IOException e) {
+				// do nothing
+			}
+		}
+		
+		public void writeToSimilar(AppData app) {
+			try {
+				if (!app.isWritenToSimilar()) {
+					similarityWriter.write(app.getAppInfoCSV() + "\n");
+					app.markAsWritenToSimilar();
+					baseToSimilar = true;
+				}
+			} catch (IOException e) {
+				// do nothing
+			}
+		}
+		
+		public void writeBase(AppData base) {
+			if (baseToCluster)
+				this.writeToCluster(base);
+			if (baseToSimilar)
+				this.writeToSimilar(base);
+			
+			this.clear();
+		}
+		
+		public void closeFile() {
+			try {
+				this.similarityWriter.close();
+				this.clusterWriter.close();
+			} catch (IOException e) {
+				// do nothing
+			}
+		}
+	}
 
 	private KdTree kdtree;
 	private ArrayList<AppData> appList;
@@ -46,12 +115,15 @@ public class kdtreeCompare {
 	private statistics stat;
 	public final double threshold = 0.9;
 	
+	private plotRecorder plot;
+	
 	MySQLAccess sqlAccess;
 	public kdtreeCompare() {
 		kdtree = new KdTree();
 		appList = new ArrayList<AppData>();
 		stat = new statistics();
 		this.sqlAccess = new MySQLAccess();
+		this.plot = new plotRecorder();
 	}
 	
 	public void insertKdtree(String name, double x, double y) {
@@ -59,7 +131,6 @@ public class kdtreeCompare {
 		appList.add(app);
 		kdtree.insertNode(app);
 	}
-	
 	
 	public int getAppListSize() {
 		return appList.size();
@@ -73,18 +144,23 @@ public class kdtreeCompare {
 	public void runKdtreeCompare(double radius, BitSetBank bsb) {
 		
 		ArrayList<AppData> nearApps;
+		//AppData buff;
 		ArrayList<String> highSimApps = new ArrayList<String>();
 		int ret = 0;
 		int totalSim = 0;
 		int comp = 0;
 		
-		//bsb.loadAuthorsMap();
+		bsb.loadAuthorsMap();
 		
 		for (int i = 0; i < appList.size(); i++) {
+		//while (!appList.isEmpty()) {
 			nearApps = kdtree.searchRange(appList.get(i), radius);
 			ret = doPairwiseComparisonWithNeighbors(appList.get(i), nearApps, bsb);
-			//ret = doPairwiseComparison(appList.get(i), appList, bsb);
+//			buff = appList.get(0);
+//			appList.remove(0);
+//			ret = doPairwiseComparison(buff, appList, bsb);
 			comp += nearApps.size();
+			//comp += appList.size() - 1;
 			
 			if (ret != 0) {
 				System.out.println("total number: " + ret);
@@ -93,6 +169,7 @@ public class kdtreeCompare {
 				
 				if (ret >= 25)
 					highSimApps.add(appList.get(i).getName() + ".apk");
+					//highSimApps.add(buff.getName() + ".apk");
 			}
 		}
 		
@@ -105,6 +182,8 @@ public class kdtreeCompare {
 		System.out.println("-----------------------");
 		for (int i = 0; i < highSimApps.size(); i++)
 			System.out.println(highSimApps.get(i));
+		
+		plot.closeFile();
 	}
 	
 	private int doPairwiseComparisonWithNeighbors(AppData base, ArrayList<AppData> list, BitSetBank bsb) {
@@ -115,29 +194,44 @@ public class kdtreeCompare {
 		for (int i = 0; i < list.size(); i++) {
 			simLogic = bsb.JaccardSimLogic(base.getName(), list.get(i).getName());
 			simContent = bsb.JaccardSimContent(base.getName(), list.get(i).getName());
-			if (simLogic > threshold && simContent > threshold && sqlAccess.IsAuthorEqual(base.getName(), list.get(i).getName())) {
-				System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity (" + simLogic + ", " + simContent + ")");
-				count++;
-				stat.recordStatistics(simLogic, simContent);
+			
+			if (simLogic > threshold) {
+				
+				plot.writeToCluster(list.get(i));
+				
+				if (simContent > threshold
+						&& bsb.isDifferentAuthors(base.getName(), list.get(i).getName())
+						&& sqlAccess.isAuthorDifferent(base.getName(), list.get(i).getName())) {
+					
+					System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity (" + simLogic + ", " + simContent + ")");
+					count++;
+					stat.recordStatistics(simLogic, simContent);
+					plot.writeToSimilar(list.get(i));
+				}
 			}
 		}
+		
+		plot.writeBase(base);
 		
 		return count;
 	}
 	
 	/* pure pairwise comparison */
 	private int doPairwiseComparison(AppData base, ArrayList<AppData> list, BitSetBank bsb) {
-		double similarity;
+		double simLogic, simContent;
 		int count = 0;
 		
 		for (int i = 0; i < list.size(); i++) {
 			if (base != list.get(i)) {
-			similarity = bsb.JaccardSimLogic(base.getName(), list.get(i).getName());
-			//System.out.println(similarity);
-			if (similarity > threshold) {
-				System.out.println(base.getName() + ", " + list.get(i).getName());
-				count++;
-			}
+				simLogic = bsb.JaccardSimLogic(base.getName(), list.get(i).getName());
+				simContent = bsb.JaccardSimContent(base.getName(), list.get(i).getName());
+				if (simLogic > threshold && simContent > threshold
+						&& bsb.isDifferentAuthors(base.getName(), list.get(i).getName())
+						&& sqlAccess.isAuthorDifferent(base.getName(), list.get(i).getName())) {
+					System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity (" + simLogic + ", " + simContent + ")");
+					count++;
+					stat.recordStatistics(simLogic, simContent);
+				}
 			}
 		}
 		

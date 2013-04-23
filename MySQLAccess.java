@@ -2,9 +2,12 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,9 +23,9 @@ import org.apache.lucene.util.OpenBitSet;
 
 public class MySQLAccess {
 	private Connection connect = null;
-	private static final String connectionString = "jdbc:mysql://localhost/test?user=apps_user&password=apps_userpw";
 	// private static final String connectionString =
-	// "jdbc:mysql://localhost/test";
+	// "jdbc:mysql://localhost/test?user=apps_user&password=apps_userpw";
+	private static final String connectionString = "jdbc:mysql://localhost/test";
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -39,7 +42,7 @@ public class MySQLAccess {
 		}
 	}
 
-	public void insert(String name, OpenBitSet featureVector, String md5,
+	public void insert(String name, AppVector featureVector, String md5,
 			Double x, Double y, Double z) throws Exception {
 
 		try {
@@ -96,11 +99,15 @@ public class MySQLAccess {
 
 	public ResultSet readResultSet(String app1, String app2) throws Exception {
 		// Statements allow to issue SQL queries to the database
-		statement = connect.createStatement();
-		// Result set get the result of the SQL query
-		String query = "select * from test.appstable1 where eid in (\"" + app1
-				+ "\",\"" + app2 + "\")";
-		return statement.executeQuery(query);
+		PreparedStatement smt = connect
+				.prepareStatement("select * from test.appstable1 where eid in(?,?)");
+		smt.setString(1, app1);
+		smt.setString(2, app2);
+		// // Result set get the result of the SQL query
+		// String query = "select * from test.appstable1 where eid in (\"" +
+		// app1
+		// + "\",\"" + app2 + "\")";
+		return smt.executeQuery();
 	}
 
 	private void printResultSetToConsole(ResultSet resultSet)
@@ -113,7 +120,7 @@ public class MySQLAccess {
 			// e.g. resultSet.getSTring(2);
 			String eid = resultSet.getString("eid");
 			String creator = resultSet.getString("creator");
-			String hash = resultSet.getString("contact_phone");
+			String hash = resultSet.getString("author_md5");
 
 			System.out.println("EID: " + eid);
 			System.out.println("Creator: " + creator);
@@ -154,16 +161,33 @@ public class MySQLAccess {
 	public boolean isAuthorDifferent(String app1, String app2) {
 		String[] a = new String[2];
 		String[] b = new String[2];
+		ResultSet rs = null;
+		PreparedStatement smt = null;
 		try {
-			ResultSet resultSet = this.readResultSet(app1, app2);
+
+			smt = connect
+					.prepareStatement("select * from test.appstable1 where eid in(?,?)");
+			smt.setString(1, app1);
+			smt.setString(2, app2);
+			rs = smt.executeQuery();
 			int i = 0;
-			while (resultSet.next()) {
-				a[i] = resultSet.getString("creator");
-				b[i] = resultSet.getString("contact_phone");
+			while (rs.next()) {
+				a[i] = rs.getString("creator");
+				b[i] = rs.getString("contact_phone");
+				// b[i] = rs.getString("author_md5");
 				i++;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (smt != null) {
+					smt.close();
+					rs.close();
+				}
+			} catch (Exception e1) {
+				System.out.print("Can't close Resultset");
+			}
 		}
 
 		if ((a[0] == null || a[1] == null) && (b[0] == null || b[1] == null)) {
@@ -172,7 +196,8 @@ public class MySQLAccess {
 		// System.out.println("Creator: " + a[0] + " +++++++++++++++++++++ " +
 		// a[1]);
 
-		return !(a[0].compareToIgnoreCase(a[1]) == 0) && !(b[0].compareToIgnoreCase(b[1]) == 0);
+		return !(a[0].compareToIgnoreCase(a[1]) == 0)
+				&& !(b[0].compareToIgnoreCase(b[1]) == 0);
 	}
 
 	HashMap<String, Integer> tmpHashMap = new HashMap<String, Integer>();
@@ -237,28 +262,57 @@ public class MySQLAccess {
 		try {
 			statement = connect.createStatement();
 			// Result set get the result of the SQL query
-			resultSet = statement.executeQuery("select * from test.appstable1 where eid");
-		} catch (SQLException e) {
+			resultSet = statement.executeQuery("select * from appsdb.apps");
+
+			while (resultSet.next()) {
+				// It is possible to get the columns via name
+				// also possible to get the columns via the column number
+				// which starts at 1
+				// e.g. resultSet.getSTring(2);
+				InputStream bos = resultSet.getBinaryStream("feature_vector");
+				ObjectInputStream out = new ObjectInputStream(bos);
+
+				AppVector ap = (AppVector) out.readObject();
+				OpenBitSet x = ap.LogicVector;
+				OpenBitSet y = ap.ContentVector;
+				System.out.println("Y: " + x.get(5000));
+				System.out.println("X: " + x.get(27000));
+				System.out.println("Y: " + y.get(5000));
+			}
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-	
+
 	public static void main(String[] args) {
 
 		long start = System.currentTimeMillis();
 		System.out.println("Load Authors!");
 		System.out.println(start);
 		MySQLAccess access = new MySQLAccess();
-		//access.loadAuthorsMapIntoDB("/home/peter/apkSignatures_d78910.txt");
+
+		// access.loadVectorsIntoDB_Batch();
+		// access.loadAuthorsMapIntoDB_Batch("/home/peter/columbia/mob/authorsSignatures/apkSignatures_s123.txt");
+		// AppVector app = new AppVector();
+		// OpenBitSet x = new OpenBitSet(27000);
+		// OpenBitSet y = new OpenBitSet(5000);
+		// x.set(27000);
+		// y.set(5000);
+
 		try {
-			access.read("com.infiniteangle.RayWar-7","com.infiniteappz.chemistrycalculators-1");
+			access.loadVectorsIntoDB_Batch(new File(
+					"/media/peter/GufretBot/000Linux/Dropbox/mobile-computing/120000/test/"));
+			// access.insert("name", new AppVector(x, y), "MD5", 12.2, 12.3,
+			// 12.4);
+			// access.temp();
+			// access.read("com.skyd.bestpuzzle.n809-1",
+			// "air.gnpgmfrh-1000001");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// printResultSetToConsole(resultSet);
 
 		// System.out.println("START:" + System.currentTimeMillis());
 		//
@@ -268,7 +322,7 @@ public class MySQLAccess {
 		// System.out.println("Write to File");
 		// access.writeHashMapToTXT(null, "lib_names", true, true);
 		// //access.writeHashMapToTXT(null, "lib_names", true, false);
-		 System.out.println("TIME:" + (System.currentTimeMillis() - start));
+		System.out.println("TIME:" + (System.currentTimeMillis() - start));
 	}
 
 	public void writeHashMapToTXT(HashMap<String, Integer> map,
@@ -330,6 +384,82 @@ public class MySQLAccess {
 		}
 	}
 
+	public void loadAuthorsMapIntoDB_Batch(String filePath) {
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(filePath));
+			String delimiter = "\\s+";
+			String currentLine;
+			String tokens[];
+
+			connect.setAutoCommit(false);
+
+			PreparedStatement stm = connect
+					.prepareStatement("UPDATE test.appstable1 SET contact_phone = ? WHERE eid = ?");
+
+			while ((currentLine = in.readLine()) != null) {
+				tokens = currentLine.split(delimiter);
+				stm.setString(1, tokens[1]);
+				stm.setString(2, tokens[0]);
+				stm.addBatch();
+			}
+
+			stm.executeBatch();
+			connect.commit();
+
+			// Close buffered reader
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void loadVectorsIntoDB_Batch(File file) throws Exception {
+
+		/* read all serial files in the folder */
+		for (File entry : file.listFiles()) {
+
+			if (entry.isDirectory()) {
+				loadVectorsIntoDB_Batch(entry);
+				continue;
+			}
+
+			if (entry.isFile() && !entry.getName().endsWith(".ser"))
+				continue;
+
+			FileInputStream fis = new FileInputStream(entry.getAbsoluteFile());
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			HashMap<String, AppVector> buff = (HashMap<String, AppVector>) ois
+					.readObject();
+			ois.close();
+
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(bos);
+
+			connect.setAutoCommit(false);
+			PreparedStatement stm = connect
+					.prepareStatement("UPDATE test.appstable1 SET app_vector = ? WHERE eid = ?");
+			for (Iterator<Map.Entry<String, AppVector>> iter1 = buff.entrySet()
+					.iterator(); iter1.hasNext();) {
+				Map.Entry<String, AppVector> x = iter1.next();
+				System.out.println("app:" + x.getKey());
+
+				oos.writeObject(x.getValue());
+				oos.flush();
+				byte[] fv = bos.toByteArray();
+
+				stm.setObject(1, fv);
+				stm.setString(2, x.getKey());
+				stm.addBatch();
+			}
+			stm.executeBatch();
+			connect.commit();
+
+			oos.close();
+			bos.close();
+			// System.out.println(bitSetsHashMap.size());
+		}
+	}
+
 	private void updateAuthor(String appName, String authorHash) {
 		// Statements allow to issue SQL queries to the database
 		try {
@@ -343,7 +473,5 @@ public class MySQLAccess {
 			e.printStackTrace();
 		}
 		// Result set get the result of the SQL query
-
 	}
-
 }

@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.lucene.util.OpenBitSet;
 
 public class MySQLAccess {
+	public static final double sizeInterval = 0.2;
 	private Connection connect = null;
 	// private static final String connectionString =
 	// "jdbc:mysql://localhost/test?user=apps_user&password=apps_userpw";
@@ -289,13 +290,13 @@ public class MySQLAccess {
 
 		long start = System.currentTimeMillis();
 		MySQLAccess access = new MySQLAccess();
-		
-		//Get the size
-		long size = access.getSize("a.a.lens-3");
+
+		// Get the size
+		boolean size = access.isSizeSimilar("a.b.mart-1", "a.co.action-23");
 		System.out.println("Size: " + size);
 
 		// access.temp();
-		//access.loadAuthorsMapIntoDB_Batch("/media/peter/GufretBot/000Linux/Dropbox/mobile-computing/Results423/apkSignatures_ds67.txt");
+		// access.loadAuthorsMapIntoDB_Batch("/media/peter/GufretBot/000Linux/Dropbox/mobile-computing/Results423/apkSignatures_ds67.txt");
 		// AppVector app = new AppVector();
 		// OpenBitSet x = new OpenBitSet(27000);
 		// OpenBitSet y = new OpenBitSet(5000);
@@ -498,6 +499,31 @@ public class MySQLAccess {
 			e.printStackTrace();
 		}
 		// Result set get the result of the SQL query
+	}
+
+	public boolean isSizeSimilar(String app1, String app2) {
+		PreparedStatement smt;
+		long[] result = { 0, 0 };
+		int i = 0;
+		try {
+			smt = connect
+					.prepareStatement("select * from test.appstable1 where eid in(?, ?)");
+			smt.setString(1, app1);
+			smt.setString(2, app2);
+			ResultSet rs = smt.executeQuery();
+			while (rs.next()) {
+				result[i++] = rs.getLong("asset_size");
+			}
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (result[0] == 0 || result[1] == 0) {
+			return false;
+		}
+		double ratio = (result[0] * 1.0 )/ result[1];
+		return ratio <= 1 + sizeInterval && ratio >= 1 - sizeInterval;
 	}
 
 	public long getSize(String name) {

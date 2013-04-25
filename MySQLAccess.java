@@ -262,22 +262,21 @@ public class MySQLAccess {
 		try {
 			statement = connect.createStatement();
 			// Result set get the result of the SQL query
-			resultSet = statement.executeQuery("select * from appsdb.apps");
+			resultSet = statement
+					.executeQuery("select * from test.appstable1 where eid = 'CommunityClinical.PocketRx-1'");
 
 			while (resultSet.next()) {
 				// It is possible to get the columns via name
 				// also possible to get the columns via the column number
 				// which starts at 1
 				// e.g. resultSet.getSTring(2);
-				InputStream bos = resultSet.getBinaryStream("feature_vector");
+				InputStream bos = resultSet.getBinaryStream("app_vector");
 				ObjectInputStream out = new ObjectInputStream(bos);
 
 				AppVector ap = (AppVector) out.readObject();
 				OpenBitSet x = ap.LogicVector;
 				OpenBitSet y = ap.ContentVector;
-				System.out.println("Y: " + x.get(5000));
-				System.out.println("X: " + x.get(27000));
-				System.out.println("Y: " + y.get(5000));
+				System.out.println("Y: " + x.get(1234));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -289,12 +288,14 @@ public class MySQLAccess {
 	public static void main(String[] args) {
 
 		long start = System.currentTimeMillis();
-		System.out.println("Load Authors!");
-		System.out.println(start);
 		MySQLAccess access = new MySQLAccess();
+		
+		//Get the size
+		long size = access.getSize("a.a.lens-3");
+		System.out.println("Size: " + size);
 
-		// access.loadVectorsIntoDB_Batch();
-		// access.loadAuthorsMapIntoDB_Batch("/home/peter/columbia/mob/authorsSignatures/apkSignatures_s123.txt");
+		// access.temp();
+		//access.loadAuthorsMapIntoDB_Batch("/media/peter/GufretBot/000Linux/Dropbox/mobile-computing/Results423/apkSignatures_ds67.txt");
 		// AppVector app = new AppVector();
 		// OpenBitSet x = new OpenBitSet(27000);
 		// OpenBitSet y = new OpenBitSet(5000);
@@ -302,8 +303,8 @@ public class MySQLAccess {
 		// y.set(5000);
 
 		try {
-			access.loadVectorsIntoDB_Batch(new File(
-					"/media/peter/GufretBot/000Linux/Dropbox/mobile-computing/120000/test/"));
+			// access.loadVectorsIntoDB_Batch(new File(
+			// "/media/peter/GufretBot/000Linux/Dropbox/mobile-computing/120000/"));
 			// access.insert("name", new AppVector(x, y), "MD5", 12.2, 12.3,
 			// 12.4);
 			// access.temp();
@@ -390,24 +391,48 @@ public class MySQLAccess {
 			String delimiter = "\\s+";
 			String currentLine;
 			String tokens[];
+			String[][] authors = new String[128000][2];
 
 			connect.setAutoCommit(false);
 
 			PreparedStatement stm = connect
-					.prepareStatement("UPDATE test.appstable1 SET contact_phone = ? WHERE eid = ?");
+					.prepareStatement("UPDATE test.appstable1 SET author_md5 = ? WHERE eid = ?");
 
+			int i = 0;
 			while ((currentLine = in.readLine()) != null) {
 				tokens = currentLine.split(delimiter);
 				stm.setString(1, tokens[1]);
 				stm.setString(2, tokens[0]);
 				stm.addBatch();
+				authors[i][0] = tokens[0];
+				authors[i][1] = tokens[1];
+				i++;
 			}
-
-			stm.executeBatch();
-			connect.commit();
-
+			int[] results = stm.executeBatch();
+			stm.close();
 			// Close buffered reader
 			in.close();
+
+			PreparedStatement stm1 = connect
+					.prepareStatement("INSERT INTO test.appstable1 (eid, author_md5) VALUES (?, ?) ON DUPLICATE KEY UPDATE app_type='D'");
+			int length = results.length;
+			for (int k = 0; k < length; k++) {
+				if (results[k] <= 0) {
+					String t = authors[k][0];
+					if (t.length() > 100)
+						t = t.substring(0, 99);
+					stm1.setString(1, t);
+					stm1.setString(2, authors[k][1]);
+					stm1.addBatch();
+					System.out
+							.println(authors[k][0] + " ---- " + authors[k][1]);
+				}
+			}
+			stm1.executeBatch();
+			stm1.close();
+
+			connect.commit();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -432,19 +457,20 @@ public class MySQLAccess {
 					.readObject();
 			ois.close();
 
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(bos);
-
 			connect.setAutoCommit(false);
 			PreparedStatement stm = connect
 					.prepareStatement("UPDATE test.appstable1 SET app_vector = ? WHERE eid = ?");
 			for (Iterator<Map.Entry<String, AppVector>> iter1 = buff.entrySet()
 					.iterator(); iter1.hasNext();) {
 				Map.Entry<String, AppVector> x = iter1.next();
-				System.out.println("app:" + x.getKey());
 
+				ByteArrayOutputStream bos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(bos);
 				oos.writeObject(x.getValue());
 				oos.flush();
+				oos.close();
+				bos.close();
+
 				byte[] fv = bos.toByteArray();
 
 				stm.setObject(1, fv);
@@ -453,9 +479,8 @@ public class MySQLAccess {
 			}
 			stm.executeBatch();
 			connect.commit();
-
-			oos.close();
-			bos.close();
+			stm.close();
+			System.out.println("500 inserted");
 			// System.out.println(bitSetsHashMap.size());
 		}
 	}
@@ -473,5 +498,24 @@ public class MySQLAccess {
 			e.printStackTrace();
 		}
 		// Result set get the result of the SQL query
+	}
+
+	public long getSize(String name) {
+		PreparedStatement smt;
+		long result = 0;
+		try {
+			smt = connect
+					.prepareStatement("select * from test.appstable1 where eid in(?)");
+			smt.setString(1, name);
+			ResultSet rs = smt.executeQuery();
+			while (rs.next()) {
+				result = rs.getLong("asset_size");
+			}
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

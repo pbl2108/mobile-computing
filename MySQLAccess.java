@@ -22,11 +22,11 @@ import java.util.Map;
 import org.apache.lucene.util.OpenBitSet;
 
 public class MySQLAccess {
-	public static final double sizeInterval = 0.2;
+	public static final double sizeInterval = 0.45;
 	private Connection connect = null;
 	// private static final String connectionString =
 	// "jdbc:mysql://localhost/test?user=apps_user&password=apps_userpw";
-	private static final String connectionString = "jdbc:mysql://localhost/test";
+	private static final String connectionString = "jdbc:mysql://localhost/test_new";
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -84,7 +84,7 @@ public class MySQLAccess {
 		// Statements allow to issue SQL queries to the database
 		statement = connect.createStatement();
 		// Result set get the result of the SQL query
-		resultSet = statement.executeQuery("select * from test.appstable1");
+		resultSet = statement.executeQuery("select * from test_new.appstable1");
 		// printResultSetToConsole(resultSet);
 	}
 
@@ -92,7 +92,7 @@ public class MySQLAccess {
 		// Statements allow to issue SQL queries to the database
 		statement = connect.createStatement();
 		// Result set get the result of the SQL query
-		String query = "select * from test.appstable1 where eid in (\"" + app1
+		String query = "select * from test_new.appstable1 where eid in (\"" + app1
 				+ "\",\"" + app2 + "\")";
 		resultSet = statement.executeQuery(query);
 		printResultSetToConsole(resultSet);
@@ -101,11 +101,11 @@ public class MySQLAccess {
 	public ResultSet readResultSet(String app1, String app2) throws Exception {
 		// Statements allow to issue SQL queries to the database
 		PreparedStatement smt = connect
-				.prepareStatement("select * from test.appstable1 where eid in(?,?)");
+				.prepareStatement("select * from test_new.appstable1 where eid in(?,?)");
 		smt.setString(1, app1);
 		smt.setString(2, app2);
 		// // Result set get the result of the SQL query
-		// String query = "select * from test.appstable1 where eid in (\"" +
+		// String query = "select * from test_new.appstable1 where eid in (\"" +
 		// app1
 		// + "\",\"" + app2 + "\")";
 		return smt.executeQuery();
@@ -164,18 +164,22 @@ public class MySQLAccess {
 		String[] b = new String[2];
 		ResultSet rs = null;
 		PreparedStatement smt = null;
+		
+		boolean creator = true;
+		boolean md5 = true;
+		
 		try {
 
 			smt = connect
-					.prepareStatement("select * from test.appstable1 where eid in(?,?)");
+					.prepareStatement("select * from test_new.appstable1 where eid in(?,?)");
 			smt.setString(1, app1);
 			smt.setString(2, app2);
 			rs = smt.executeQuery();
 			int i = 0;
 			while (rs.next()) {
 				a[i] = rs.getString("creator");
-				b[i] = rs.getString("contact_phone");
-				// b[i] = rs.getString("author_md5");
+				//b[i] = rs.getString("contact_phone");
+				 b[i] = rs.getString("author_md5");
 				i++;
 			}
 		} catch (Exception e) {
@@ -191,14 +195,23 @@ public class MySQLAccess {
 			}
 		}
 
-		if ((a[0] == null || a[1] == null) && (b[0] == null || b[1] == null)) {
-			return true;
-		}
+//		if ((a[0] == null || a[1] == null) && (b[0] == null || b[1] == null)) {
+//			return true;
+//		}
+		
+		if (a[0] == null || a[1] == null)
+			creator = true;
+		else
+			creator = !(a[0].compareToIgnoreCase(a[1]) == 0);
+		
+		if (b[0] == null || b[1] == null)
+			md5 = true;
+		else
+			md5 = !(b[0].compareToIgnoreCase(b[1]) == 0);
 		// System.out.println("Creator: " + a[0] + " +++++++++++++++++++++ " +
 		// a[1]);
 
-		return !(a[0].compareToIgnoreCase(a[1]) == 0)
-				&& !(b[0].compareToIgnoreCase(b[1]) == 0);
+		return creator && md5;
 	}
 
 	HashMap<String, Integer> tmpHashMap = new HashMap<String, Integer>();
@@ -264,7 +277,7 @@ public class MySQLAccess {
 			statement = connect.createStatement();
 			// Result set get the result of the SQL query
 			resultSet = statement
-					.executeQuery("select * from test.appstable1 where eid = 'CommunityClinical.PocketRx-1'");
+					.executeQuery("select * from test_new.appstable1 where eid = 'CommunityClinical.PocketRx-1'");
 
 			while (resultSet.next()) {
 				// It is possible to get the columns via name
@@ -397,7 +410,7 @@ public class MySQLAccess {
 			connect.setAutoCommit(false);
 
 			PreparedStatement stm = connect
-					.prepareStatement("UPDATE test.appstable1 SET author_md5 = ? WHERE eid = ?");
+					.prepareStatement("UPDATE test_new.appstable1 SET author_md5 = ? WHERE eid = ?");
 
 			int i = 0;
 			while ((currentLine = in.readLine()) != null) {
@@ -415,7 +428,7 @@ public class MySQLAccess {
 			in.close();
 
 			PreparedStatement stm1 = connect
-					.prepareStatement("INSERT INTO test.appstable1 (eid, author_md5) VALUES (?, ?) ON DUPLICATE KEY UPDATE app_type='D'");
+					.prepareStatement("INSERT INTO test_new.appstable1 (eid, author_md5) VALUES (?, ?) ON DUPLICATE KEY UPDATE app_type='D'");
 			int length = results.length;
 			for (int k = 0; k < length; k++) {
 				if (results[k] <= 0) {
@@ -460,7 +473,7 @@ public class MySQLAccess {
 
 			connect.setAutoCommit(false);
 			PreparedStatement stm = connect
-					.prepareStatement("UPDATE test.appstable1 SET app_vector = ? WHERE eid = ?");
+					.prepareStatement("UPDATE test_new.appstable1 SET app_vector = ? WHERE eid = ?");
 			for (Iterator<Map.Entry<String, AppVector>> iter1 = buff.entrySet()
 					.iterator(); iter1.hasNext();) {
 				Map.Entry<String, AppVector> x = iter1.next();
@@ -491,7 +504,7 @@ public class MySQLAccess {
 		try {
 			statement = connect.createStatement();
 
-			String query = "UPDATE test.appstable1 SET contact_phone = \""
+			String query = "UPDATE test_new.appstable1 SET contact_phone = \""
 					+ authorHash + "\" WHERE eid = \"" + appName + "\"";
 			statement.executeUpdate(query);
 		} catch (SQLException e) {
@@ -507,7 +520,7 @@ public class MySQLAccess {
 		int i = 0;
 		try {
 			smt = connect
-					.prepareStatement("select * from test.appstable1 where eid in(?, ?)");
+					.prepareStatement("select * from test_new.appstable1 where eid in(?, ?)");
 			smt.setString(1, app1);
 			smt.setString(2, app2);
 			ResultSet rs = smt.executeQuery();
@@ -531,7 +544,7 @@ public class MySQLAccess {
 		long result = 0;
 		try {
 			smt = connect
-					.prepareStatement("select * from test.appstable1 where eid in(?)");
+					.prepareStatement("select * from test_new.appstable1 where eid in(?)");
 			smt.setString(1, name);
 			ResultSet rs = smt.executeQuery();
 			while (rs.next()) {

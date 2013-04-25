@@ -145,17 +145,23 @@ public class kdtreeCompare {
 		
 		ArrayList<AppData> nearApps;
 		//AppData buff;
-		ArrayList<String> highSimApps = new ArrayList<String>();
+//		ArrayList<String> highSimApps = new ArrayList<String>();
 		int ret = 0;
 		int totalSim = 0;
 		int comp = 0;
 		
-		bsb.loadAuthorsMap();
+		//bsb.loadAuthorsMap();
 		
 		for (int i = 0; i < appList.size(); i++) {
 		//while (!appList.isEmpty()) {
 			nearApps = kdtree.searchRange(appList.get(i), radius);
-			ret = doPairwiseComparisonWithNeighbors(appList.get(i), nearApps, bsb);
+			
+			try {
+				ret = doPairwiseComparisonWithNeighbors(appList.get(i), nearApps, bsb);
+			} catch (OutOfMemoryError me) {
+				System.out.println("out of memory, stop...");
+				break;
+			}
 //			buff = appList.get(0);
 //			appList.remove(0);
 //			ret = doPairwiseComparison(buff, appList, bsb);
@@ -167,8 +173,8 @@ public class kdtreeCompare {
 				System.out.println("-----------------------");
 				totalSim += ret;
 				
-				if (ret >= 25)
-					highSimApps.add(appList.get(i).getName() + ".apk");
+//				if (ret >= 25)
+//					highSimApps.add(appList.get(i).getName() + ".apk");
 					//highSimApps.add(buff.getName() + ".apk");
 			}
 		}
@@ -179,9 +185,9 @@ public class kdtreeCompare {
 		System.out.println("total similar apps detected: " + totalSim);
 		stat.printStatistics();
 		
-		System.out.println("-----------------------");
-		for (int i = 0; i < highSimApps.size(); i++)
-			System.out.println(highSimApps.get(i));
+//		System.out.println("-----------------------");
+//		for (int i = 0; i < highSimApps.size(); i++)
+//			System.out.println(highSimApps.get(i));
 		
 		plot.closeFile();
 	}
@@ -200,8 +206,8 @@ public class kdtreeCompare {
 				plot.writeToCluster(list.get(i));
 				
 				if (simContent > threshold
-						&& bsb.isDifferentAuthors(base.getName(), list.get(i).getName())
-						&& sqlAccess.isAuthorDifferent(base.getName(), list.get(i).getName())) {
+						&& sqlAccess.isAuthorDifferent(base.getName(), list.get(i).getName())
+						&& sqlAccess.isSizeSimilar(base.getName(), list.get(i).getName())) {
 					
 					System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity (" + simLogic + ", " + simContent + ")");
 					count++;
@@ -226,7 +232,6 @@ public class kdtreeCompare {
 				simLogic = bsb.JaccardSimLogic(base.getName(), list.get(i).getName());
 				simContent = bsb.JaccardSimContent(base.getName(), list.get(i).getName());
 				if (simLogic > threshold && simContent > threshold
-						&& bsb.isDifferentAuthors(base.getName(), list.get(i).getName())
 						&& sqlAccess.isAuthorDifferent(base.getName(), list.get(i).getName())) {
 					System.out.println(base.getName() + ", " + list.get(i).getName() + " : similarity (" + simLogic + ", " + simContent + ")");
 					count++;

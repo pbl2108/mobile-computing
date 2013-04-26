@@ -159,6 +159,57 @@ public class MySQLAccess {
 		}
 	}
 
+	//isAuthorDifferent isSize
+	public boolean[] isAuthorAndSize(String app1, String app2) {
+		String[] a = new String[2];
+		String[] b = new String[2];
+		long[] asset_size = new long[2];
+		ResultSet rs = null;
+		PreparedStatement smt = null;
+		try {
+
+			smt = connect
+					.prepareStatement("select * from test.appstable1 where eid in(?,?)");
+			smt.setString(1, app1);
+			smt.setString(2, app2);
+			rs = smt.executeQuery();
+			int i = 0;
+			while (rs.next()) {
+				a[i] = rs.getString("creator");
+				b[i] = rs.getString("author_md5");
+				asset_size[i] = rs.getLong("asset_size");
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (smt != null) {
+					smt.close();
+					rs.close();
+				}
+			} catch (Exception e1) {
+				System.out.print("Can't close Resultset");
+			}
+		}
+
+		boolean isAuthor;
+		if ((a[0] == null || a[1] == null) && (b[0] == null || b[1] == null)) {
+			isAuthor = true;
+		}
+		isAuthor = !(a[0].compareToIgnoreCase(a[1]) == 0)
+				&& !(b[0].compareToIgnoreCase(b[1]) == 0);
+
+		boolean isSize;
+		if (asset_size[0] == 0 || asset_size[1] == 0) {
+			isSize = false;
+		}
+		double ratio = (asset_size[0] * 1.0) / asset_size[1];
+		isSize = ratio <= 1 + sizeInterval && ratio >= 1 - sizeInterval;
+
+		return new boolean[] { isAuthor, isSize };
+	}
+	
 	public boolean isAuthorDifferent(String app1, String app2) {
 		String[] a = new String[2];
 		String[] b = new String[2];

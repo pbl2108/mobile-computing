@@ -14,30 +14,36 @@ public class printFiles {
 			int idx = 0;
 			int fileCount = 0;
 			
-			//File topDir = new File("/proj/ds/encos/apk");
-			File topDir = new File("/home/Dfosak/Desktop/apks");
+			File topDir = new File("/proj/ds/encos/apk");
+			//File topDir = new File("/home/Dfosak/Desktop/apks");
 			File[] files = topDir.listFiles();
 			File outfile = new File(apkList + idx);
-			FileWriter fw = new FileWriter(outfile.getAbsoluteFile());
+			FileWriter fw = new FileWriter(outfile.getAbsoluteFile(),true);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
+			System.out.println(files.length);
+			
 			while (fileCount < files.length){
-				bw.write(files[fileCount] + "\n");
+				bw.write(files[fileCount].getName() + "\n");
 				
 				fileCount++;
 				
 				
-				if(fileCount % (files.length/6) == 0){
+				if(fileCount % (files.length/8) == 0){
+					System.out.println(fileCount);
 					idx++;
 					bw.close();
 					fw.close();
-					fw = new FileWriter(outfile.getAbsoluteFile());
-					bw = new BufferedWriter(fw);
 					outfile = new File(apkList + idx);
+					fw = new FileWriter(outfile.getAbsoluteFile(), true);
+					bw = new BufferedWriter(fw);
+					
 				}
 				
 				
 			}
+			
+			System.out.println(fileCount);
 			
 			bw.close();
 			fw.close();

@@ -22,11 +22,15 @@ import java.util.Map;
 import org.apache.lucene.util.OpenBitSet;
 
 public class MySQLAccess {
+	private static final String contentMapPath = "content_extensions.txt";
+	private static final String logicMapPath = "smali-methods.txt";
+	private static final String whiteListLibraries = "whitelist_librariesDB.txt";
+	private static final String permissionsMapPath = "permissions.txt";
 	public static final double sizeInterval = 0.45;
 	private Connection connect = null;
+	private static final String connectionString = "jdbc:mysql://localhost/test?user=apps_user&password=apps_userpw";
 	// private static final String connectionString =
-	// "jdbc:mysql://localhost/test?user=apps_user&password=apps_userpw";
-	private static final String connectionString = "jdbc:mysql://localhost/test_new";
+	// "jdbc:mysql://localhost/test_new";
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -92,8 +96,8 @@ public class MySQLAccess {
 		// Statements allow to issue SQL queries to the database
 		statement = connect.createStatement();
 		// Result set get the result of the SQL query
-		String query = "select * from test_new.appstable1 where eid in (\"" + app1
-				+ "\",\"" + app2 + "\")";
+		String query = "select * from test_new.appstable1 where eid in (\""
+				+ app1 + "\",\"" + app2 + "\")";
 		resultSet = statement.executeQuery(query);
 		printResultSetToConsole(resultSet);
 	}
@@ -159,7 +163,7 @@ public class MySQLAccess {
 		}
 	}
 
-	//isAuthorDifferent isSize
+	// isAuthorDifferent isSize
 	public boolean[] isAuthorAndSize(String app1, String app2) {
 		String[] a = new String[2];
 		String[] b = new String[2];
@@ -209,16 +213,16 @@ public class MySQLAccess {
 
 		return new boolean[] { isAuthor, isSize };
 	}
-	
+
 	public boolean isAuthorDifferent(String app1, String app2) {
 		String[] a = new String[2];
 		String[] b = new String[2];
 		ResultSet rs = null;
 		PreparedStatement smt = null;
-		
+
 		boolean creator = true;
 		boolean md5 = true;
-		
+
 		try {
 
 			smt = connect
@@ -229,8 +233,8 @@ public class MySQLAccess {
 			int i = 0;
 			while (rs.next()) {
 				a[i] = rs.getString("creator");
-				//b[i] = rs.getString("contact_phone");
-				 b[i] = rs.getString("author_md5");
+				// b[i] = rs.getString("contact_phone");
+				b[i] = rs.getString("author_md5");
 				i++;
 			}
 		} catch (Exception e) {
@@ -246,15 +250,16 @@ public class MySQLAccess {
 			}
 		}
 
-//		if ((a[0] == null || a[1] == null) && (b[0] == null || b[1] == null)) {
-//			return true;
-//		}
-		
+		// if ((a[0] == null || a[1] == null) && (b[0] == null || b[1] == null))
+		// {
+		// return true;
+		// }
+
 		if (a[0] == null || a[1] == null)
 			creator = true;
 		else
 			creator = !(a[0].compareToIgnoreCase(a[1]) == 0);
-		
+
 		if (b[0] == null || b[1] == null)
 			md5 = true;
 		else
@@ -354,10 +359,15 @@ public class MySQLAccess {
 
 		long start = System.currentTimeMillis();
 		MySQLAccess access = new MySQLAccess();
+		access.loadWhitelistLibs();
+		access.processStatistics("/home/peter/columbia/mob/output.txt");///home/peter/github/mobile-computing/db/output_stats.txt");
+
+		BitsetStats bitStats = new BitsetStats();
+		bitStats.printHashMap(contentCountMap, "libs");
 
 		// Get the size
-		boolean size = access.isSizeSimilar("a.b.mart-1", "a.co.action-23");
-		System.out.println("Size: " + size);
+		// boolean size = access.isSizeSimilar("a.b.mart-1", "a.co.action-23");
+		// System.out.println("Size: " + size);
 
 		// access.temp();
 		// access.loadAuthorsMapIntoDB_Batch("/media/peter/GufretBot/000Linux/Dropbox/mobile-computing/Results423/apkSignatures_ds67.txt");
@@ -586,7 +596,7 @@ public class MySQLAccess {
 		if (result[0] == 0 || result[1] == 0) {
 			return false;
 		}
-		double ratio = (result[0] * 1.0 )/ result[1];
+		double ratio = (result[0] * 1.0) / result[1];
 		return ratio <= 1 + sizeInterval && ratio >= 1 - sizeInterval;
 	}
 
@@ -607,5 +617,94 @@ public class MySQLAccess {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	static HashMap<String, Long> contentCountMap = new HashMap<String, Long>();
+
+	private void loadWhitelistLibs() {
+		try {
+
+			BufferedReader in = new BufferedReader(new FileReader(
+					whiteListLibraries));
+			String str;
+
+			while ((str = in.readLine()) != null) {
+				str = str.substring(1).replace('/', '.');
+				// System.out.println(str);
+				this.contentCountMap.put(str, 0l);
+			}
+			System.out.println("Libraries Loaded!");
+			// Close buffered reader
+			in.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	// com.custom.lwp.GoodRiver-1,com.custom.lwp.cubmom-1,(1.0 1.0)
+	public void processStatistics(String inputFile) {
+
+		ResultSet rs = null;
+		PreparedStatement smt = null;
+		String[] a;
+		String val;
+
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(inputFile));
+			String currentLine;
+
+			while ((currentLine = in.readLine()) != null) {
+				if (currentLine.startsWith("-"))
+					continue;
+
+				String[] apps = currentLine.split(",");
+				smt = connect
+						.prepareStatement("select * from test.appstable1 where eid in(?,?)");
+
+				// System.out.println("-------------------------------------");
+				// System.out.println(apps[0]);
+				// System.out.println(apps[1]);
+
+				smt.setString(1, apps[0]);
+				smt.setString(2, apps[1]);
+				rs = smt.executeQuery();
+
+				int i = 0;
+				while (rs.next()) {
+					val = rs.getString("lib_names");
+					if (val.isEmpty() || val == null || val.length() == 2)
+						continue;
+
+					a = val.split("\", \"");
+					a[0] = a[0].substring(2);
+					a[a.length - 1] = a[a.length - 1].replaceAll("\"]", "");
+
+					for (i = 0; i < a.length; i++) {
+						contentCountMap
+								.put(a[i], contentCountMap.get(a[i]) + 1);
+					}
+				}
+
+				if (smt != null) {
+					smt.close();
+					rs.close();
+				}
+			}
+			// Close buffered reader
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (smt != null) {
+					smt.close();
+					rs.close();
+				}
+			} catch (Exception e1) {
+				System.out.print("Can't close Resultset");
+			}
+		}
 	}
 }

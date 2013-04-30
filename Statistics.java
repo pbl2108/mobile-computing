@@ -5,6 +5,7 @@ import org.apache.lucene.util.OpenBitSet;
 
 public class Statistics {
 	
+	
 	static BitSetBank bsb;
 	public boolean isFramework(String fName) {
 
@@ -28,7 +29,7 @@ public class Statistics {
 
 	// wallpaper: 718292
 	public boolean isWallpaper(String line) {
-		return line.contains("wallpaper");
+		return line.contains("wallpaper") || line.contains("Wallpaper");
 	}
 
 	public void processSimilarityOutput(String inputFile) {
@@ -79,7 +80,6 @@ public class Statistics {
 				OpenBitSet lv = (OpenBitSet)av1.LogicVector.clone();
 				
 				lv.and(av2.LogicVector);
-				System.out.println(lv.cardinality());
 			}
 			// Close buffered reader
 			in.close();
@@ -89,10 +89,15 @@ public class Statistics {
 	}
 
 	public static void main(String[] args) {
-		bsb = new BitSetBank();
-		bsb.readAllFromSerial("/home/peter/github/mobile-computing/db/bitSetMap_d_15_s_8");
+//		bsb = new BitSetBank();
+//		bsb.readAllFromSerial("/home/peter/github/mobile-computing/db/bitSetMap_d_15_s_8/part_0.ser");
+//		
+//		Statistics bs = new Statistics();
+//		bs.processStatistics("/home/peter/github/mobile-computing/db/output_stats.txt");
 		
-		Statistics bs = new Statistics();
-		bs.processStatistics("/home/peter/github/mobile-computing/db/output_stats.txt");
+		SmaliParser p = new SmaliParser();
+		System.out.println(p.contentFeaturesCount);
+		OpenBitSet t = new OpenBitSet(p.contentFeaturesCount);
+		System.out.println(t.size());
 	}
 }

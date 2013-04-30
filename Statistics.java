@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import org.apache.lucene.util.OpenBitSet;
+
 public class Statistics {
 	
 	static BitSetBank bsb;
@@ -74,7 +76,10 @@ public class Statistics {
 				AppVector av1 = bsb.bitSetsHashMap.get(apps[0]);
 				AppVector av2 = bsb.bitSetsHashMap.get(apps[1]);
 				
+				OpenBitSet lv = (OpenBitSet)av1.LogicVector.clone();
 				
+				lv.and(av2.LogicVector);
+				System.out.println(lv.cardinality());
 			}
 			// Close buffered reader
 			in.close();
@@ -87,9 +92,7 @@ public class Statistics {
 		bsb = new BitSetBank();
 		bsb.readAllFromSerial("/home/peter/github/mobile-computing/db/bitSetMap_d_15_s_8");
 		
-		System.out.println(bsb.bitSetsHashMap.size());
-		
 		Statistics bs = new Statistics();
-		//bs.processStatistics("/home/peter/columbia/mob/output.txt");
+		bs.processStatistics("/home/peter/github/mobile-computing/db/output_stats.txt");
 	}
 }
